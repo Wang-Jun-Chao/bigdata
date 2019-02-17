@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean name="kafkaInput" class="wjc.bigdata.spark.data.pump.connector.spark.KafkaInput" init-method="init">
+        <property name="topics">
+            <list>
+                <value>kafka-streaming</value>
+            </list>
+        </property>
+        <property name="duration">
+            <bean class="org.apache.spark.streaming.Durations" factory-method="seconds">
+                <constructor-arg value="10"/>
+            </bean>
+        </property>
+        <property name="sparkConfig">
+            <map>
+                <entry key="spark.master" value="local"/>
+                <entry key="spark.app.name" value="kafka-stream"/>
+                <entry key="spark.serializer" value="org.apache.spark.serializer.KryoSerializer"/>
+                <entry key="spark.kryo.registrator" value="wjc.bigdata.spark.data.pump.register.CustomKryoRegistrator"/>
+            </map>
+        </property>
+        <property name="kafkaConfig">
+            <map>
+                <entry key="bootstrap.servers" value="kslave2:9092,kslave3:9092,kslave4:9092"/>
+                <entry key="group.id" value="spark"/>
+                <entry key="key.serializer" value="org.apache.kafka.common.serialization.StringSerializer"/>
+                <entry key="key.deserializer" value="org.apache.kafka.common.serialization.StringDeserializer"/>
+                <entry key="value.serializer" value="org.apache.kafka.common.serialization.StringSerializer"/>
+                <entry key="value.deserializer" value="org.apache.kafka.common.serialization.StringDeserializer"/>
+            </map>
+        </property>
+    </bean>
+    <bean name="kafkaOutput" class="wjc.bigdata.spark.data.pump.connector.spark.KafkaOutput" init-method="init">
+        <property name="kafkaConfig">
+            <map>
+                <entry key="bootstrap.servers" value="kslave2:9092,kslave3:9092,kslave4:9092"/>
+                <entry key="group.id" value="spark"/>
+                <entry key="client.id" value="kafka-streaming-output"/>
+                <entry key="key.serializer" value="org.apache.kafka.common.serialization.StringSerializer"/>
+                <entry key="key.deserializer" value="org.apache.kafka.common.serialization.StringDeserializer"/>
+                <entry key="value.serializer" value="org.apache.kafka.common.serialization.StringSerializer"/>
+                <entry key="value.deserializer" value="org.apache.kafka.common.serialization.StringDeserializer"/>
+                <entry key="transactional.id" value="my-transactional-id"/>
+            </map>
+        </property>
+        <property name="topics">
+            <list>
+                <value>kafka-streaming-out</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean name="defaultCalculationContext" class="wjc.bigdata.spark.data.pump.operation.DefaultCalculationContext">
+        <property name="input" ref="kafkaInput"/>
+        <property name="output" ref="kafkaOutput"/>
+    </bean>
+
+    <bean name="kafkaCalculator" class="wjc.bigdata.spark.cluster.KafkaCalculator"/>
+
+    <bean name="handlerChain" class="wjc.bigdata.spark.data.pump.operation.DefaultCalculatorChain">
+        <constructor-arg>
+            <list>
+                <ref bean="kafkaCalculator"/>
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <!--<bean name="beforeAction" class="wjc.bigdata.spark.local.TestBeforeCalculationHandlerationHandler"/>-->
+    <bean name="afterCalculateHandler" class="wjc.bigdata.spark.cluster.KafkaAfterCalculateHandler">
+        <property name="reader" ref="kafkaInput"/>
+    </bean>
+</beans>

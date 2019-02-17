@@ -7,6 +7,10 @@ import org.apache.spark.SparkConf;
 import org.apache.spark.serializer.KryoSerializer;
 import wjc.bigdata.spark.java.register.CustomKryoRegistrator;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,7 +22,8 @@ public class Base {
     protected final static Map<String, Object> KAFKA_PROPS = new HashMap<>();
     protected final static ObjectMapper        MAPPER      = new ObjectMapper();
     protected final static String              BROKERS     = "kslave2:9092,kslave3:9092,kslave4:9092";
-    protected final static String              TOPIC       = "kafka-streaming-out";
+    protected final static String              TOPIC       = "kafka-streaming";
+//    protected final static String              TOPIC       = "kafka-streaming-" + new SimpleDateFormat("yyyy_MM_dd").format(new Date());
 
     protected final static String              GROUP_ID    = "spark";
     protected final static SparkConf           SPARK_CONF  = new SparkConf();

@@ -2,7 +2,7 @@ package wjc.bigdata.spark.local;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import wjc.bigdata.spark.data.platform.SparkApplication;
+import wjc.bigdata.spark.data.pump.SparkApplication;
 
 /**
  * @author: wangjunchao(王俊超)

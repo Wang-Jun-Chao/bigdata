@@ -4,12 +4,14 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean name="reader" class="wjc.bigdata.spark.local.TestReader"/>
-    <bean name="firstHandler" class="wjc.bigdata.spark.local.TestFirstHandler"/>
-    <bean name="secondHandler" class="wjc.bigdata.spark.local.TestSecondHandler"/>
+    <bean name="testReader" class="wjc.bigdata.spark.local.TestReader"/>
+    <bean name="firstHandler" class="wjc.bigdata.spark.local.TestFirstCalculator"/>
+    <bean name="secondHandler" class="wjc.bigdata.spark.local.TestSecondCalculator"/>
     <bean name="testOutput" class="wjc.bigdata.spark.local.TestWriter"/>
 
-    <bean name="handlerChain" class="wjc.bigdata.spark.data.pump.operation.DefaultHandlerChain">
+    <bean name="kafkaInput" class="wjc.bigdata.spark.data.pump.connector.spark.KafkaInput"/>
+
+    <bean name="handlerChain" class="wjc.bigdata.spark.data.pump.operation.DefaultCalculatorChain">
         <constructor-arg>
             <list>
                 <ref bean="firstHandler"/>
@@ -17,6 +19,10 @@
             </list>
         </constructor-arg>
     </bean>
-    <!--<bean name="beforeAction" class="wjc.bigdata.spark.local.TestBeforeAction"/>-->
-    <bean name="afterAction" class="wjc.bigdata.spark.local.TestAfterAction"/>
+    <bean name="defaultCalculationContext" class="wjc.bigdata.spark.data.pump.operation.DefaultCalculationContext">
+        <property name="input" ref="testReader"/>
+        <property name="output" ref="testOutput"/>
+    </bean>
+    <!--<bean name="beforeAction" class="wjc.bigdata.spark.local.TestBeforeCalculationHandlerationHandler"/>-->
+    <bean name="afterCalculateHandler" class="wjc.bigdata.spark.local.TestAfterCalculateHandler"/>
 </beans>

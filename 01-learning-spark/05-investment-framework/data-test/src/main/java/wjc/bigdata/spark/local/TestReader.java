@@ -1,7 +1,7 @@
 package wjc.bigdata.spark.local;
 
 import org.apache.spark.rdd.RDD;
-import wjc.bigdata.spark.data.pump.connector.Input;
+import wjc.bigdata.spark.data.pump.connector.AbstractInput;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -13,7 +13,7 @@ import java.util.UUID;
  * @author: wangjunchao(王俊超)
  * @time: 2019-01-28 19:53
  **/
-public class TestReader implements Input {
+public class TestReader extends AbstractInput<RDD> {
 
     private Map<String, Object> attributes = new HashMap<>();
 
@@ -28,14 +28,14 @@ public class TestReader implements Input {
     }
 
     @Override
-    public Map<String, ? extends Collection> getAttributeMap() {
+    public RDD read() {
+        attributes.put("java.lang.String", UUID.randomUUID().toString());
+        System.out.println("read data: " + getAttributes());
         return null;
     }
 
     @Override
-    public <T> RDD<T> read() {
-        attributes.put("java.lang.String", UUID.randomUUID().toString());
-        System.out.println("read data: " + getAttributes());
+    public Collection<? extends RDD> batchRead() {
         return null;
     }
 }

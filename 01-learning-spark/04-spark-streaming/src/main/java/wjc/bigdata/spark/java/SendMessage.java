@@ -6,6 +6,8 @@ import org.apache.kafka.clients.producer.RecordMetadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -22,18 +24,19 @@ public class SendMessage extends Base {
 
         Random random = new Random();
 
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         try {
 
             while (true) {
 
                 int id = random.nextInt();
                 ProducerRecord<String, String> record = new ProducerRecord<>(
-                        TOPIC, "wjc-wjc-" + System.currentTimeMillis(), "val-" + System.currentTimeMillis());
+                        TOPIC, "wjc-" + System.currentTimeMillis(), "val-" + sdf.format(new Date()));
 
                 RecordMetadata metadata = PRODUCER.send(record).get();
-                logger.info(metadata.toString());
+                logger.warn(metadata + " --> " +  record.key() + ": " + record.value());
 
-                TimeUnit.SECONDS.sleep(1);
+                TimeUnit.SECONDS.sleep(2);
             }
 
         } catch (Exception e) {

@@ -25,7 +25,7 @@
         <!--<relativePath>../pom.xml</relativePath>-->
     </parent>
 
-    <artifactId>spark-examples_2.11</artifactId>
+    <artifactId>06-spark-examples</artifactId>
     <packaging>jar</packaging>
     <name>Spark Project Examples</name>
     <url>http://spark.apache.org/</url>

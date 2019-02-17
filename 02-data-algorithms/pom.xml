@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>wjc.bigdata.spark</groupId>
+    <artifactId>02-data-algorithms</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>ch0101-secondary-sort-spark</module>
+        <module>ch0101-secondary-sort-hadoop</module>
+        <module>ch0201-secondary-sort-hadoop</module>
+        <module>ch0301-top10-unique-key-hadoop</module>
+        <module>ch0302-top10-nonunique-key-hadoop</module>
+        <module>ch0303-top10-unique-key-spark</module>
+        <module>ch0304-top10-nonunique-key-spark</module>
+        <module>ch0401-left-out-join-hadoop</module>
+        <module>ch0402-left-out-join-spark</module>
+    </modules>
+</project>

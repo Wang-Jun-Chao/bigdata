@@ -4,6 +4,7 @@ import org.apache.spark.api.java.JavaRDDLike;
 import org.apache.spark.rdd.RDD;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 /**
  * 数据输出连接器
@@ -11,16 +12,14 @@ import java.io.Serializable;
  * @author: wangjunchao(王俊超)
  * @time: 2019-01-28 14:00
  **/
-public interface Output extends Serializable {
+public interface Output<T> extends Attribute<T> {
 
     /**
      * 将RDD的结果进行输出，一般输出到HDFS, KAFKA, REDIS等存储系统
      *
-     * @param rdd 输入的RDD数据
+     * @param data 输入的RDD数据
      */
-    <T> void write(RDD<T> rdd);
+    void write(T data);
 
-    <T> void write(JavaRDDLike<T, ? extends JavaRDDLike> rdd);
-
-
+    void write(Collection<? extends T> data);
 }

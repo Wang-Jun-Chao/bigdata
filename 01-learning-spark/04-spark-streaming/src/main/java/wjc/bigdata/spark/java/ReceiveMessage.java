@@ -20,13 +20,16 @@ import java.util.List;
 public class ReceiveMessage extends Base {
     private final static Logger logger = LoggerFactory.getLogger(ReceiveMessage.class);
 
-    private final static KafkaConsumer<String, String> CONSUMER = new KafkaConsumer<>(KAFKA_PROPS);
 
 
     public static void main(String[] args) throws JsonProcessingException {
 
+        KAFKA_PROPS.put("client.id", "kafka-streaming-output");
+        KafkaConsumer<String, String> CONSUMER = new KafkaConsumer<>(KAFKA_PROPS);
+
         // 向集群请求主题可用的分区。如果只打算读取特定分区，可以跳过这一步。
-        List<PartitionInfo> partitionInfos = CONSUMER.partitionsFor(TOPIC);
+        List<PartitionInfo> partitionInfos = CONSUMER.partitionsFor(TOPIC + "-out");
+//        List<PartitionInfo> partitionInfos = CONSUMER.partitionsFor(TOPIC);
         List<TopicPartition> partitions = new ArrayList<>();
         if (partitionInfos != null) {
             for (PartitionInfo partition : partitionInfos) {

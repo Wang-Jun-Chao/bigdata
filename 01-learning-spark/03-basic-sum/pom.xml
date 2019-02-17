@@ -6,12 +6,12 @@
 
     <groupId>wjc.bigdata.spark</groupId>
     <artifactId>03-basic-sum</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
 
     <parent>
         <groupId>wjc.bigdata.spark</groupId>
         <artifactId>01-learning-spark</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0</version>
     </parent>
 
     <dependencies>
