@@ -10,6 +10,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>ch0000-data-algorithm-utils</module>
         <module>ch0101-secondary-sort-spark</module>
         <module>ch0101-secondary-sort-hadoop</module>
         <module>ch0201-secondary-sort-hadoop</module>
