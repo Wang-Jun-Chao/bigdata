@@ -2,7 +2,7 @@ package wjc.bigdata.hadoop.leftoutjoin;
 
 import org.apache.hadoop.io.DataInputBuffer;
 import org.apache.hadoop.io.RawComparator;
-import tl.lin.data.pair.PairOfStrings;
+
 
 
 /**

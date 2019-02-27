@@ -1,7 +1,7 @@
 package wjc.bigdata.hadoop.leftoutjoin;
 
 import org.apache.hadoop.mapreduce.Partitioner;
-import tl.lin.data.pair.PairOfStrings;
+
 
 /**
  * This is an plug-in class.

@@ -19,5 +19,7 @@
         <module>ch0304-top10-nonunique-key-spark</module>
         <module>ch0401-left-out-join-hadoop</module>
         <module>ch0402-left-out-join-spark</module>
+        <module>ch0501-order-inversion-hadoop</module>
+        <module>ch0601-moving-average-pojo</module>
     </modules>
 </project>

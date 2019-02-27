@@ -16,8 +16,7 @@ import java.util.Set;
  *
  * @author Mahmoud Parsian
  */
-public class LocationCountReducer
-        extends Reducer<Text, Text, Text, LongWritable> {
+public class LocationCountReducer extends Reducer<Text, Text, Text, LongWritable> {
 
     @Override
     public void reduce(Text productID, Iterable<Text> locations, Context context)

@@ -1,5 +1,6 @@
 package wjc.bigdata.hadoop.leftoutjoin;
 
+import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
@@ -11,12 +12,11 @@ import java.io.IOException;
  *
  * @author Mahmoud Parsian
  */
-public class LocationCountMapper
-        extends Mapper<Text, Text, Text, Text> {
+public class LocationCountMapper extends Mapper<LongWritable, Text, Text, Text> {
 
     @Override
-    public void map(Text key, Text value, Context context)
-            throws IOException, InterruptedException {
-        context.write(key, value);
+    public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
+        String[] parts = value.toString().split("\t");
+        context.write(new Text(parts[0]), new Text(parts[1]));
     }
 }

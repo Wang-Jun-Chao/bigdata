@@ -2,7 +2,7 @@ package wjc.bigdata.hadoop.leftoutjoin;
 
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
-import tl.lin.data.pair.PairOfStrings;
+
 
 import java.util.Iterator;
 

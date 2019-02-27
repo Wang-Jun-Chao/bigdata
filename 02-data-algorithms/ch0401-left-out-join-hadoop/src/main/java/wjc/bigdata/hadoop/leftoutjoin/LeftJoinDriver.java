@@ -8,7 +8,9 @@ import org.apache.hadoop.mapreduce.lib.input.MultipleInputs;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.SequenceFileOutputFormat;
-import tl.lin.data.pair.PairOfStrings;
+import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
+
+import wjc.bigdata.data.algorithm.utils.HadoopPathUtils;
 //
 
 /**
@@ -19,9 +21,9 @@ import tl.lin.data.pair.PairOfStrings;
 public class LeftJoinDriver {
 
     public static void main(String[] args) throws Exception {
-        Path transactions = new Path(args[0]);  // input
-        Path users = new Path(args[1]);         // input
-        Path output = new Path(args[2]);        // output
+        Path transactions = new Path(HadoopPathUtils.inputPath(args[0]));  // input
+        Path users = new Path(HadoopPathUtils.inputPath(args[1]));         // input
+        Path output = new Path(HadoopPathUtils.outputPath(args[2]));       // output
 
         Configuration conf = new Configuration();
         Job job = new Job(conf);
@@ -38,11 +40,11 @@ public class LeftJoinDriver {
         // 3. how PairOfStrings will be sorted
         job.setSortComparatorClass(PairOfStrings.Comparator.class);
 
-        job.setReducerClass(org.dataalgorithms.chap04.mapreduce.LeftJoinReducer.class);
+        job.setReducerClass(LeftJoinReducer.class);
 
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(Text.class);
-        job.setOutputFormatClass(SequenceFileOutputFormat.class);
+        job.setOutputFormatClass(TextOutputFormat.class);
 
         // define multiple mappers: one for users and one for transactions
         MultipleInputs.addInputPath(job, transactions, TextInputFormat.class, LeftJoinTransactionMapper.class);

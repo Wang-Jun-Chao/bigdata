@@ -4,7 +4,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
-import tl.lin.data.pair.PairOfStrings;
+
 
 /**
  * LeftJoinUserMapper implements the map() function for
@@ -25,7 +25,7 @@ public class LeftJoinUserMapper
     @Override
     public void map(LongWritable key, Text value, Context context)
             throws java.io.IOException, InterruptedException {
-        String[] tokens = StringUtils.split(value.toString(), "\t");
+        String[] tokens = StringUtils.split(value.toString(), " ");
         if (tokens.length == 2) {
             // tokens[0] = user_id
             // tokens[1] = location_id
