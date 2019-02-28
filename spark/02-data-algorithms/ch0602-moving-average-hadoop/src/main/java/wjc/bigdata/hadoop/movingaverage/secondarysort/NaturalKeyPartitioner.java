@@ -34,9 +34,7 @@ public class NaturalKeyPartitioner implements Partitioner<CompositeKey, TimeSeri
     }
 
     @Override
-    public int getPartition(CompositeKey key,
-                            TimeSeriesData value,
-                            int numberOfPartitions) {
+    public int getPartition(CompositeKey key, TimeSeriesData value, int numberOfPartitions) {
         return Math.abs((int) (hash(key.getName()) % numberOfPartitions));
     }
 

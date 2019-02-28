@@ -23,8 +23,7 @@ import java.util.Iterator;
  *
  * @author Mahmoud Parsian
  */
-public class SortByMRF_MovingAverageReducer extends MapReduceBase
-        implements Reducer<CompositeKey, TimeSeriesData, Text, Text> {
+public class SortByMRF_MovingAverageReducer extends MapReduceBase implements Reducer<CompositeKey, TimeSeriesData, Text, Text> {
 
     int windowSize = 5; // default window size
 
@@ -37,10 +36,7 @@ public class SortByMRF_MovingAverageReducer extends MapReduceBase
     }
 
     @Override
-    public void reduce(CompositeKey key,
-                       Iterator<TimeSeriesData> values,
-                       OutputCollector<Text, Text> output,
-                       Reporter reporter)
+    public void reduce(CompositeKey key, Iterator<TimeSeriesData> values, OutputCollector<Text, Text> output, Reporter reporter)
             throws IOException {
 
         // note that values are sorted.

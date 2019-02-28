@@ -21,8 +21,7 @@ import java.util.Date;
  *
  * @author Mahmoud Parsian
  */
-public class SortByMRF_MovingAverageMapper extends MapReduceBase
-        implements Mapper<LongWritable, Text, CompositeKey, TimeSeriesData> {
+public class SortByMRF_MovingAverageMapper extends MapReduceBase implements Mapper<LongWritable, Text, CompositeKey, TimeSeriesData> {
 
     // reuse Hadoop's Writable objects
     private final CompositeKey   reducerKey   = new CompositeKey();

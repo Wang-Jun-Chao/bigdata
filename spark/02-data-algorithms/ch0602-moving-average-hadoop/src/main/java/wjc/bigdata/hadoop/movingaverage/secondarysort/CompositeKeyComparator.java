@@ -24,13 +24,7 @@ public class CompositeKeyComparator extends WritableComparator {
         int comparison = key1.getName().compareTo(key2.getName());
         if (comparison == 0) {
             // names are equal here
-            if (key1.getTimestamp() == key2.getTimestamp()) {
-                return 0;
-            } else if (key1.getTimestamp() < key2.getTimestamp()) {
-                return -1;
-            } else {
-                return 1;
-            }
+            return Long.compare(key1.getTimestamp(), key2.getTimestamp());
         } else {
             return comparison;
         }
