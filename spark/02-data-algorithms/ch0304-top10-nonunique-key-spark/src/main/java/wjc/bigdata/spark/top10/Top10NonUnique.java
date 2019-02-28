@@ -10,8 +10,8 @@ import org.apache.spark.api.java.function.FlatMapFunction;
 import org.apache.spark.api.java.function.PairFunction;
 import org.apache.spark.api.java.function.Function2;
 import org.apache.spark.broadcast.Broadcast;
-import wjc.bigdata.data.algorithm.utils.HadoopPathUtils;
-import wjc.bigdata.data.algorithm.utils.SparkUtil;
+import wjc.bigdata.algorithm.utils.HadoopPathUtils;
+import wjc.bigdata.algorithm.utils.SparkUtil;
 
 import java.util.List;
 import java.util.Map;

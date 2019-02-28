@@ -1,4 +1,4 @@
-package wjc.bigdata.data.algorithm.utils;
+package wjc.bigdata.algorithm.utils;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;

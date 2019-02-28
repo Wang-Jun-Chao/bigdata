@@ -1,7 +1,7 @@
 package wjc.bigdata.hadoop.secondarysort;
 
 import org.apache.hadoop.io.Writable;
-import wjc.bigdata.data.algorithm.utils.DateUtil;
+import wjc.bigdata.algorithm.utils.DateUtil;
 
 import java.io.DataInput;
 import java.io.DataOutput;

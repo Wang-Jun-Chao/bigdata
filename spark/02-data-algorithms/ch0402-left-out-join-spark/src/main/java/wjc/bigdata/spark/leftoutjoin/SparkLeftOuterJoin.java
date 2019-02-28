@@ -10,7 +10,7 @@ import org.apache.spark.api.java.function.Function;
 import org.apache.spark.api.java.function.PairFlatMapFunction;
 import org.apache.spark.api.java.function.PairFunction;
 import scala.Tuple2;
-import wjc.bigdata.data.algorithm.utils.HadoopPathUtils;
+import wjc.bigdata.algorithm.utils.HadoopPathUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;

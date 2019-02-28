@@ -9,12 +9,10 @@ import org.apache.spark.api.java.function.Function;
 import org.apache.spark.api.java.function.Function2;
 import org.apache.spark.api.java.function.PairFunction;
 import scala.Tuple2;
-import wjc.bigdata.data.algorithm.utils.DataStructures;
-import wjc.bigdata.data.algorithm.utils.HadoopPathUtils;
-import wjc.bigdata.data.algorithm.utils.SparkUtil;
+import wjc.bigdata.algorithm.utils.DataStructures;
+import wjc.bigdata.algorithm.utils.HadoopPathUtils;
+import wjc.bigdata.algorithm.utils.SparkUtil;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;

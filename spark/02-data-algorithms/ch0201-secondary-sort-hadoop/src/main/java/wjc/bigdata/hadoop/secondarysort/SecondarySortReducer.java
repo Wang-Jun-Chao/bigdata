@@ -2,7 +2,7 @@ package wjc.bigdata.hadoop.secondarysort;
 
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
-import wjc.bigdata.data.algorithm.utils.DateUtil;
+import wjc.bigdata.algorithm.utils.DateUtil;
 
 import java.io.IOException;
 

@@ -1,4 +1,4 @@
-package wjc.bigdata.data.algorithm.utils;
+package wjc.bigdata.algorithm.utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;

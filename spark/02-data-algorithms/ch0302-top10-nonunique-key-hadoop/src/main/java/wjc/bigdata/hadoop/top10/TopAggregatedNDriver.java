@@ -3,7 +3,6 @@ package wjc.bigdata.hadoop.top10;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.fs.PathFilter;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.NullWritable;
@@ -18,9 +17,7 @@ import org.apache.hadoop.util.ToolRunner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import wjc.bigdata.data.algorithm.utils.HadoopPathUtils;
-
-import java.io.IOException;
+import wjc.bigdata.algorithm.utils.HadoopPathUtils;
 
 /**
  * TopNDriver: assumes that all K's are unique for all given (K,V) values.

@@ -4,7 +4,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
-import wjc.bigdata.data.algorithm.utils.DateUtil;
+import wjc.bigdata.algorithm.utils.DateUtil;
 
 import java.io.IOException;
 import java.util.Date;

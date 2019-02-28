@@ -9,14 +9,12 @@ import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.Function;
 import org.apache.spark.api.java.function.PairFunction;
 import scala.Tuple2;
-import wjc.bigdata.data.algorithm.utils.HadoopPathUtils;
-import wjc.bigdata.data.algorithm.utils.SparkUtil;
-import wjc.bigdata.data.algorithm.utils.TupleComparator;
+import wjc.bigdata.algorithm.utils.HadoopPathUtils;
+import wjc.bigdata.algorithm.utils.SparkUtil;
+import wjc.bigdata.algorithm.utils.TupleComparator;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 //

@@ -6,11 +6,9 @@ import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.PairFunction;
 import scala.Tuple2;
-import wjc.bigdata.data.algorithm.utils.HadoopPathUtils;
+import wjc.bigdata.algorithm.utils.HadoopPathUtils;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * run args /secondary_sort/input /secondary_sort/output

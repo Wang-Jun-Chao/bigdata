@@ -12,10 +12,7 @@ import org.apache.hadoop.util.ToolRunner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import wjc.bigdata.data.algorithm.utils.HadoopPathUtils;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import wjc.bigdata.algorithm.utils.HadoopPathUtils;
 
 /**
  * SecondarySortDriver is driver class for submitting secondary sort job to Hadoop.
