@@ -1,4 +1,4 @@
-package wjc.bigdata.hadoop.movingaverage;
+package wjc.bigdata.hadoop.movingaverage.meomorysort;
 
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.Text;
@@ -11,13 +11,10 @@ import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 //
 import wjc.bigdata.algorithm.utils.HadoopPathUtils;
-import wjc.bigdata.algorithm.utils.HadoopUtil;
-import wjc.bigdata.hadoop.movingaverage.SortInMemory_MovingAverageMapper;
-import wjc.bigdata.hadoop.movingaverage.SortInMemory_MovingAverageReducer;
 import wjc.bigdata.hadoop.movingaverage.TimeSeriesData;
 
 /**
- * Args : 2 /moving_average/input /moving_average/output
+ * Run args : 2 /moving_average/input /moving_average/output
  *
  * MapReduce job for moving averages of time series data
  * by using in memory sort (without secondary sort).

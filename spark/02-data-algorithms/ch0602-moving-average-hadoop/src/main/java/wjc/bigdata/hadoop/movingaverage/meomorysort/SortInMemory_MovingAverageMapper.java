@@ -1,10 +1,11 @@
-package wjc.bigdata.hadoop.movingaverage;
+package wjc.bigdata.hadoop.movingaverage.meomorysort;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 import wjc.bigdata.algorithm.utils.DateUtil;
+import wjc.bigdata.hadoop.movingaverage.TimeSeriesData;
 
 import java.io.IOException;
 import java.util.Date;
