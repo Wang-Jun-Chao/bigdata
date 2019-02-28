@@ -12,8 +12,7 @@ import org.apache.hadoop.mapreduce.Mapper;
  *
  * @author Mahmoud Parsian
  */
-public class LeftJoinTransactionMapper
-        extends Mapper<LongWritable, Text, PairOfStrings, PairOfStrings> {
+public class LeftJoinTransactionMapper extends Mapper<LongWritable, Text, PairOfStrings, PairOfStrings> {
 
     PairOfStrings outputKey   = new PairOfStrings();
     PairOfStrings outputValue = new PairOfStrings();

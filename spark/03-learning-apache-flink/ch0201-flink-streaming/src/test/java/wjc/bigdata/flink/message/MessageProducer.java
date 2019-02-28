@@ -31,7 +31,7 @@ public class MessageProducer extends Base {
                 int id = random.nextInt();
                 ProducerRecord<String, String> record = new ProducerRecord<>(
                         PRODUCT_TOPIC, "" + System.currentTimeMillis(), System.currentTimeMillis()
-                        + "," + (int) (Math.random() * 100) + ",id-" + (int) (Math.random() * 100));
+                        + "," + (int) (Math.random() * 100) + ",sensor-id-" + (int) (Math.random() * 100));
 
                 RecordMetadata metadata = PRODUCER.send(record).get();
                 logger.warn(metadata + " --> " + record.key() + ": " + record.value());

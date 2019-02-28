@@ -10,7 +10,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>01-learning-spark</module>
-        <module>06-spark-examples</module>
+        <module>spark</module>
     </modules>
 </project>

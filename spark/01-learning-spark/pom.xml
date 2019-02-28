@@ -9,13 +9,6 @@
     <version>1.0</version>
     <packaging>pom</packaging>
 
-    <parent>
-        <groupId>wjc.bigdata</groupId>
-        <artifactId>spark</artifactId>
-        <version>1.0</version>
-    </parent>
-
-
     <modules>
         <module>01-word-count</module>
         <module>02-basic-avg</module>
