@@ -1,4 +1,4 @@
-package wjc.bigdata.flink;
+package wjc.bigdata.flink.batchapi;
 
 public class Record {
 

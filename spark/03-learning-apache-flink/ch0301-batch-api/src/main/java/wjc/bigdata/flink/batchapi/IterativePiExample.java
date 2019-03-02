@@ -1,4 +1,4 @@
-package wjc.bigdata.flink;
+package wjc.bigdata.flink.batchapi;
 
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.java.DataSet;
