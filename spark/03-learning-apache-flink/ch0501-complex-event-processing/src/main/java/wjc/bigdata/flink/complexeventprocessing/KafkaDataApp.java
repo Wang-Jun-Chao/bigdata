@@ -18,12 +18,11 @@ public class KafkaDataApp {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
-        Properties properties = new Properties();
-        properties.setProperty("bootstrap.servers", "localhost:9092");
-        properties.setProperty("group.id", "test");
-
         DataStream<TemperatureEvent> inputEventStream = env.addSource(
-                new FlinkKafkaConsumer09<TemperatureEvent>("test", new EventDeserializationSchema(), properties));
+                new FlinkKafkaConsumer09<TemperatureEvent>(
+                        Base.PRODUCT_TOPIC,
+                        new EventDeserializationSchema(),
+                        Base.KAFKA_PROPS2));
 
         Pattern<TemperatureEvent, ?> warningPattern = Pattern.<TemperatureEvent>begin("first")
                 .subtype(TemperatureEvent.class).where(new IterativeCondition<TemperatureEvent>() {
