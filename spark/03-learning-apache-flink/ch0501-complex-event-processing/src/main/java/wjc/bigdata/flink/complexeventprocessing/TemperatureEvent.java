@@ -47,8 +47,8 @@ public class TemperatureEvent extends MonitoringEvent {
     @Override
     public String toString() {
 
-        return "TemperatureEvent [getTemperature()=" + getTemperature()
-                + ", getMachineName()=" + getMachineName() + "]";
+        return "TemperatureEvent [temperature=" + getTemperature()
+                + ", machineName=" + getMachineName() + "]";
     }
 
 }

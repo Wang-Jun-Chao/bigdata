@@ -1,5 +1,6 @@
 package wjc.bigdata.flink.complexeventprocessing;
 
+import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.cep.CEP;
 import org.apache.flink.cep.PatternSelectFunction;
 import org.apache.flink.cep.pattern.Pattern;
@@ -7,29 +8,27 @@ import org.apache.flink.cep.pattern.conditions.IterativeCondition;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.windowing.time.Time;
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer09;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
-public class App {
+public class KafkaDataApp {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        DataStream<TemperatureEvent> inputEventStream = env.fromElements(
-                new TemperatureEvent("xyz", 22.0),
-                new TemperatureEvent("xyz", 20.1),
-                new TemperatureEvent("xyz", 21.1),
-                new TemperatureEvent("xyz", 22.2),
-                new TemperatureEvent("xyz", 29.1),
-                new TemperatureEvent("xyz", 22.3),
-                new TemperatureEvent("xyz", 22.1),
-                new TemperatureEvent("xyz", 22.4),
-                new TemperatureEvent("xyz", 22.7),
-                new TemperatureEvent("xyz", 27.0));
+
+        Properties properties = new Properties();
+        properties.setProperty("bootstrap.servers", "localhost:9092");
+        properties.setProperty("group.id", "test");
+
+        DataStream<TemperatureEvent> inputEventStream = env.addSource(
+                new FlinkKafkaConsumer09<TemperatureEvent>("test", new EventDeserializationSchema(), properties));
 
         Pattern<TemperatureEvent, ?> warningPattern = Pattern.<TemperatureEvent>begin("first")
                 .subtype(TemperatureEvent.class).where(new IterativeCondition<TemperatureEvent>() {
                     @Override
-                    public boolean filter(TemperatureEvent value, Context<TemperatureEvent> ctx) {
+                    public boolean filter(TemperatureEvent value, Context<TemperatureEvent> ctx) throws Exception {
                         return value.getTemperature() >= 26.0;
                     }
                 }).within(Time.seconds(10));
@@ -38,8 +37,10 @@ public class App {
                 .select(new PatternSelectFunction<TemperatureEvent, Alert>() {
                     @Override
                     public Alert select(Map<String, List<TemperatureEvent>> pattern) throws Exception {
-                        return new Alert("Temperature Rise Detected");
+                        return new Alert("Temperature Rise Detected:" + pattern);
                     }
+
+
                 });
 
         patternStream.print();
