@@ -13,6 +13,7 @@
         <module>ch0301-batch-api</module>
         <module>ch0401-table-api</module>
         <module>ch0501-complex-event-processing</module>
+        <module>ch0601-machine-learning</module>
     </modules>
     
 </project>
