@@ -1,6 +1,6 @@
 //package wjc.bigdata.flink.machinelearning.scala
 //
-//import org.apache.flink.api.scala.{DataSet, ExecutionEnvironment}
+//import org.apache.flink.api.scala._
 //import org.apache.flink.ml.common.LabeledVector
 //import org.apache.flink.ml.regression.MultipleLinearRegression
 //
@@ -31,5 +31,4 @@
 //        predictions.writeAsText("mlr-out")
 //
 //        env.execute("Flink MLR App")
-//    }
 //}

@@ -1,9 +1,10 @@
 //package wjc.bigdata.flink.machinelearning.scala
 //
-//import org.apache.flink.api.scala.{DataSet, ExecutionEnvironment}
+//import org.apache.flink.api.scala._
 //import org.apache.flink.ml.classification.SVM
 //import org.apache.flink.ml.common.LabeledVector
 //import org.apache.flink.ml.math.Vector
+//import wjc.bigdata.flink.util.PathUtils
 //
 ///**
 //  * @author: wangjunchao(王俊超)
@@ -12,8 +13,8 @@
 //object MySVMApp {
 //    def main(args: Array[String]) {
 //        // set up the execution environment
-//        val pathToTrainingFile: String = "iris-train.txt"
-//        val pathToTestingFile: String = "iris-train.txt"
+//        val pathToTrainingFile: String = PathUtils.workDir("iris-train.txt")
+//        val pathToTestingFile: String = PathUtils.workDir("iris-train.txt")
 //        val env = ExecutionEnvironment.getExecutionEnvironment
 //
 //        // Read the training data set, from a LibSVM formatted file
