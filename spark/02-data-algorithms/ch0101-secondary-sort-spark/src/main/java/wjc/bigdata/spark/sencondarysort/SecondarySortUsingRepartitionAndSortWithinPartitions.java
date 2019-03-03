@@ -6,7 +6,7 @@ import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.PairFunction;
 import scala.Tuple2;
-import wjc.bigdata.algorithm.utils.HadoopPathUtils;
+import wjc.bigdata.algorithm.utils.PathUtils;
 
 import java.io.Serializable;
 
@@ -44,8 +44,8 @@ public class SecondarySortUsingRepartitionAndSortWithinPartitions implements Ser
         //
         int partitions = Integer.parseInt(args[0]);
 
-        String inputPath = HadoopPathUtils.inputPath(args[1]);
-        String outputPath = HadoopPathUtils.outputPath(args[2]) ;
+        String inputPath = PathUtils.inputPath(args[1]);
+        String outputPath = PathUtils.outputPath(args[2]) ;
 
         SparkConf conf = new SparkConf();
         conf.setMaster("local");

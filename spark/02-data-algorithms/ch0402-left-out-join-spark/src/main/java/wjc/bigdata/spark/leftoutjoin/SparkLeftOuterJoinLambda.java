@@ -10,7 +10,7 @@ import org.apache.spark.api.java.function.Function;
 import org.apache.spark.api.java.function.PairFlatMapFunction;
 import org.apache.spark.api.java.function.PairFunction;
 import scala.Tuple2;
-import wjc.bigdata.algorithm.utils.HadoopPathUtils;
+import wjc.bigdata.algorithm.utils.PathUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -50,7 +50,7 @@ public class SparkLeftOuterJoinLambda {
         sparkConf.setMaster("local");
         JavaSparkContext ctx = new JavaSparkContext(sparkConf);
 
-        JavaRDD<String> users = ctx.textFile(HadoopPathUtils.inputPath(usersInputFile), 1);
+        JavaRDD<String> users = ctx.textFile(PathUtils.inputPath(usersInputFile), 1);
 
         // mapToPair
         // <K2,V2> JavaPairRDD<K2,V2> mapToPair(PairFunction<T,K2,V2> f)
@@ -71,7 +71,7 @@ public class SparkLeftOuterJoinLambda {
                     }
                 });
 
-        JavaRDD<String> transactions = ctx.textFile(HadoopPathUtils.inputPath(transactionsInputFile), 1);
+        JavaRDD<String> transactions = ctx.textFile(PathUtils.inputPath(transactionsInputFile), 1);
 
         // PairFunction<T, K, V>
         // T => Tuple2<K, V>

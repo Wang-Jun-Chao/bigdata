@@ -13,7 +13,7 @@ import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import wjc.bigdata.algorithm.utils.HadoopPathUtils;
+import wjc.bigdata.algorithm.utils.PathUtils;
 
 /**
  * TopNDriver: assumes that all K's are unique for all given (K,V) values.
@@ -73,8 +73,8 @@ public class TopNDriver extends Configured implements Tool {
 
         // args[1] = input directory
         // args[2] = output directory
-        FileInputFormat.setInputPaths(job, new Path(HadoopPathUtils.inputPath(args[1])));
-        FileOutputFormat.setOutputPath(job, new Path(HadoopPathUtils.outputPath(args[2])));
+        FileInputFormat.setInputPaths(job, new Path(PathUtils.inputPath(args[1])));
+        FileOutputFormat.setOutputPath(job, new Path(PathUtils.outputPath(args[2])));
 
         boolean status = job.waitForCompletion(true);
         THE_LOGGER.info("run(): status=" + status);

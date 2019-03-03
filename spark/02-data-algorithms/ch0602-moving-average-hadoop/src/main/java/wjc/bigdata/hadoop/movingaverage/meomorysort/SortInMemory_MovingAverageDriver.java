@@ -10,7 +10,7 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 //
-import wjc.bigdata.algorithm.utils.HadoopPathUtils;
+import wjc.bigdata.algorithm.utils.PathUtils;
 import wjc.bigdata.hadoop.movingaverage.TimeSeriesData;
 
 /**
@@ -57,8 +57,8 @@ public class SortInMemory_MovingAverageDriver {
         job.getConfiguration().setInt("moving.average.window.size", windowSize);
 
         // define I/O
-        FileInputFormat.addInputPath(job, new Path(HadoopPathUtils.inputPath(otherArgs[1])));
-        FileOutputFormat.setOutputPath(job, new Path(HadoopPathUtils.outputPath(otherArgs[2])));
+        FileInputFormat.addInputPath(job, new Path(PathUtils.inputPath(otherArgs[1])));
+        FileOutputFormat.setOutputPath(job, new Path(PathUtils.outputPath(otherArgs[2])));
 
         job.setInputFormatClass(TextInputFormat.class);
         job.setOutputFormatClass(TextOutputFormat.class);

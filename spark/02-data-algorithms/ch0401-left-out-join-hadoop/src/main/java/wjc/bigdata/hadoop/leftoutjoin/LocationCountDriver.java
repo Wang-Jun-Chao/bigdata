@@ -9,7 +9,7 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
-import wjc.bigdata.algorithm.utils.HadoopPathUtils;
+import wjc.bigdata.algorithm.utils.PathUtils;
 
 /**
  * LocationCountDriver is driver class for counting locations.
@@ -19,8 +19,8 @@ import wjc.bigdata.algorithm.utils.HadoopPathUtils;
 public class LocationCountDriver {
 
     public static void main(String[] args) throws Exception {
-        Path input = new Path(HadoopPathUtils.inputPath(args[0]));
-        Path output = new Path(HadoopPathUtils.outputPath(args[1]));
+        Path input = new Path(PathUtils.inputPath(args[0]));
+        Path output = new Path(PathUtils.outputPath(args[1]));
         Configuration conf = new Configuration();
 
         Job job = new Job(conf);

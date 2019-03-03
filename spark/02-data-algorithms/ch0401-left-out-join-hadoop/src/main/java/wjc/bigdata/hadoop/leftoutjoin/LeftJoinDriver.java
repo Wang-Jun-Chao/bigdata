@@ -9,7 +9,7 @@ import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 
-import wjc.bigdata.algorithm.utils.HadoopPathUtils;
+import wjc.bigdata.algorithm.utils.PathUtils;
 //
 
 /**
@@ -20,9 +20,9 @@ import wjc.bigdata.algorithm.utils.HadoopPathUtils;
 public class LeftJoinDriver {
 
     public static void main(String[] args) throws Exception {
-        Path transactions = new Path(HadoopPathUtils.inputPath(args[0]));  // input
-        Path users = new Path(HadoopPathUtils.inputPath(args[1]));         // input
-        Path output = new Path(HadoopPathUtils.outputPath(args[2]));       // output
+        Path transactions = new Path(PathUtils.inputPath(args[0]));  // input
+        Path users = new Path(PathUtils.inputPath(args[1]));         // input
+        Path output = new Path(PathUtils.outputPath(args[2]));       // output
 
         Configuration conf = new Configuration();
         Job job = new Job(conf);

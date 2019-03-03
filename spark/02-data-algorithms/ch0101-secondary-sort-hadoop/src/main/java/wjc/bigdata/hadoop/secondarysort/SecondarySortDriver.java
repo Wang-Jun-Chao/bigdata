@@ -12,7 +12,7 @@ import org.apache.hadoop.util.ToolRunner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import wjc.bigdata.algorithm.utils.HadoopPathUtils;
+import wjc.bigdata.algorithm.utils.PathUtils;
 
 /**
  * SecondarySortDriver is driver class for submitting secondary sort job to Hadoop.
@@ -72,8 +72,8 @@ public class SecondarySortDriver extends Configured implements Tool {
         // args[0] = input directory
         // args[1] = output directory
 
-        FileInputFormat.setInputPaths(job, new Path(HadoopPathUtils.inputPath(args[0])));
-        FileOutputFormat.setOutputPath(job, new Path(HadoopPathUtils.outputPath(args[1])));
+        FileInputFormat.setInputPaths(job, new Path(PathUtils.inputPath(args[0])));
+        FileOutputFormat.setOutputPath(job, new Path(PathUtils.outputPath(args[1])));
 
         job.setOutputKeyClass(DateTemperaturePair.class);
         job.setOutputValueClass(Text.class);

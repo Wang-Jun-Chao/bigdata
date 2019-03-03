@@ -8,7 +8,7 @@ import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.FlatMapFunction;
 import org.apache.spark.api.java.function.PairFunction;
-import wjc.bigdata.algorithm.utils.HadoopPathUtils;
+import wjc.bigdata.algorithm.utils.PathUtils;
 import wjc.bigdata.algorithm.utils.SparkUtil;
 
 import java.util.List;
@@ -63,7 +63,7 @@ public class Top10 {
       // STEP-3: create an RDD for input
       // input record format:
       //  <string-key><,><integer-value>,
-      JavaRDD<String> lines = ctx.textFile(HadoopPathUtils.inputPath(inputPath), 1);
+      JavaRDD<String> lines = ctx.textFile(PathUtils.inputPath(inputPath), 1);
 
     
       // STEP-4: create (K, V) pairs

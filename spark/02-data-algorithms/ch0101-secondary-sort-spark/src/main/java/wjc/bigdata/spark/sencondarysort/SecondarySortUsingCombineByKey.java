@@ -10,7 +10,7 @@ import org.apache.spark.api.java.function.Function2;
 import org.apache.spark.api.java.function.PairFunction;
 import scala.Tuple2;
 import wjc.bigdata.algorithm.utils.DataStructures;
-import wjc.bigdata.algorithm.utils.HadoopPathUtils;
+import wjc.bigdata.algorithm.utils.PathUtils;
 import wjc.bigdata.algorithm.utils.SparkUtil;
 
 import java.util.List;
@@ -71,9 +71,9 @@ public class SecondarySortUsingCombineByKey {
         }
 
 
-        String inputPath = HadoopPathUtils.inputPath(args[0]);
+        String inputPath = PathUtils.inputPath(args[0]);
         System.out.println("inputPath=" + inputPath);
-        String outputPath = HadoopPathUtils.outputPath(args[1]) ;
+        String outputPath = PathUtils.outputPath(args[1]) ;
         ;
         System.out.println("outputPath=" + outputPath);
 

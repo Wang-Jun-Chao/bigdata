@@ -10,7 +10,7 @@ import org.apache.hadoop.mapred.JobConf;
 import org.apache.hadoop.mapred.TextInputFormat;
 import org.apache.hadoop.mapred.TextOutputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
-import wjc.bigdata.algorithm.utils.HadoopPathUtils;
+import wjc.bigdata.algorithm.utils.PathUtils;
 import wjc.bigdata.hadoop.movingaverage.TimeSeriesData;
 //
 
@@ -55,8 +55,8 @@ public class SortByMRF_MovingAverageDriver {
         jobconf.setInt("moving.average.window.size", windowSize);
 
         // define I/O
-        FileInputFormat.setInputPaths(jobconf, new Path(HadoopPathUtils.inputPath(otherArgs[1])));
-        FileOutputFormat.setOutputPath(jobconf, new Path(HadoopPathUtils.outputPath(otherArgs[2])));
+        FileInputFormat.setInputPaths(jobconf, new Path(PathUtils.inputPath(otherArgs[1])));
+        FileOutputFormat.setOutputPath(jobconf, new Path(PathUtils.outputPath(otherArgs[2])));
 
         jobconf.setInputFormat(TextInputFormat.class);
         jobconf.setOutputFormat(TextOutputFormat.class);

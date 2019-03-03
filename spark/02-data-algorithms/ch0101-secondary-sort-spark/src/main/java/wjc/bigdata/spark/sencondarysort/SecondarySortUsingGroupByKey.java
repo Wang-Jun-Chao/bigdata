@@ -9,7 +9,7 @@ import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.Function;
 import org.apache.spark.api.java.function.PairFunction;
 import scala.Tuple2;
-import wjc.bigdata.algorithm.utils.HadoopPathUtils;
+import wjc.bigdata.algorithm.utils.PathUtils;
 import wjc.bigdata.algorithm.utils.SparkUtil;
 import wjc.bigdata.algorithm.utils.TupleComparator;
 
@@ -60,9 +60,9 @@ public class SecondarySortUsingGroupByKey {
             System.exit(1);
         }
 
-        String inputPath = HadoopPathUtils.inputPath(args[0]);
+        String inputPath = PathUtils.inputPath(args[0]);
         System.out.println("inputPath=" + inputPath);
-        String outputPath = HadoopPathUtils.outputPath(args[1]);
+        String outputPath = PathUtils.outputPath(args[1]);
         System.out.println("outputPath=" + outputPath);
 
         // STEP-2: Connect to the Spark master by creating JavaSparkContext object

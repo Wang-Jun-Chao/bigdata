@@ -12,7 +12,7 @@ import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 //
 import org.apache.log4j.Logger;
-import wjc.bigdata.algorithm.utils.HadoopPathUtils;
+import wjc.bigdata.algorithm.utils.PathUtils;
 
 /**
  * RelativeFrequencyDriver is driver class for computing relative frequency of words.
@@ -40,8 +40,8 @@ public class RelativeFrequencyDriver extends Configured implements Tool {
     @Override
     public int run(String[] args) throws Exception {
         int neighborWindow = Integer.parseInt(args[0]);
-        Path inputPath = new Path(HadoopPathUtils.inputPath(args[1]));
-        Path outputPath = new Path(HadoopPathUtils.outputPath(args[2]));
+        Path inputPath = new Path(PathUtils.inputPath(args[1]));
+        Path outputPath = new Path(PathUtils.outputPath(args[2]));
 
         Job job = new Job(new Configuration(), "RelativeFrequencyDriver");
         job.setJarByClass(RelativeFrequencyDriver.class);

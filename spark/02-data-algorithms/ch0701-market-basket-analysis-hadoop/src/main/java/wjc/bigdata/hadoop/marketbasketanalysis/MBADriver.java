@@ -12,10 +12,11 @@ import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 import org.apache.log4j.Logger;
-import wjc.bigdata.algorithm.utils.HadoopPathUtils;
-import wjc.bigdata.algorithm.utils.HadoopUtil;
+import wjc.bigdata.algorithm.utils.PathUtils;
 
 /**
+ * Run agrs: /market_basket_analysis/input /market_basket_analysis/output 2
+ *
  * This is the driver class to submit the MBA job.
  * <p>
  * Market Basket Analysis Algorithm: find the association rule for the list of items.
@@ -76,8 +77,8 @@ public class MBADriver extends Configured implements Tool {
 
 
         //input/output path
-        FileInputFormat.setInputPaths(job, new Path(HadoopPathUtils.inputPath(inputPath)));
-        FileOutputFormat.setOutputPath(job, new Path(HadoopPathUtils.outputPath(outputPath)));
+        FileInputFormat.setInputPaths(job, new Path(PathUtils.inputPath(inputPath)));
+        FileOutputFormat.setOutputPath(job, new Path(PathUtils.outputPath(outputPath)));
 
         //Mapper K, V output
         job.setMapOutputKeyClass(Text.class);

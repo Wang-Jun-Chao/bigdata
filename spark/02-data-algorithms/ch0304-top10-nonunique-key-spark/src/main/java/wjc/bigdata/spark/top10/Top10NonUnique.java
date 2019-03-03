@@ -10,7 +10,7 @@ import org.apache.spark.api.java.function.FlatMapFunction;
 import org.apache.spark.api.java.function.PairFunction;
 import org.apache.spark.api.java.function.Function2;
 import org.apache.spark.broadcast.Broadcast;
-import wjc.bigdata.algorithm.utils.HadoopPathUtils;
+import wjc.bigdata.algorithm.utils.PathUtils;
 import wjc.bigdata.algorithm.utils.SparkUtil;
 
 import java.util.List;
@@ -73,7 +73,7 @@ public class Top10NonUnique {
       // STEP-4: create an RDD from input
       //    input record format:
       //        <string-key><,><integer-value-count>
-      JavaRDD<String> lines = ctx.textFile(HadoopPathUtils.inputPath(args[0]), 1);
+      JavaRDD<String> lines = ctx.textFile(PathUtils.inputPath(args[0]), 1);
       lines.saveAsTextFile("~/output/1");
     
       // STEP-5: partition RDD 

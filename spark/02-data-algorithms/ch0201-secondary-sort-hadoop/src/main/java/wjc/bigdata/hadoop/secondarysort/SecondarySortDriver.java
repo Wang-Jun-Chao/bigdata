@@ -9,7 +9,7 @@ import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
-import wjc.bigdata.algorithm.utils.HadoopPathUtils;
+import wjc.bigdata.algorithm.utils.PathUtils;
 
 /**
  * SecondarySortDriver is driver class for submitting secondary sort job to Hadoop.
@@ -63,9 +63,9 @@ public class SecondarySortDriver {
         job.setInputFormatClass(TextInputFormat.class);
         job.setOutputFormatClass(TextOutputFormat.class);
 
-        FileInputFormat.addInputPath(job, new Path(HadoopPathUtils.inputPath(otherArgs[0])));
+        FileInputFormat.addInputPath(job, new Path(PathUtils.inputPath(otherArgs[0])));
 
-        FileOutputFormat.setOutputPath(job, new Path(HadoopPathUtils.outputPath(otherArgs[1])));
+        FileOutputFormat.setOutputPath(job, new Path(PathUtils.outputPath(otherArgs[1])));
 
         job.waitForCompletion(true);
 

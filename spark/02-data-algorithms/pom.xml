@@ -23,5 +23,7 @@
         <module>ch0501-order-inversion-hadoop</module>
         <module>ch0601-moving-average-pojo</module>
         <module>ch0602-moving-average-hadoop</module>
+        <module>ch0701-market-basket-analysis-hadoop</module>
+        <module>ch0702-market-basket-analysis-spark</module>
     </modules>
 </project>

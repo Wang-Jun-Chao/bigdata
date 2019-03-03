@@ -17,7 +17,7 @@ import org.apache.hadoop.util.ToolRunner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import wjc.bigdata.algorithm.utils.HadoopPathUtils;
+import wjc.bigdata.algorithm.utils.PathUtils;
 
 /**
  * TopNDriver: assumes that all K's are unique for all given (K,V) values.
@@ -52,9 +52,9 @@ public class TopAggregatedNDriver extends Configured implements Tool {
     @Override
     public int run(String[] args) throws Exception {
 
-        String tmpOut = HadoopPathUtils.outputPath(args[2] + "-tmp");
-        args[1] = HadoopPathUtils.inputPath(args[1]);
-        args[2] = HadoopPathUtils.outputPath(args[2]);
+        String tmpOut = PathUtils.outputPath(args[2] + "-tmp");
+        args[1] = PathUtils.inputPath(args[1]);
+        args[2] = PathUtils.outputPath(args[2]);
 
         boolean status = aggregateJob(new String[]{args[1], tmpOut});
         if (!status) {
