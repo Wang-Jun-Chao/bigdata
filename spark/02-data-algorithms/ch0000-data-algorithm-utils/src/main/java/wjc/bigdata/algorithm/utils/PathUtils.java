@@ -1,5 +1,10 @@
 package wjc.bigdata.algorithm.utils;
 
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -35,5 +40,16 @@ public class PathUtils {
 
     public static void main(String[] args) {
         System.out.println(workDir());
+    }
+
+    public static boolean removeWorkDir(String s) {
+        try {
+            FileUtils.deleteDirectory(new File(workDir(s)));
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 }

@@ -47,6 +47,8 @@ public class FindAssociationRules {
         sparkConf.setMaster("local");
         JavaSparkContext ctx = new JavaSparkContext(sparkConf);
 
+        PathUtils.removeWorkDir("/rules");
+
         // STEP-3: read all transactions from HDFS and create the first RDD
         JavaRDD<String> transactions = ctx.textFile(transactionsFileName, 1);
         transactions.saveAsTextFile(PathUtils.workDir("/rules/output/1"));
