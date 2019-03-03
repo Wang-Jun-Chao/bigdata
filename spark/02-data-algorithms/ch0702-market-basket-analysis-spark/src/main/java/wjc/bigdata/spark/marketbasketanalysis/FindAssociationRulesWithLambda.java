@@ -3,12 +3,14 @@ package wjc.bigdata.spark.marketbasketanalysis;
 
 // STEP-0: import required classes and interfaces
 
+import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import scala.Tuple2;
 import scala.Tuple3;
 import wjc.bigdata.algorithm.utils.Combination;
+import wjc.bigdata.algorithm.utils.PathUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,11 +36,16 @@ public class FindAssociationRulesWithLambda {
         String transactionsFileName = args[0];
 
         // STEP-2: create a Spark context object
-        JavaSparkContext ctx = new JavaSparkContext();
+        SparkConf sparkConf = new SparkConf();
+        sparkConf.setAppName("spark-market-basket-analysis");
+        sparkConf.setMaster("local");
+        JavaSparkContext ctx = new JavaSparkContext(sparkConf);
+
+        PathUtils.removeWorkDir("/rules");
 
         // STEP-3: read all transactions from HDFS and create the first RDD
         JavaRDD<String> transactions = ctx.textFile(transactionsFileName, 1);
-        transactions.saveAsTextFile("/rules/output/1");
+        transactions.saveAsTextFile(PathUtils.workDir("/rules/output/1"));
 
         // STEP-4: generate frequent patterns
         // PairFlatMapFunction<T, K, V>
@@ -56,12 +63,12 @@ public class FindAssociationRulesWithLambda {
                     return result.iterator();
                 });
         //
-        patterns.saveAsTextFile("/rules/output/2");
+        patterns.saveAsTextFile(PathUtils.workDir("/rules/output/2"));
 
         // STEP-5: combine/reduce frequent patterns
         JavaPairRDD<List<String>, Integer> combined = patterns.reduceByKey((Integer i1, Integer i2) -> i1 + i2);
         //
-        combined.saveAsTextFile("/rules/output/3");
+        combined.saveAsTextFile(PathUtils.workDir("/rules/output/3"));
 
         // now, we have: patterns(K,V)
         //      K = pattern as List<String>
@@ -98,11 +105,11 @@ public class FindAssociationRulesWithLambda {
                     return result.iterator();
                 });
         //
-        subpatterns.saveAsTextFile("/rules/output/4");
+        subpatterns.saveAsTextFile(PathUtils.workDir("/rules/output/4"));
 
         // STEP-6: combine sub-patterns
         JavaPairRDD<List<String>, Iterable<Tuple2<List<String>, Integer>>> rules = subpatterns.groupByKey();
-        rules.saveAsTextFile("/rules/output/5");
+        rules.saveAsTextFile(PathUtils.workDir("/rules/output/5"));
 
         // STEP-7: generate association rules
         // Now, use (K=List<String>, V=Iterable<Tuple2<List<String>,Integer>>)
@@ -146,7 +153,7 @@ public class FindAssociationRulesWithLambda {
                     }
                     return result;
                 });
-        assocRules.saveAsTextFile("/rules/output/6");
+        assocRules.saveAsTextFile(PathUtils.workDir("/rules/output/6"));
 
         // done
         ctx.close();
