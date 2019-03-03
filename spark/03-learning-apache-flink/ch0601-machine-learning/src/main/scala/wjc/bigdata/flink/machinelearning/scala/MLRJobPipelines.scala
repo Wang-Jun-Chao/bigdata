@@ -1,9 +1,10 @@
-package com.demo.flink.ml
+package wjc.bigdata.flink.machinelearning.scala
 
-import org.apache.flink.api.scala._
-import org.apache.flink.ml._
+import org.apache.flink.api.scala.{ExecutionEnvironment, _}
+import org.apache.flink.ml.MLUtils
 import org.apache.flink.ml.preprocessing.{MinMaxScaler, PolynomialFeatures, StandardScaler}
 import org.apache.flink.ml.regression.MultipleLinearRegression
+import wjc.bigdata.flink.util.PathUtils
 
 /**
   * This class shows how to solve classification problems using Flink ML
@@ -11,7 +12,7 @@ import org.apache.flink.ml.regression.MultipleLinearRegression
   * Machine Learning Algorithm - Multiple Linear Regression
   * Data Pre-processing - Using Standard Scaler and Polynomial Feature
   */
-object ScalaMLRJobPipelines {
+object MLRJobPipelines {
     def main(args: Array[String]) {
         // set up the execution environment
         val env = ExecutionEnvironment.getExecutionEnvironment
@@ -27,8 +28,9 @@ object ScalaMLRJobPipelines {
             .setMin(1.0)
             .setMax(3.0)
 
-        val trainingDataset = MLUtils.readLibSVM(env, "iris-train.txt")
-        val testingDataset = MLUtils.readLibSVM(env, "iris-test.txt").map { lv => lv.vector }
+        val trainingDataset = MLUtils.readLibSVM(env, PathUtils.workDir("iris-train.txt"))
+        val testingDataset = MLUtils.readLibSVM(env, PathUtils.workDir("iris-test.txt"))
+            .map { lv => lv.vector }
         val mlr = MultipleLinearRegression()
             .setStepsize(1.0)
             .setIterations(5)
