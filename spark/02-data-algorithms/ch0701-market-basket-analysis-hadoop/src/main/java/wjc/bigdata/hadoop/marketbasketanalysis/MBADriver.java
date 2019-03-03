@@ -72,7 +72,7 @@ public class MBADriver extends Configured implements Tool {
 
         // job.setJarByClass(MBADriver.class);
         // add jars to distributed cache
-        HadoopUtil.addJarsToDistributedCache(job, "/lib/");
+//        HadoopUtil.addJarsToDistributedCache(job, "/lib/");
 
 
         //input/output path

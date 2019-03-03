@@ -34,6 +34,7 @@ public class Combination {
 
 
     /**
+     * TODO 这个方法可以优化，使用分治法
      * Will return unique combinations of size=n.
      * If elements = { a, b, c }, then findCollections(elements, 2) will return:
      * <p>
