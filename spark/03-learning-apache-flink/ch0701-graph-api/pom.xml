@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>wjc.bigdata.flink</groupId>
-    <artifactId>ch0601-machine-learning</artifactId>
+    <artifactId>ch0701-graph-api</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -35,14 +35,14 @@
         </dependency>
         <dependency>
             <groupId>org.apache.flink</groupId>
-            <artifactId>flink-ml_2.11</artifactId>
+            <artifactId>flink-gelly_2.11</artifactId>
             <version>${flink.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.scala-lang</groupId>
-            <artifactId>scala-library</artifactId>
-            <version>2.11.12</version>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-gelly-scala_2.11</artifactId>
+            <version>${flink.version}</version>
         </dependency>
 
         <dependency>
@@ -60,28 +60,6 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>net.alchim31.maven</groupId>
-                <artifactId>scala-maven-plugin</artifactId>
-                <version>3.4.6</version>
-                <executions>
-                    <execution>
-                        <id>scala-compile-first</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>add-source</goal>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>scala-test-compile</id>
-                        <phase>process-test-resources</phase>
-                        <goals>
-                            <goal>testCompile</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
