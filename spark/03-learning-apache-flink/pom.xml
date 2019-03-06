@@ -15,5 +15,9 @@
         <module>ch0501-complex-event-processing</module>
         <module>ch0601-machine-learning</module>
     </modules>
-    
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <flink.version>1.7.2</flink.version>
+        <slf4j.version>1.7.26</slf4j.version>
+    </properties>
 </project>
