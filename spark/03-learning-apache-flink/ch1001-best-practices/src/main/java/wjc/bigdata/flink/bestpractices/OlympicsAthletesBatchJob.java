@@ -7,6 +7,7 @@ import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.util.Collector;
+import wjc.bigdata.flink.util.PathUtils;
 
 import java.util.List;
 
@@ -31,8 +32,10 @@ public class OlympicsAthletesBatchJob {
         final ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
         env.getConfig().registerTypeWithKryoSerializer(Record.class, RecordSerializer.class);
 
+        String filePath = PathUtils.workDir("olympic-athletes.csv");
+
         DataSet<Record> csvInput = env
-                .readCsvFile("D://NOTBACKEDUP//dataflow//flink-batch//src//main//resources//data//olympic-athletes.csv")
+                .readCsvFile(filePath)
                 .pojoType(Record.class, "playerName", "country", "year", "game", "gold", "silver", "bronze", "total");
 
         DataSet<Tuple2<String, Integer>> groupedByCountry = csvInput
@@ -83,9 +86,8 @@ public class OlympicsAthletesBatchJob {
                 return input.toUpperCase() + sum;
             }
         }).withBroadcastSet(toBroadcast, "country"); // Broadcast the set with
+
         // name
         data.print();
-
     }
-
 }
