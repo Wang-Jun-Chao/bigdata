@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>wjc.bigdata.flink</groupId>
-    <artifactId>ch0801-distributed-data-processing</artifactId>
+    <artifactId>ch0901-deploying-flink-on-cloud</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <build>
