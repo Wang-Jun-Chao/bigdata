@@ -53,13 +53,8 @@ public class LogAnalyzerTotal implements Serializable {
                         }
                     }
                 })
-//                .updateStateByKey(new Functions.ComputeRunningSum());
-                .updateStateByKey(new Function<JavaRDD<ApacheAccessLog>, JavaPairRDD<Integer, Long>>() {
-                    @Override
-                    public JavaPairRDD<Integer, Long> call(JavaRDD<ApacheAccessLog> rdd) {
-                        return Functions.responseCodeCount(rdd);
-                    }
-                });
+                .updateStateByKey(new Functions.ComputeRunningSum());
+
 
 
         responseCodeCountDStream.foreachRDD(new Function2<List<Long>, Optional<Long>, Optional<Long>>() {
