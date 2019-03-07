@@ -26,12 +26,15 @@ public final class BasicAvgMapPartitions {
 
     public void run(String master) {
         JavaSparkContext sc = new JavaSparkContext(
-                master, "basicavgmappartitions", System.getenv("SPARK_HOME"), System.getenv("JARS"));
+                master,
+                "basic-avg-map-partitions",
+                System.getenv("SPARK_HOME"),
+                System.getenv("JARS"));
         JavaRDD<Integer> rdd = sc.parallelize(
                 Arrays.asList(1, 2, 3, 4, 5));
         FlatMapFunction<Iterator<Integer>, AvgCount> setup = new FlatMapFunction<Iterator<Integer>, AvgCount>() {
             @Override
-            public Iterable<AvgCount> call(Iterator<Integer> input) {
+            public Iterator<AvgCount> call(Iterator<Integer> input) {
                 AvgCount a = new AvgCount(0, 0);
                 while (input.hasNext()) {
                     a.total_ += input.next();
@@ -39,7 +42,7 @@ public final class BasicAvgMapPartitions {
                 }
                 ArrayList<AvgCount> ret = new ArrayList<AvgCount>();
                 ret.add(a);
-                return ret;
+                return ret.iterator();
             }
         };
         Function2<AvgCount, AvgCount, AvgCount> combine = new Function2<AvgCount, AvgCount, AvgCount>() {
