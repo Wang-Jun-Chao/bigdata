@@ -15,6 +15,7 @@
         <module>03-basic-sum</module>
         <module>04-spark-streaming</module>
         <module>05-investment-framework</module>
+        <module>06-all-examples</module>
     </modules>
 
     <dependencyManagement>
