@@ -1,16 +1,20 @@
 /**
- * Illustrates how to compute an average using aggregate in Java
+ * Illustrates Kryo serialization in Java
  */
-package wjc.bigdata.spark.allexamples;
+package wjc.bigdata.spark.java;
 
+import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryo.serializers.FieldSerializer;
+import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.Function2;
+import org.apache.spark.serializer.KryoRegistrator;
 
 import java.io.Serializable;
 import java.util.Arrays;
 
-public final class BasicAvg {
+public final class BasicAvgWithKryo implements Serializable {
     public static void main(String[] args) throws Exception {
         String master;
         if (args.length > 0) {
@@ -19,9 +23,12 @@ public final class BasicAvg {
             master = "local";
         }
 
-        JavaSparkContext sc = new JavaSparkContext(
-                master, "basicavg", System.getenv("SPARK_HOME"), System.getenv("JARS"));
+        SparkConf conf = new SparkConf().setMaster(master).setAppName("basic-avg-with-kyro");
+        conf.set("spark.serializer", "org.apache.spark.serializer.KryoSerializer");
+        conf.set("spark.kryo.registrator", AvgRegistrator.class.getName());
+        JavaSparkContext sc = new JavaSparkContext(conf);
         JavaRDD<Integer> rdd = sc.parallelize(Arrays.asList(1, 2, 3, 4));
+
         Function2<AvgCount, Integer, AvgCount> addAndCount = new Function2<AvgCount, Integer, AvgCount>() {
             @Override
             public AvgCount call(AvgCount a, Integer x) {
@@ -41,12 +48,18 @@ public final class BasicAvg {
         AvgCount initial = new AvgCount(0, 0);
         AvgCount result = rdd.aggregate(initial, addAndCount, combine);
         System.out.println(result.avg());
-        sc.stop();
     }
 
-    public static class AvgCount implements Serializable {
+    // This is our custom class we will configure Kyro to serialize
+    public static class AvgCount implements java.io.Serializable {
         public int total;
         public int num;
+
+        public AvgCount() {
+            total = 0;
+            num = 0;
+        }
+
         public AvgCount(int total, int num) {
             this.total = total;
             this.num = num;
@@ -54,6 +67,13 @@ public final class BasicAvg {
 
         public float avg() {
             return total / (float) num;
+        }
+    }
+
+    public static class AvgRegistrator implements KryoRegistrator {
+        @Override
+        public void registerClasses(Kryo kryo) {
+            kryo.register(AvgCount.class, new FieldSerializer(kryo, AvgCount.class));
         }
     }
 }

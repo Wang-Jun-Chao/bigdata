@@ -1,7 +1,7 @@
 /**
  * Illustrates a simple map partitions in Java to compute the average
  */
-package wjc.bigdata.spark.allexamples;
+package wjc.bigdata.spark.java;
 
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 
-public final class BasicAvgMapPartitions {
+public final class BasicAvgMapPartitions implements Serializable {
     public static void main(String[] args) throws Exception {
         String master;
         if (args.length > 0) {
@@ -27,10 +27,10 @@ public final class BasicAvgMapPartitions {
 
     public void run(String master) {
         JavaSparkContext sc = new JavaSparkContext(
-                master,
-                "basic-avg-map-partitions",
+                master, "basic-avg-map-partitions",
                 System.getenv("SPARK_HOME"),
                 System.getenv("JARS"));
+
         JavaRDD<Integer> rdd = sc.parallelize(
                 Arrays.asList(1, 2, 3, 4, 5));
         FlatMapFunction<Iterator<Integer>, AvgCount> setup = new FlatMapFunction<Iterator<Integer>, AvgCount>() {
@@ -59,7 +59,7 @@ public final class BasicAvgMapPartitions {
         System.out.println(result.avg());
     }
 
-    class AvgCount implements Serializable {
+    public static class AvgCount implements Serializable {
         public Integer total;
         public Integer num;
 
