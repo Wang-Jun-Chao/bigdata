@@ -19,6 +19,7 @@ public class ReadTransferStats implements Serializable {
         // convert the input from Writables to native types
         JavaPairDStream<Long, Integer> usefulInput = input.mapToPair(
                 new PairFunction<Tuple2<LongWritable, Text>, Long, Integer>() {
+                    @Override
                     public Tuple2<Long, Integer> call(Tuple2<LongWritable, Text> input) {
                         return new Tuple2(input._1().get(), Integer.parseInt(input._2().toString()));
                     }

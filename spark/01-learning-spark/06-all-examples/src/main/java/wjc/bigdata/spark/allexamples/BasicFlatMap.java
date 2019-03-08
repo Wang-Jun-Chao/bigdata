@@ -8,6 +8,7 @@ import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.FlatMapFunction;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -19,12 +20,16 @@ public class BasicFlatMap {
         }
 
         JavaSparkContext sc = new JavaSparkContext(
-                args[0], "basicflatmap", System.getenv("SPARK_HOME"), System.getenv("JARS"));
+                args[0],
+                "basic-flat-map",
+                System.getenv("SPARK_HOME"),
+                System.getenv("JARS"));
         JavaRDD<String> rdd = sc.textFile(args[1]);
         JavaRDD<String> words = rdd.flatMap(
                 new FlatMapFunction<String, String>() {
-                    public Iterable<String> call(String x) {
-                        return Arrays.asList(x.split(" "));
+                    @Override
+                    public Iterator<String> call(String x) {
+                        return Arrays.asList(x.split(" ")).iterator();
                     }
                 });
         Map<String, Long> result = words.countByValue();

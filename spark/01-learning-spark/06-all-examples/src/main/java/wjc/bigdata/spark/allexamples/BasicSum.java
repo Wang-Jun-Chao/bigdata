@@ -21,6 +21,7 @@ public class BasicSum {
                 master, "basicmap", System.getenv("SPARK_HOME"), System.getenv("JARS"));
         JavaRDD<Integer> rdd = sc.parallelize(Arrays.asList(1, 2, 3, 4));
         Integer result = rdd.fold(0, new Function2<Integer, Integer, Integer>() {
+            @Override
             public Integer call(Integer x, Integer y) {
                 return x + y;
             }

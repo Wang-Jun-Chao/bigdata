@@ -36,7 +36,8 @@ public class BasicLoadJson {
     }
 
     public static class ParseJson implements FlatMapFunction<Iterator<String>, Person> {
-        public Iterable<Person> call(Iterator<String> lines) throws Exception {
+        @Override
+        public Iterator<Person> call(Iterator<String> lines) throws Exception {
             ArrayList<Person> people = new ArrayList<Person>();
             ObjectMapper mapper = new ObjectMapper();
             while (lines.hasNext()) {
@@ -47,25 +48,27 @@ public class BasicLoadJson {
                     // Skip invalid input
                 }
             }
-            return people;
+            return people.iterator();
         }
     }
 
     public static class LikesPandas implements Function<Person, Boolean> {
+        @Override
         public Boolean call(Person person) {
             return person.lovesPandas;
         }
     }
 
     public static class WriteJson implements FlatMapFunction<Iterator<Person>, String> {
-        public Iterable<String> call(Iterator<Person> people) throws Exception {
+        @Override
+        public Iterator<String> call(Iterator<Person> people) throws Exception {
             ArrayList<String> text = new ArrayList<String>();
             ObjectMapper mapper = new ObjectMapper();
             while (people.hasNext()) {
                 Person person = people.next();
                 text.add(mapper.writeValueAsString(person));
             }
-            return text;
+            return text.iterator();
         }
     }
 }

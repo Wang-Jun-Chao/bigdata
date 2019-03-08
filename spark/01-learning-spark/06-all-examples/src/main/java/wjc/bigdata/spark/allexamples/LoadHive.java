@@ -6,7 +6,7 @@ package wjc.bigdata.spark.allexamples;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.Function;
-import org.apache.spark.sql.DataFrame;
+import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SQLContext;
 
@@ -24,7 +24,7 @@ public class LoadHive {
         JavaSparkContext sc = new JavaSparkContext(
                 master, "loadhive", System.getenv("SPARK_HOME"), System.getenv("JARS"));
         SQLContext sqlCtx = new SQLContext(sc);
-        DataFrame rdd = sqlCtx.sql("SELECT key, value FROM src");
+        Dataset<Row> rdd = sqlCtx.sql("SELECT key, value FROM src");
         JavaRDD<Integer> squaredKeys = rdd.toJavaRDD().map(new SquareKey());
         List<Integer> result = squaredKeys.collect();
         for (Integer elem : result) {
@@ -33,6 +33,7 @@ public class LoadHive {
     }
 
     public static class SquareKey implements Function<Row, Integer> {
+        @Override
         public Integer call(Row row) throws Exception {
             return row.getInt(0) * row.getInt(0);
         }

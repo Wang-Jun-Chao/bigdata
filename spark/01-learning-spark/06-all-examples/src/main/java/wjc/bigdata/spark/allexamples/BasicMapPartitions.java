@@ -28,7 +28,8 @@ public class BasicMapPartitions {
                 Arrays.asList("KK6JKQ", "Ve3UoW", "kk6jlk", "W6BB"));
         JavaRDD<String> result = rdd.mapPartitions(
                 new FlatMapFunction<Iterator<String>, String>() {
-                    public Iterable<String> call(Iterator<String> input) {
+                    @Override
+                    public Iterator<String> call(Iterator<String> input) {
                         ArrayList<String> content = new ArrayList<String>();
                         ArrayList<ContentExchange> cea = new ArrayList<ContentExchange>();
                         HttpClient client = new HttpClient();
@@ -46,7 +47,7 @@ public class BasicMapPartitions {
                             }
                         } catch (Exception e) {
                         }
-                        return content;
+                        return content.iterator();
                     }
                 });
         System.out.println(StringUtils.join(result.collect(), ","));

@@ -35,6 +35,7 @@ public class BasicSaveSequenceFile {
     }
 
     public static class ConvertToWritableTypes implements PairFunction<Tuple2<String, Integer>, Text, IntWritable> {
+        @Override
         public Tuple2<Text, IntWritable> call(Tuple2<String, Integer> record) {
             return new Tuple2(new Text(record._1), new IntWritable(record._2));
         }

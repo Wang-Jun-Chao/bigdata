@@ -8,6 +8,7 @@ import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.FlatMapFunction;
 import org.apache.spark.api.java.function.Function2;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -37,8 +38,8 @@ public final class BasicAvgMapPartitions {
             public Iterator<AvgCount> call(Iterator<Integer> input) {
                 AvgCount a = new AvgCount(0, 0);
                 while (input.hasNext()) {
-                    a.total_ += input.next();
-                    a.num_ += 1;
+                    a.total += input.next();
+                    a.num += 1;
                 }
                 ArrayList<AvgCount> ret = new ArrayList<AvgCount>();
                 ret.add(a);
@@ -48,8 +49,8 @@ public final class BasicAvgMapPartitions {
         Function2<AvgCount, AvgCount, AvgCount> combine = new Function2<AvgCount, AvgCount, AvgCount>() {
             @Override
             public AvgCount call(AvgCount a, AvgCount b) {
-                a.total_ += b.total_;
-                a.num_ += b.num_;
+                a.total += b.total;
+                a.num += b.num;
                 return a;
             }
         };
@@ -58,30 +59,30 @@ public final class BasicAvgMapPartitions {
         System.out.println(result.avg());
     }
 
-    class AvgCount {
-        public Integer total_;
-        public Integer num_;
+    class AvgCount implements Serializable {
+        public Integer total;
+        public Integer num;
 
         public AvgCount() {
-            total_ = 0;
-            num_ = 0;
+            total = 0;
+            num = 0;
         }
 
         public AvgCount(Integer total, Integer num) {
-            total_ = total;
-            num_ = num;
+            this.total = total;
+            this.num = num;
         }
 
         public AvgCount merge(Iterable<Integer> input) {
             for (Integer elem : input) {
-                num_ += 1;
-                total_ += elem;
+                num += 1;
+                total += elem;
             }
             return this;
         }
 
         public float avg() {
-            return total_ / (float) num_;
+            return total / (float) num;
         }
     }
 }

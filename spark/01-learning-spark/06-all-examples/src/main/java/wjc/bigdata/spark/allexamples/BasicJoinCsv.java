@@ -38,6 +38,7 @@ public class BasicJoinCsv {
     }
 
     public static class ParseLine implements PairFunction<String, Integer, String[]> {
+        @Override
         public Tuple2<Integer, String[]> call(String line) throws Exception {
             CSVReader reader = new CSVReader(new StringReader(line));
             String[] elements = reader.readNext();

@@ -51,6 +51,7 @@ public class ChapterSixExample {
         // Count the number of lines with KK6JKQ
         final Accumulator<Integer> count = sc.accumulator(0);
         rdd.foreach(new VoidFunction<String>() {
+            @Override
             public void call(String line) {
                 if (line.contains("KK6JKQ")) {
                     count.add(1);
@@ -62,11 +63,12 @@ public class ChapterSixExample {
         final Accumulator<Integer> blankLines = sc.accumulator(0);
         JavaRDD<String> callSigns = rdd.flatMap(
                 new FlatMapFunction<String, String>() {
-                    public Iterable<String> call(String line) {
+                    @Override
+                    public Iterator<String> call(String line) {
                         if (line.equals("")) {
                             blankLines.add(1);
                         }
-                        return Arrays.asList(line.split(" "));
+                        return Arrays.asList(line.split(" ")).iterator();
                     }
                 });
         callSigns.saveAsTextFile(outputDir + "/callsigns");
@@ -90,10 +92,12 @@ public class ChapterSixExample {
                 });
         JavaPairRDD<String, Integer> contactCounts = validCallSigns.mapToPair(
                 new PairFunction<String, String, Integer>() {
+                    @Override
                     public Tuple2<String, Integer> call(String callSign) {
                         return new Tuple2(callSign, 1);
                     }
                 }).reduceByKey(new Function2<Integer, Integer, Integer>() {
+            @Override
             public Integer call(Integer x, Integer y) {
                 return x + y;
             }
@@ -113,6 +117,7 @@ public class ChapterSixExample {
         final Broadcast<String[]> signPrefixes = sc.broadcast(loadCallSignTable());
         JavaPairRDD<String, Integer> countryContactCounts = contactCounts.mapToPair(
                 new PairFunction<Tuple2<String, Integer>, String, Integer>() {
+                    @Override
                     public Tuple2<String, Integer> call(Tuple2<String, Integer> callSignCount) {
                         String sign = callSignCount._1();
                         String country = lookupCountry(sign, signPrefixes.value());
@@ -124,7 +129,8 @@ public class ChapterSixExample {
         // Use mapPartitions to re-use setup work.
         JavaPairRDD<String, CallLog[]> contactsContactLists = validCallSigns.mapPartitionsToPair(
                 new PairFlatMapFunction<Iterator<String>, String, CallLog[]>() {
-                    public Iterable<Tuple2<String, CallLog[]>> call(Iterator<String> input) {
+                    @Override
+                    public Iterator<Tuple2<String, CallLog[]>> call(Iterator<String> input) {
                         // List for our results.
                         ArrayList<Tuple2<String, CallLog[]>> callsignQsos =
                                 new ArrayList<Tuple2<String, CallLog[]>>();
@@ -142,7 +148,7 @@ public class ChapterSixExample {
                             }
                         } catch (Exception e) {
                         }
-                        return callsignQsos;
+                        return callsignQsos.iterator();
                     }
                 });
         System.out.println(StringUtils.join(contactsContactLists.collect(), ","));
@@ -153,19 +159,21 @@ public class ChapterSixExample {
         sc.addFile(distScript);
         JavaRDD<String> pipeInputs = contactsContactLists.values().map(new VerifyCallLogs()).flatMap(
                 new FlatMapFunction<CallLog[], String>() {
-                    public Iterable<String> call(CallLog[] calls) {
+                    @Override
+                    public Iterator<String> call(CallLog[] calls) {
                         ArrayList<String> latLons = new ArrayList<String>();
                         for (CallLog call : calls) {
                             latLons.add(call.mylat + "," + call.mylong +
                                     "," + call.contactlat + "," + call.contactlong);
                         }
-                        return latLons;
+                        return latLons.iterator();
                     }
                 });
         JavaRDD<String> distances = pipeInputs.pipe(SparkFiles.get(distScriptName));
         // First we need to convert our RDD of String to a DoubleRDD so we can
         // access the stats function
         JavaDoubleRDD distanceDoubles = distances.mapToDouble(new DoubleFunction<String>() {
+            @Override
             public double call(String value) {
                 return Double.parseDouble(value);
             }
@@ -175,6 +183,7 @@ public class ChapterSixExample {
         final Double mean = stats.mean();
         JavaDoubleRDD reasonableDistances =
                 distanceDoubles.filter(new Function<Double, Boolean>() {
+                    @Override
                     public Boolean call(Double x) {
                         return (Math.abs(x - mean) < 3 * stddev);
                     }
@@ -232,12 +241,14 @@ public class ChapterSixExample {
     }
 
     public static class SumInts implements Function2<Integer, Integer, Integer> {
+        @Override
         public Integer call(Integer x, Integer y) {
             return x + y;
         }
     }
 
     public static class VerifyCallLogs implements Function<CallLog[], CallLog[]> {
+        @Override
         public CallLog[] call(CallLog[] input) {
             ArrayList<CallLog> res = new ArrayList<CallLog>();
             if (input != null) {

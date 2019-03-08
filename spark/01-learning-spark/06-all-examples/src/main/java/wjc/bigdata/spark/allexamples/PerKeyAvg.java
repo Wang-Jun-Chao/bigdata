@@ -63,7 +63,6 @@ public final class PerKeyAvg {
     public static class AvgCount implements java.io.Serializable {
         public int total_;
         public int num_;
-
         public AvgCount(int total, int num) {
             total_ = total;
             num_ = num;

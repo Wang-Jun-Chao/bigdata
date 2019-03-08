@@ -19,6 +19,7 @@ public class StreamingLogInput {
         JavaDStream<String> lines = jssc.socketTextStream("localhost", 7777);
         // Filter our DStream for lines with "error"
         JavaDStream<String> errorLines = lines.filter(new Function<String, Boolean>() {
+            @Override
             public Boolean call(String line) {
                 return line.contains("error");
             }
@@ -28,7 +29,7 @@ public class StreamingLogInput {
         // start our streaming context and wait for it to "finish"
         jssc.start();
         // Wait for 10 seconds then exit. To run forever call without a timeout
-        jssc.awaitTermination(10000);
+        jssc.awaitTerminationOrTimeout(10000);
         // Stop the streaming context
         jssc.stop();
     }

@@ -32,6 +32,7 @@ public class BasicLoadSequenceFile {
     }
 
     public static class ConvertToNativeTypes implements PairFunction<Tuple2<Text, IntWritable>, String, Integer> {
+        @Override
         public Tuple2<String, Integer> call(Tuple2<Text, IntWritable> record) {
             return new Tuple2(record._1.toString(), record._2.get());
         }

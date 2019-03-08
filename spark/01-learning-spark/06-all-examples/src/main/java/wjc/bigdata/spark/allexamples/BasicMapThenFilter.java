@@ -23,12 +23,14 @@ public class BasicMapThenFilter {
         JavaRDD<Integer> rdd = sc.parallelize(Arrays.asList(1, 2, 3, 4));
         JavaRDD<Integer> squared = rdd.map(
                 new Function<Integer, Integer>() {
+                    @Override
                     public Integer call(Integer x) {
                         return x * x;
                     }
                 });
         JavaRDD<Integer> result = squared.filter(
                 new Function<Integer, Boolean>() {
+                    @Override
                     public Boolean call(Integer x) {
                         return x != 1;
                     }

@@ -12,6 +12,7 @@ import org.apache.spark.api.java.function.PairFunction;
 import scala.Tuple2;
 
 import java.util.Arrays;
+import java.util.Iterator;
 
 
 public class WordCount {
@@ -22,14 +23,17 @@ public class WordCount {
         JavaRDD<String> rdd = sc.textFile(args[1]);
         JavaPairRDD<String, Integer> counts = rdd.flatMap(
                 new FlatMapFunction<String, String>() {
-                    public Iterable<String> call(String x) {
-                        return Arrays.asList(x.split(" "));
+                    @Override
+                    public Iterator<String> call(String x) {
+                        return Arrays.asList(x.split(" ")).iterator();
                     }
                 }).mapToPair(new PairFunction<String, String, Integer>() {
+            @Override
             public Tuple2<String, Integer> call(String x) {
-                return new Tuple2(x, 1);
+                return new Tuple2<>(x, 1);
             }
         }).reduceByKey(new Function2<Integer, Integer, Integer>() {
+            @Override
             public Integer call(Integer x, Integer y) {
                 return x + y;
             }

@@ -6,6 +6,7 @@ import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.function.Function;
 import org.apache.spark.api.java.function.Function2;
 import org.apache.spark.api.java.function.PairFunction;
+import org.apache.spark.api.java.function.VoidFunction;
 import org.apache.spark.streaming.api.java.JavaDStream;
 import org.apache.spark.streaming.api.java.JavaPairDStream;
 import scala.Tuple2;
@@ -24,20 +25,24 @@ public class LogAnalyzerWindowed implements Serializable {
                 Flags.getInstance().getSlideInterval());
         JavaDStream<String> ip = accessLogsDStream.map(
                 new Function<ApacheAccessLog, String>() {
+                    @Override
                     public String call(ApacheAccessLog entry) {
                         return entry.getIpAddress();
                     }
                 });
         // reduceByWindow
         JavaDStream<Long> requestCountRBW = accessLogsDStream.map(new Function<ApacheAccessLog, Long>() {
+            @Override
             public Long call(ApacheAccessLog entry) {
                 return 1L;
             }
         }).reduceByWindow(new Function2<Long, Long, Long>() {
+            @Override
             public Long call(Long v1, Long v2) {
                 return v1 + v2;
             }
         }, new Function2<Long, Long, Long>() {
+            @Override
             public Long call(Long v1, Long v2) {
                 return v1 - v2;
             }
@@ -46,6 +51,7 @@ public class LogAnalyzerWindowed implements Serializable {
         // reducebykeyandwindow
         JavaPairDStream<String, Long> ipAddressPairDStream = accessLogsDStream.mapToPair(
                 new PairFunction<ApacheAccessLog, String, Long>() {
+                    @Override
                     public Tuple2<String, Long> call(ApacheAccessLog entry) {
                         return new Tuple2(entry.getIpAddress(), 1L);
                     }
@@ -53,12 +59,14 @@ public class LogAnalyzerWindowed implements Serializable {
         JavaPairDStream<String, Long> ipCountDStream = ipAddressPairDStream.reduceByKeyAndWindow(
                 // Adding elements in the new slice
                 new Function2<Long, Long, Long>() {
+                    @Override
                     public Long call(Long v1, Long v2) {
                         return v1 + v2;
                     }
                 },
                 // Removing elements from the oldest slice
                 new Function2<Long, Long, Long>() {
+                    @Override
                     public Long call(Long v1, Long v2) {
                         return v1 - v2;
                     }
@@ -77,12 +85,14 @@ public class LogAnalyzerWindowed implements Serializable {
         // use a transform for the response code count
         JavaPairDStream<Integer, Long> responseCodeCountTransform = accessLogsDStream.transformToPair(
                 new Function<JavaRDD<ApacheAccessLog>, JavaPairRDD<Integer, Long>>() {
+                    @Override
                     public JavaPairRDD<Integer, Long> call(JavaRDD<ApacheAccessLog> logs) {
                         return Functions.responseCodeCount(logs);
                     }
                 });
-        windowDStream.foreachRDD(new Function<JavaRDD<ApacheAccessLog>, Void>() {
-            public Void call(JavaRDD<ApacheAccessLog> accessLogs) {
+        windowDStream.foreachRDD(new VoidFunction<JavaRDD<ApacheAccessLog>>() {
+            @Override
+            public void call(JavaRDD<ApacheAccessLog> accessLogs) {
                 Tuple4<Long, Long, Long, Long> contentSizeStats =
                         Functions.contentSizeStats(accessLogs);
 
@@ -103,7 +113,6 @@ public class LogAnalyzerWindowed implements Serializable {
 
                 logStatistics = new LogStatistics(contentSizeStats, responseCodeToCount,
                         ip, topEndpoints);
-                return null;
             }
         });
     }

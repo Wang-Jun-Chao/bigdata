@@ -4,7 +4,8 @@
 package wjc.bigdata.spark.allexamples;
 
 import org.apache.spark.api.java.JavaSparkContext;
-import org.apache.spark.sql.DataFrame;
+import org.apache.spark.sql.Dataset;
+import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SQLContext;
 
 public class LoadJsonWithSparkSQL {
@@ -20,7 +21,7 @@ public class LoadJsonWithSparkSQL {
         JavaSparkContext sc = new JavaSparkContext(
                 master, "loadJsonwithsparksql");
         SQLContext sqlCtx = new SQLContext(sc);
-        DataFrame input = sqlCtx.jsonFile(jsonFile);
+        Dataset<Row> input = sqlCtx.jsonFile(jsonFile);
         input.printSchema();
     }
 }

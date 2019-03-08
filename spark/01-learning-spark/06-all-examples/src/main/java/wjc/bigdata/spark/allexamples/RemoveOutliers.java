@@ -30,6 +30,7 @@ public class RemoveOutliers {
         final StatCounter summaryStats = rdd.stats();
         final Double stddev = Math.sqrt(summaryStats.variance());
         return rdd.filter(new Function<Double, Boolean>() {
+            @Override
             public Boolean call(Double x) {
                 return (Math.abs(x - summaryStats.mean()) < 3 * stddev);
             }

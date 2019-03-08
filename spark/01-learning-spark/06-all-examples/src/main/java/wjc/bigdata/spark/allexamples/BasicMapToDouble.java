@@ -24,6 +24,7 @@ public class BasicMapToDouble {
         JavaRDD<Integer> rdd = sc.parallelize(Arrays.asList(1, 2, 3, 4));
         JavaDoubleRDD result = rdd.mapToDouble(
                 new DoubleFunction<Integer>() {
+                    @Override
                     public double call(Integer x) {
                         double y = (double) x;
                         return y * y;

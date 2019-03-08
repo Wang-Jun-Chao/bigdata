@@ -4,6 +4,7 @@ import com.google.common.collect.Ordering;
 import org.apache.spark.api.java.JavaDoubleRDD;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
+import org.apache.spark.api.java.Optional;
 import org.apache.spark.api.java.function.DoubleFunction;
 import org.apache.spark.api.java.function.Function;
 import org.apache.spark.api.java.function.Function2;
@@ -15,7 +16,6 @@ import javax.annotation.Nullable;
 import java.io.Serializable;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
 public class Functions {
     public static final @Nullable
@@ -101,7 +101,7 @@ public class Functions {
     public static final class ComputeRunningSum implements Function2<List<Long>, Optional<Long>, Optional<Long>> {
         @Override
         public Optional<Long> call(List<Long> nums, Optional<Long> current) {
-            long sum = current.orElse(0L);
+            long sum = current.or(0L);
             for (long i : nums) {
                 sum += i;
             }

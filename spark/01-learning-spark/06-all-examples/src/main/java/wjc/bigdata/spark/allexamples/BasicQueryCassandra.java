@@ -3,7 +3,7 @@
  */
 package wjc.bigdata.spark.allexamples;
 
-import com.datastax.spark.connector.CassandraRow;
+import com.datastax.spark.connector.japi.CassandraRow;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
@@ -12,7 +12,8 @@ import org.apache.spark.api.java.function.DoubleFunction;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import static com.datastax.spark.connector.CassandraJavaUtil.javaFunctions;
+import static com.datastax.spark.connector.japi.CassandraJavaUtil.javaFunctions;
+import static com.datastax.spark.connector.japi.CassandraJavaUtil.mapToRow;
 
 public class BasicQueryCassandra {
     public static void main(String[] args) throws Exception {
@@ -25,12 +26,13 @@ public class BasicQueryCassandra {
                 .set("spark.cassandra.connection.host", cassandraHost);
 
         JavaSparkContext sc = new JavaSparkContext(
-                sparkMaster, "basicquerycassandra", conf);
+                sparkMaster, "basic-query-cassandra", conf);
         // entire table as an RDD
         // assumes your table test was created as CREATE TABLE test.kv(key text PRIMARY KEY, value int);
         JavaRDD<CassandraRow> data = javaFunctions(sc).cassandraTable("test", "kv");
         // print some basic stats
         System.out.println(data.mapToDouble(new DoubleFunction<CassandraRow>() {
+            @Override
             public double call(CassandraRow row) {
                 return row.getInt("value");
             }
@@ -39,7 +41,11 @@ public class BasicQueryCassandra {
         ArrayList<KeyValue> input = new ArrayList<KeyValue>();
         input.add(KeyValue.newInstance("mostmagic", 3));
         JavaRDD<KeyValue> kvRDD = sc.parallelize(input);
-        javaFunctions(kvRDD, KeyValue.class).saveToCassandra("test", "kv");
+
+
+        javaFunctions(kvRDD)
+                .writerBuilder("test", "kv", mapToRow(KeyValue.class))
+                .saveToCassandra();
     }
 
     public static class KeyValue implements Serializable {
@@ -60,12 +66,12 @@ public class BasicQueryCassandra {
             return key;
         }
 
-        void setKey(String k) {
-            this.key = k;
-        }
-
         public Integer getValue() {
             return value;
+        }
+
+        void setKey(String k) {
+            this.key = k;
         }
 
         void setValue(Integer v) {

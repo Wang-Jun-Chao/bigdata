@@ -12,11 +12,12 @@ import org.apache.spark.api.java.function.Function;
 import scala.Tuple2;
 
 import java.io.StringReader;
+import java.util.Iterator;
 
 public class BasicLoadWholeCsv {
 
     public static void main(String[] args) throws Exception {
-        if (args.length != 3) {
+        if (args.length != 4) {
             throw new Exception("Usage BasicLoadCsv sparkMaster csvInputFile csvOutputFile key");
         }
         String master = args[0];
@@ -25,11 +26,12 @@ public class BasicLoadWholeCsv {
         final String key = args[3];
 
         JavaSparkContext sc = new JavaSparkContext(
-                master, "loadwholecsv", System.getenv("SPARK_HOME"), System.getenv("JARS"));
+                master, "load-whole-csv", System.getenv("SPARK_HOME"), System.getenv("JARS"));
         JavaPairRDD<String, String> csvData = sc.wholeTextFiles(csvInput);
         JavaRDD<String[]> keyedRDD = csvData.flatMap(new ParseLine());
         JavaRDD<String[]> result =
                 keyedRDD.filter(new Function<String[], Boolean>() {
+                    @Override
                     public Boolean call(String[] input) {
                         return input[0].equals(key);
                     }
@@ -39,9 +41,10 @@ public class BasicLoadWholeCsv {
     }
 
     public static class ParseLine implements FlatMapFunction<Tuple2<String, String>, String[]> {
-        public Iterable<String[]> call(Tuple2<String, String> file) throws Exception {
+        @Override
+        public Iterator<String[]> call(Tuple2<String, String> file) throws Exception {
             CSVReader reader = new CSVReader(new StringReader(file._2()));
-            return reader.readAll();
+            return reader.readAll().iterator();
         }
     }
 }
