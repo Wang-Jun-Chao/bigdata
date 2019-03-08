@@ -19,22 +19,12 @@ public class BasicMapThenFilter {
             master = "local";
         }
         JavaSparkContext sc = new JavaSparkContext(
-                master, "basicmapfilter", System.getenv("SPARK_HOME"), System.getenv("JARS"));
+                master, "basic-map-filter",
+                System.getenv("SPARK_HOME"),
+                System.getenv("JARS"));
         JavaRDD<Integer> rdd = sc.parallelize(Arrays.asList(1, 2, 3, 4));
-        JavaRDD<Integer> squared = rdd.map(
-                new Function<Integer, Integer>() {
-                    @Override
-                    public Integer call(Integer x) {
-                        return x * x;
-                    }
-                });
-        JavaRDD<Integer> result = squared.filter(
-                new Function<Integer, Boolean>() {
-                    @Override
-                    public Boolean call(Integer x) {
-                        return x != 1;
-                    }
-                });
+        JavaRDD<Integer> squared = rdd.map((Function<Integer, Integer>) x -> x * x);
+        JavaRDD<Integer> result = squared.filter((Function<Integer, Boolean>) x -> x != 1);
         System.out.println(StringUtils.join(result.collect(), ","));
     }
 }

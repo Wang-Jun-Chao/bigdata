@@ -54,7 +54,7 @@ public class BasicJoinCsv {
             CSVReader reader = new CSVReader(new StringReader(line));
             String[] elements = reader.readNext();
             Integer key = Integer.parseInt(elements[0]);
-            return new Tuple2(key, elements);
+            return new Tuple2<>(key, elements);
         }
     }
 }

@@ -20,20 +20,19 @@ public class RemoveOutliers {
             master = "local";
         }
         JavaSparkContext sc = new JavaSparkContext(
-                master, "basicmap", System.getenv("SPARK_HOME"), System.getenv("JARS"));
+                master,
+                "basic-map",
+                System.getenv("SPARK_HOME"),
+                System.getenv("JARS"));
         JavaDoubleRDD input = sc.parallelizeDoubles(Arrays.asList(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 1000.0));
         JavaDoubleRDD result = removeOutliers(input);
         System.out.println(StringUtils.join(result.collect(), ","));
     }
 
-    static JavaDoubleRDD removeOutliers(JavaDoubleRDD rdd) {
+    private static JavaDoubleRDD removeOutliers(JavaDoubleRDD rdd) {
         final StatCounter summaryStats = rdd.stats();
-        final Double stddev = Math.sqrt(summaryStats.variance());
-        return rdd.filter(new Function<Double, Boolean>() {
-            @Override
-            public Boolean call(Double x) {
-                return (Math.abs(x - summaryStats.mean()) < 3 * stddev);
-            }
-        });
+        final double stddev = Math.sqrt(summaryStats.variance());
+        System.out.println("stddev: " + stddev + ", mean: " + summaryStats.mean());
+        return rdd.filter((Function<Double, Boolean>) x -> (Math.abs(x - summaryStats.mean()) < 2 * stddev));
     }
 }

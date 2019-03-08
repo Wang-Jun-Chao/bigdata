@@ -23,7 +23,10 @@ public class BasicMapPartitions {
             master = "local";
         }
         JavaSparkContext sc = new JavaSparkContext(
-                master, "basicmappartitions", System.getenv("SPARK_HOME"), System.getenv("JARS"));
+                master,
+                "basic-map-partitions",
+                System.getenv("SPARK_HOME"),
+                System.getenv("JARS"));
         JavaRDD<String> rdd = sc.parallelize(
                 Arrays.asList("KK6JKQ", "Ve3UoW", "kk6jlk", "W6BB"));
         JavaRDD<String> result = rdd.mapPartitions(

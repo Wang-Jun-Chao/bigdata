@@ -22,7 +22,10 @@ public class BasicLoadSequenceFile {
         String fileName = args[1];
 
         JavaSparkContext sc = new JavaSparkContext(
-                master, "basicloadsequencefile", System.getenv("SPARK_HOME"), System.getenv("JARS"));
+                master,
+                "basic-load-sequence-file",
+                System.getenv("SPARK_HOME"),
+                System.getenv("JARS"));
         JavaPairRDD<Text, IntWritable> input = sc.sequenceFile(fileName, Text.class, IntWritable.class);
         JavaPairRDD<String, Integer> result = input.mapToPair(new ConvertToNativeTypes());
         List<Tuple2<String, Integer>> resultList = result.collect();
@@ -34,7 +37,7 @@ public class BasicLoadSequenceFile {
     public static class ConvertToNativeTypes implements PairFunction<Tuple2<Text, IntWritable>, String, Integer> {
         @Override
         public Tuple2<String, Integer> call(Tuple2<Text, IntWritable> record) {
-            return new Tuple2(record._1.toString(), record._2.get());
+            return new Tuple2<>(record._1.toString(), record._2.get());
         }
     }
 }

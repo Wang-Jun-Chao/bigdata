@@ -37,18 +37,30 @@ import java.util.regex.Pattern;
 public class ChapterSixExample {
     public static void main(String[] args) throws Exception {
 
-        if (args.length != 4) {
-            throw new Exception("Usage AccumulatorExample sparkMaster inputFile outDirectory");
-        }
-        String sparkMaster = args[0];
-        String inputFile = args[1];
-        String inputFile2 = args[2];
-        String outputDir = args[3];
+//        if (args.length != 4) {
+//            throw new Exception("Usage AccumulatorExample sparkMaster inputFile outDirectory");
+//        }
+//        String sparkMaster = args[0];
+//        String inputFile = args[1];
+//        String inputFile2 = args[2];
+//        String outputDir = args[3];
+
+
+        String sparkMaster = "local";
+        String inputFile = PathUtils.workDir("chapter-six-example.json");
+        String inputFile2 = PathUtils.workDir("chapter-six-example.json");
+        PathUtils.removeWorkDir("chapter-six-example-output");
+        String outputDir = PathUtils.workDir("chapter-six-example-output");
+        ;
+
 
         JavaSparkContext sc = new JavaSparkContext(
-                sparkMaster, "ChapterSixExample", System.getenv("SPARK_HOME"), System.getenv("JARS"));
+                sparkMaster, "chapter-six-example",
+                System.getenv("SPARK_HOME"),
+                System.getenv("JARS"));
         JavaRDD<String> rdd = sc.textFile(inputFile);
         // Count the number of lines with KK6JKQ
+
         final Accumulator<Integer> count = sc.accumulator(0);
         rdd.foreach(new VoidFunction<String>() {
             @Override
@@ -78,6 +90,7 @@ public class ChapterSixExample {
         final Accumulator<Integer> invalidSignCount = sc.accumulator(0);
         JavaRDD<String> validCallSigns = callSigns.filter(
                 new Function<String, Boolean>() {
+                    @Override
                     public Boolean call(String callSign) {
                         Pattern p = Pattern.compile("\\A\\d?\\p{Alpha}{1,2}\\d{1,4}\\p{Alpha}{1,3}\\Z");
                         Matcher m = p.matcher(callSign);
@@ -94,7 +107,7 @@ public class ChapterSixExample {
                 new PairFunction<String, String, Integer>() {
                     @Override
                     public Tuple2<String, Integer> call(String callSign) {
-                        return new Tuple2(callSign, 1);
+                        return new Tuple2<>(callSign, 1);
                     }
                 }).reduceByKey(new Function2<Integer, Integer, Integer>() {
             @Override

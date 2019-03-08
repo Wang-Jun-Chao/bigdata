@@ -32,13 +32,13 @@ import java.util.Arrays;
 public final class MLlib {
 
     public static void main(String[] args) {
-        SparkConf sparkConf = new SparkConf().setAppName("JavaBookExample");
+        SparkConf sparkConf = new SparkConf().setAppName("java-book-example").setMaster("local");
         JavaSparkContext sc = new JavaSparkContext(sparkConf);
 
         // Load 2 types of emails from text files: spam and ham (non-spam).
         // Each line has text from one email.
-        JavaRDD<String> spam = sc.textFile("files/spam.txt");
-        JavaRDD<String> ham = sc.textFile("files/ham.txt");
+        JavaRDD<String> spam = sc.textFile(PathUtils.workDir("/files/spam.txt"));
+        JavaRDD<String> ham = sc.textFile(PathUtils.workDir("files/ham.txt"));
 
         // Create a HashingTF instance to map email text to vectors of 100 features.
         final HashingTF tf = new HashingTF(100);

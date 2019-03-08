@@ -24,31 +24,37 @@ public final class PerKeyAvg {
         }
 
         JavaSparkContext sc = new JavaSparkContext(
-                master, "PerKeyAvg", System.getenv("SPARK_HOME"), System.getenv("JARS"));
-        List<Tuple2<String, Integer>> input = new ArrayList();
-        input.add(new Tuple2("coffee", 1));
-        input.add(new Tuple2("coffee", 2));
-        input.add(new Tuple2("pandas", 3));
+                master, "per-key-avg",
+                System.getenv("SPARK_HOME"),
+                System.getenv("JARS"));
+        List<Tuple2<String, Integer>> input = new ArrayList<>();
+        input.add(new Tuple2<>("coffee", 1));
+        input.add(new Tuple2<>("coffee", 2));
+        input.add(new Tuple2<>("pandas", 3));
+
         JavaPairRDD<String, Integer> rdd = sc.parallelizePairs(input);
+
         Function<Integer, AvgCount> createAcc = new Function<Integer, AvgCount>() {
             @Override
             public AvgCount call(Integer x) {
                 return new AvgCount(x, 1);
             }
         };
+
         Function2<AvgCount, Integer, AvgCount> addAndCount = new Function2<AvgCount, Integer, AvgCount>() {
             @Override
             public AvgCount call(AvgCount a, Integer x) {
-                a.total_ += x;
-                a.num_ += 1;
+                a.total += x;
+                a.num += 1;
                 return a;
             }
         };
+
         Function2<AvgCount, AvgCount, AvgCount> combine = new Function2<AvgCount, AvgCount, AvgCount>() {
             @Override
             public AvgCount call(AvgCount a, AvgCount b) {
-                a.total_ += b.total_;
-                a.num_ += b.num_;
+                a.total += b.total;
+                a.num += b.num;
                 return a;
             }
         };
@@ -61,15 +67,15 @@ public final class PerKeyAvg {
     }
 
     public static class AvgCount implements java.io.Serializable {
-        public int total_;
-        public int num_;
+        public int total;
+        public int num;
         public AvgCount(int total, int num) {
-            total_ = total;
-            num_ = num;
+            this.total = total;
+            this.num = num;
         }
 
         public float avg() {
-            return total_ / (float) num_;
+            return total / (float) num;
         }
     }
 }

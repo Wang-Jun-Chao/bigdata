@@ -1,0 +1,4 @@
+match    ,r1
+not-match,r2
+not-match,r3
+match    ,r4

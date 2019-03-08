@@ -17,25 +17,33 @@ import java.util.Iterator;
 public class BasicLoadWholeCsv {
 
     public static void main(String[] args) throws Exception {
-        if (args.length != 4) {
-            throw new Exception("Usage BasicLoadCsv sparkMaster csvInputFile csvOutputFile key");
-        }
-        String master = args[0];
-        String csvInput = args[1];
-        String outputFile = args[2];
-        final String key = args[3];
+//        if (args.length != 4) {
+//            throw new Exception("Usage BasicLoadCsv sparkMaster csvInputFile csvOutputFile key");
+//        }
+//        String master = args[0];
+//        String csvInput = args[1];
+//        String outputFile = args[2];
+//        final String key = args[3];
+
+        PathUtils.removeWorkDir("load-whole-csv-output.csv");
+        String master = "local";
+        String csvInput = PathUtils.workDir("load-whole-csv-input.csv");
+        String outputFile = PathUtils.workDir("load-whole-csv-output.csv");
+        final String key = "match";
 
         JavaSparkContext sc = new JavaSparkContext(
-                master, "load-whole-csv", System.getenv("SPARK_HOME"), System.getenv("JARS"));
+                master,
+                "load-whole-csv",
+                System.getenv("SPARK_HOME"),
+                System.getenv("JARS"));
         JavaPairRDD<String, String> csvData = sc.wholeTextFiles(csvInput);
         JavaRDD<String[]> keyedRDD = csvData.flatMap(new ParseLine());
-        JavaRDD<String[]> result =
-                keyedRDD.filter(new Function<String[], Boolean>() {
-                    @Override
-                    public Boolean call(String[] input) {
-                        return input[0].equals(key);
-                    }
-                });
+        JavaRDD<String[]> result = keyedRDD.filter(new Function<String[], Boolean>() {
+            @Override
+            public Boolean call(String[] input) {
+                return input[0].equals(key);
+            }
+        });
 
         result.saveAsTextFile(outputFile);
     }

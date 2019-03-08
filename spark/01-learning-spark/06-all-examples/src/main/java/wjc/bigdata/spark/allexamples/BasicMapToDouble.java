@@ -20,15 +20,12 @@ public class BasicMapToDouble {
             master = "local";
         }
         JavaSparkContext sc = new JavaSparkContext(
-                master, "basicmaptodouble", System.getenv("SPARK_HOME"), System.getenv("JARS"));
+                master, "basic-map-to-double", System.getenv("SPARK_HOME"), System.getenv("JARS"));
         JavaRDD<Integer> rdd = sc.parallelize(Arrays.asList(1, 2, 3, 4));
         JavaDoubleRDD result = rdd.mapToDouble(
-                new DoubleFunction<Integer>() {
-                    @Override
-                    public double call(Integer x) {
-                        double y = (double) x;
-                        return y * y;
-                    }
+                (DoubleFunction<Integer>) x -> {
+                    double y = (double) x;
+                    return y * y;
                 });
         System.out.println(StringUtils.join(result.collect(), ","));
     }

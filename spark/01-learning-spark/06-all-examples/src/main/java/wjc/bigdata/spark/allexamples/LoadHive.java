@@ -22,7 +22,10 @@ public class LoadHive {
         String tbl = args[1];
 
         JavaSparkContext sc = new JavaSparkContext(
-                master, "loadhive", System.getenv("SPARK_HOME"), System.getenv("JARS"));
+                master,
+                "load-hive",
+                System.getenv("SPARK_HOME"),
+                System.getenv("JARS"));
         SQLContext sqlCtx = new SQLContext(sc);
         Dataset<Row> rdd = sqlCtx.sql("SELECT key, value FROM src");
         JavaRDD<Integer> squaredKeys = rdd.toJavaRDD().map(new SquareKey());

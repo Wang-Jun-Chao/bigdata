@@ -26,7 +26,9 @@ public class BasicQueryCassandra {
                 .set("spark.cassandra.connection.host", cassandraHost);
 
         JavaSparkContext sc = new JavaSparkContext(
-                sparkMaster, "basic-query-cassandra", conf);
+                sparkMaster,
+                "basic-query-cassandra",
+                conf);
         // entire table as an RDD
         // assumes your table test was created as CREATE TABLE test.kv(key text PRIMARY KEY, value int);
         JavaRDD<CassandraRow> data = javaFunctions(sc).cassandraTable("test", "kv");
