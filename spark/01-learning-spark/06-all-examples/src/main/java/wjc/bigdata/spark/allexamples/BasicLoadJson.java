@@ -15,15 +15,23 @@ import java.util.Iterator;
 public class BasicLoadJson {
 
     public static void main(String[] args) throws Exception {
-        if (args.length != 3) {
-            throw new Exception("Usage BasicLoadJson [sparkMaster] [jsoninput] [jsonoutput]");
-        }
-        String master = args[0];
-        String fileName = args[1];
-        String outfile = args[2];
+//        if (args.length != 3) {
+//            throw new Exception("Usage BasicLoadJson [sparkMaster] [jsoninput] [jsonoutput]");
+//        }
+//        String master = args[0];
+//        String fileName = args[1];
+//        String outfile = args[2];
+
+        String master = "local";
+        String fileName = PathUtils.workDir("panda-investigate.txt");
+        String outfile = PathUtils.workDir("panda-lover-result");
+
 
         JavaSparkContext sc = new JavaSparkContext(
-                master, "basicloadjson", System.getenv("SPARK_HOME"), System.getenv("JARS"));
+                master,
+                "basic-load-json",
+                System.getenv("SPARK_HOME"),
+                System.getenv("JARS"));
         JavaRDD<String> input = sc.textFile(fileName);
         JavaRDD<Person> result = input.mapPartitions(new ParseJson()).filter(new LikesPandas());
         JavaRDD<String> formatted = result.mapPartitions(new WriteJson());
