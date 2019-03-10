@@ -12,7 +12,7 @@
     <modules>
         <module>01-learning-spark</module>
         <module>02-data-algorithms</module>
-        <module>03-learning-apache-flink</module>
+        <module>03-rdd-concurrency</module>
         <module>06-spark-examples</module>
     </modules>
 </project>
