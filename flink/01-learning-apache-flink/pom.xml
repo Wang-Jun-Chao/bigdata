@@ -7,6 +7,7 @@
     <groupId>wjc.bigdata.flink</groupId>
     <artifactId>03-learning-apache-flink</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
     <modules>
         <module>ch0201-flink-streaming</module>
@@ -15,7 +16,6 @@
         <module>ch0501-complex-event-processing</module>
         <module>ch0601-machine-learning</module>
     </modules>
-
 
     <build>
         <plugins>

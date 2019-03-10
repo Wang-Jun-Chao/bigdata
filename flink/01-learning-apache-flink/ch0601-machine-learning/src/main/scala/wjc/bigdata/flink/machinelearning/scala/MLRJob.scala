@@ -1,7 +1,6 @@
 package wjc.bigdata.flink.machinelearning.scala
 
-import org.apache.flink.api.scala._
-import org.apache.flink.api.scala.ExecutionEnvironment
+import org.apache.flink.api.scala.{ExecutionEnvironment, _}
 import org.apache.flink.ml.MLUtils
 import org.apache.flink.ml.regression.MultipleLinearRegression
 import wjc.bigdata.flink.util.PathUtils

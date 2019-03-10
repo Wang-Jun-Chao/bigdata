@@ -1,6 +1,5 @@
 package wjc.bigdata.flink.complexeventprocessing;
 
-import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.cep.CEP;
 import org.apache.flink.cep.PatternSelectFunction;
 import org.apache.flink.cep.pattern.Pattern;
@@ -12,7 +11,6 @@ import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer09;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 public class KafkaDataApp {
     public static void main(String[] args) throws Exception {
