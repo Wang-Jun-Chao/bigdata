@@ -27,7 +27,7 @@ public class Toolset {
 
         Dataset<Row> flights = flightsDF.as("Flight");
 
-        Object[] take = flights.filter(
+        Object take = flights.filter(
                 (FilterFunction<Row>) row -> !"Canada".equalsIgnoreCase(row.getAs("ORIGIN_COUNTRY_NAME"))
         ).map(new MapFunction<Row, Row>() {
             @Override
