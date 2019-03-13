@@ -40,7 +40,7 @@ public class Introduction {
                 .read()
                 .option("inferSchema", "true")
                 .option("header", "true")
-                .csv(PathUtils.workDir("data/flight-data/csv/2015-summary.csv"));
+                .csv(PathUtils.workDir("../../../data/flight-data/csv/2015-summary.csv"));
 
         // Taking 3 rows from the flight dataset
         Object[] dataObjects = (Object[]) flightData2015.take(3);
