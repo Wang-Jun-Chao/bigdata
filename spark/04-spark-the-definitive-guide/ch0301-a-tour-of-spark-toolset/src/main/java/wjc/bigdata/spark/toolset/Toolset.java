@@ -2,12 +2,23 @@ package wjc.bigdata.spark.toolset;
 
 import org.apache.spark.api.java.function.FilterFunction;
 import org.apache.spark.api.java.function.MapFunction;
+import org.apache.spark.ml.Pipeline;
+import org.apache.spark.ml.PipelineModel;
+import org.apache.spark.ml.PipelineStage;
+import org.apache.spark.ml.clustering.KMeans;
+import org.apache.spark.ml.clustering.KMeansModel;
+import org.apache.spark.ml.feature.OneHotEncoder;
+import org.apache.spark.ml.feature.StringIndexer;
+import org.apache.spark.ml.feature.VectorAssembler;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.functions;
 import org.apache.spark.sql.types.StructType;
+import scala.collection.JavaConverters;
+import scala.collection.Seq;
+import scala.reflect.ClassManifestFactory;
 import wjc.bigdata.spark.util.PathUtils;
 
 import java.util.Arrays;
@@ -59,7 +70,6 @@ public class Toolset {
                 .show(5);
 
 
-
         staticDataFrame.createOrReplaceTempView("retail_data");
         spark.conf().set("spark.sql.shuffle.partitions", "5");
         Dataset<Row> streamingDataFrame = spark.readStream()
@@ -91,5 +101,60 @@ public class Toolset {
         ).show(5);
 
         staticDataFrame.printSchema();
+
+        Dataset<Row> preppedDataFrame = staticDataFrame
+                .na().fill(0)
+                .withColumn("day_of_week", functions.date_format(functions.col("InvoiceDate"), "EEEE"))
+                .coalesce(5);
+        preppedDataFrame.printSchema();
+
+
+        Dataset<Row> trainDataFrame = preppedDataFrame
+                .where("InvoiceDate < '2011-07-01'");
+        Dataset<Row> testDataFrame = preppedDataFrame
+                .where("InvoiceDate >= '2011-07-01'");
+
+        trainDataFrame.count();
+        testDataFrame.count();
+
+
+        StringIndexer indexer = new StringIndexer()
+                .setInputCol("day_of_week")
+                .setOutputCol("day_of_week_index");
+
+        OneHotEncoder encoder = new OneHotEncoder()
+                .setInputCol("day_of_week_index")
+                .setOutputCol("day_of_week_encoded");
+
+
+        VectorAssembler vectorAssembler = new VectorAssembler()
+                .setInputCols(new String[]{"UnitPrice", "Quantity", "day_of_week_encoded"})
+                .setOutputCol("features");
+
+        Pipeline transformationPipeline = new Pipeline()
+                .setStages(new PipelineStage[]{indexer, encoder, vectorAssembler});
+
+        PipelineModel fittedPipeline = transformationPipeline.fit(trainDataFrame);
+
+        Dataset<Row> transformedTraining = fittedPipeline.transform(trainDataFrame);
+        transformedTraining.cache();
+
+        KMeans kmeans = new KMeans()
+                .setK(20)
+                .setSeed(1L);
+        KMeansModel kmModel = kmeans.fit(transformedTraining);
+
+        Dataset<Row> transformedTest = fittedPipeline.transform(testDataFrame);
+        System.out.println(kmModel.computeCost(transformedTest));
+
+
+        Seq<Integer> seq = JavaConverters.asScalaIteratorConverter(Arrays.asList(1, 2, 3).iterator()).asScala().toSeq();
+
+        Object integers = spark.sparkContext().<Integer>parallelize(
+                seq, 1,
+                ClassManifestFactory.<Integer>classType(Integer.class))
+                .take(5);
+        System.out.println(Arrays.toString((Object[]) integers));
+
     }
 }
