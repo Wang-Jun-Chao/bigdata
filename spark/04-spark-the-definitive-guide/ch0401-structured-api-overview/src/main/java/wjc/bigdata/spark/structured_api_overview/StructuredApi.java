@@ -1,4 +1,4 @@
-package wjc.bigdata.spark.structuredapi;
+package wjc.bigdata.spark.structured_api_overview;
 
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;

@@ -12,6 +12,9 @@
     <modules>
         <module>ch0000-spark-the-definitive-guide-utils</module>
         <module>ch0201-a-gentle-introduction-to-spark</module>
+        <module>ch0301-a-tour-of-spark-toolset</module>
+        <module>ch0401-structured-api-overview</module>
+        <module>ch0501-basic-structured-operations</module>
         <module>ch0701-aggregations</module>
     </modules>
 

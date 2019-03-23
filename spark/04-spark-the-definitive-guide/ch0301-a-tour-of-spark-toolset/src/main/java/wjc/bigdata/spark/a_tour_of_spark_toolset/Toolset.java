@@ -1,4 +1,4 @@
-package wjc.bigdata.spark.toolset;
+package wjc.bigdata.spark.a_tour_of_spark_toolset;
 
 import org.apache.spark.api.java.function.FilterFunction;
 import org.apache.spark.api.java.function.MapFunction;

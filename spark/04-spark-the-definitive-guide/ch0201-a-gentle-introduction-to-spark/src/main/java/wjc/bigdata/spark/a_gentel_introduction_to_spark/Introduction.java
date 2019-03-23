@@ -1,4 +1,4 @@
-package wjc.bigdata.spark.intro;
+package wjc.bigdata.spark.a_gentel_introduction_to_spark;
 
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
