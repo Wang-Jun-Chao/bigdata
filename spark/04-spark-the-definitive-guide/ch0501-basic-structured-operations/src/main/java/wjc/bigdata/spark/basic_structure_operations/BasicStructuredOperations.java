@@ -1,11 +1,13 @@
 package wjc.bigdata.spark.basic_structure_operations;
 
 import org.apache.spark.api.java.JavaSparkContext$;
+import org.apache.spark.api.java.function.FilterFunction;
 import org.apache.spark.rdd.RDD;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.catalyst.expressions.GenericRow;
+import org.apache.spark.sql.functions;
 import org.apache.spark.sql.types.DataTypes;
 import org.apache.spark.sql.types.Metadata;
 import org.apache.spark.sql.types.StructField;
@@ -74,8 +76,7 @@ public class BasicStructuredOperations {
         );
 
         Seq<GenericRow> myRows = JavaConverters
-                .asScalaIteratorConverter(Arrays.asList(new GenericRow(new Object[]{"Hello", null, 1L}))
-                        .iterator())
+                .asScalaIteratorConverter(Arrays.asList(new GenericRow(new Object[]{"Hello", null, 1L})).iterator())
                 .asScala()
                 .toSeq();
         // java 泛型不支持协变所以先变成 obj 再变成目标类型
@@ -86,5 +87,119 @@ public class BasicStructuredOperations {
                 JavaSparkContext$.MODULE$.fakeClassTag());
         Dataset<Row> myDf = spark.createDataFrame(myRDD, myManualSchema);
         myDf.show();
+
+
+        df.select("DEST_COUNTRY_NAME")
+                .show(2);
+        df.select("DEST_COUNTRY_NAME", "ORIGIN_COUNTRY_NAME")
+                .show(2);
+        df.select(
+                df.col("DEST_COUNTRY_NAME"),
+                functions.column("DEST_COUNTRY_NAME"),
+                functions.column("DEST_COUNTRY_NAME"),
+                functions.column("DEST_COUNTRY_NAME"),
+                functions.expr("DEST_COUNTRY_NAME"))
+                .show(2);
+        df.select(functions.expr("DEST_COUNTRY_NAME AS destination"))
+                .show(2);
+        df.select(functions.expr("DEST_COUNTRY_NAME as destination").alias("DEST_COUNTRY_NAME"))
+                .show(2);
+        df.selectExpr("DEST_COUNTRY_NAME as newColumnName", "DEST_COUNTRY_NAME")
+                .show(2);
+        df.selectExpr(
+                "*", // include all original columns
+                "(DEST_COUNTRY_NAME = ORIGIN_COUNTRY_NAME) as withinCountry")
+                .show(2);
+        df.selectExpr("avg(count)", "count(distinct(DEST_COUNTRY_NAME))")
+                .show(2);
+        df.select(functions.expr("*"), functions.lit(1).as("One"))
+                .show(2);
+        df.withColumn("numberOne", functions.lit(1))
+                .show(2);
+        df.withColumn("withinCountry", functions.expr("ORIGIN_COUNTRY_NAME == DEST_COUNTRY_NAME"))
+                .show(2);
+
+        columns = df.withColumn("Destination", functions.expr("DEST_COUNTRY_NAME")).columns();
+        System.out.println(Arrays.toString(columns));
+        columns = df.withColumnRenamed("DEST_COUNTRY_NAME", "dest").columns();
+        System.out.println(Arrays.toString(columns));
+
+        Dataset<Row> dfWithLongColName = df.withColumn(
+                "This Long Column-Name",
+                functions.expr("ORIGIN_COUNTRY_NAME"));
+        dfWithLongColName.show(2);
+        dfWithLongColName.selectExpr(
+                "`This Long Column-Name`",
+                "`This Long Column-Name` as `new col`")
+                .show(2);
+        dfWithLongColName.createOrReplaceTempView("dfTableLong");
+        columns = dfWithLongColName.select(functions.column("This Long Column-Name")).columns();
+        System.out.println(Arrays.toString(columns));
+
+        columns = df.drop("ORIGIN_COUNTRY_NAME").columns();
+        System.out.println(Arrays.toString(columns));
+
+        dfWithLongColName.drop("ORIGIN_COUNTRY_NAME", "DEST_COUNTRY_NAME");
+        df.withColumn("count2", functions.column("count").cast("long"))
+                .take(2);
+        df.filter(new FilterFunction<Row>() {
+            @Override
+            public boolean call(Row value) throws Exception {
+                return (long) value.getAs("count") < 2;
+            }
+        }).show(2);
+        df.where("count < 2").show(2);
+
+        df.where("count < 2").where("ORIGIN_COUNTRY_NAME != \"Croatia\"")
+                .show(2);
+        long count = df.select("ORIGIN_COUNTRY_NAME", "DEST_COUNTRY_NAME").distinct().count();
+        System.out.println(count);
+
+        count = df.select("ORIGIN_COUNTRY_NAME").distinct().count();
+        System.out.println(count);
+
+        long seed = 5;
+        boolean withReplacement = false;
+        double fraction = 0.5;
+        count = df.sample(withReplacement, fraction, seed).count();
+        System.out.println(count);
+
+        Dataset[] dataFrames = df.randomSplit(new double[]{0.25, 0.75}, seed);
+        System.out.println(dataFrames[0].count() > dataFrames[1].count());
+
+        schema = df.schema();
+        Seq<GenericRow> newRows = JavaConverters
+                .asScalaIteratorConverter(
+                        Arrays.asList(
+                                new GenericRow(new Object[]{"New Country", "Other Country", 5L}),
+                                new GenericRow(new Object[]{"New Country 2", "Other Country 3", 1L})
+                        ).iterator())
+                .asScala()
+                .toSeq();
+
+        obj = newRows;
+
+        RDD<Row> parallelizedRows = spark.sparkContext().parallelize(
+                (Seq) obj,
+                spark.sparkContext().defaultParallelism(),
+                JavaSparkContext$.MODULE$.fakeClassTag());
+
+        Dataset newDF = spark.createDataFrame(parallelizedRows, schema);
+        df.union(newDF)
+                .where("count = 1")
+                .where("ORIGIN_COUNTRY_NAME != \"United States\"")
+                .show(); // get all of them and we'll see our new rows at the end;
+
+        df.sort("count")
+                .show(5);
+        df.orderBy("count", "DEST_COUNTRY_NAME")
+                .show(5);
+        df.orderBy(functions.col("count"), functions.col("DEST_COUNTRY_NAME"))
+                .show(5);
+
+        df.orderBy(functions.expr("count desc"))
+                .show(2);
+        df.orderBy(functions.desc("count"), functions.asc("DEST_COUNTRY_NAME"))
+                .show(2);
     }
 }
