@@ -201,5 +201,25 @@ public class BasicStructuredOperations {
                 .show(2);
         df.orderBy(functions.desc("count"), functions.asc("DEST_COUNTRY_NAME"))
                 .show(2);
+
+        df = spark.read().format("json").load(PathUtils.workDir(
+                "../../../data/flight-data/json/*-summary.json"));
+        df.limit(5).show();
+        df.orderBy(functions.expr("count desc")).limit(6).show();
+        System.out.println(df.rdd().getNumPartitions());
+
+        df.repartition(5);
+        df.repartition(functions.col("DEST_COUNTRY_NAME"));
+        df.repartition(5, functions.col("DEST_COUNTRY_NAME"));
+        df.repartition(5, functions.col("DEST_COUNTRY_NAME")).coalesce(2);
+
+        Dataset collectDF = df.limit(10);
+        collectDF.take(5); // take works with an Integer count
+        collectDF.show(); // this prints it out nicely
+        collectDF.show(5, false);
+        collectDF.collect();
+
+        collectDF.toLocalIterator();
+
     }
 }
