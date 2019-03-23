@@ -7,7 +7,7 @@ import org.apache.spark.ml.PipelineModel;
 import org.apache.spark.ml.PipelineStage;
 import org.apache.spark.ml.clustering.KMeans;
 import org.apache.spark.ml.clustering.KMeansModel;
-import org.apache.spark.ml.feature.OneHotEncoder;
+import org.apache.spark.ml.feature.OneHotEncoderEstimator;
 import org.apache.spark.ml.feature.StringIndexer;
 import org.apache.spark.ml.feature.VectorAssembler;
 import org.apache.spark.sql.Dataset;
@@ -22,7 +22,6 @@ import scala.reflect.ClassManifestFactory;
 import wjc.bigdata.spark.util.PathUtils;
 
 import java.util.Arrays;
-//import static org.apache.spark.sql.functions.*;
 
 /**
  * @author: wangjunchao(王俊超)
@@ -122,9 +121,9 @@ public class Toolset {
                 .setInputCol("day_of_week")
                 .setOutputCol("day_of_week_index");
 
-        OneHotEncoder encoder = new OneHotEncoder()
-                .setInputCol("day_of_week_index")
-                .setOutputCol("day_of_week_encoded");
+        OneHotEncoderEstimator encoder = new OneHotEncoderEstimator()
+                .setInputCols(new String[]{"day_of_week_index"})
+                .setOutputCols(new String[]{"day_of_week_encoded"});
 
 
         VectorAssembler vectorAssembler = new VectorAssembler()
@@ -148,7 +147,11 @@ public class Toolset {
         System.out.println(kmModel.computeCost(transformedTest));
 
 
-        Seq<Integer> seq = JavaConverters.asScalaIteratorConverter(Arrays.asList(1, 2, 3).iterator()).asScala().toSeq();
+        Seq<Integer> seq = JavaConverters
+                .asScalaIteratorConverter(Arrays.asList(1, 2, 3)
+                .iterator())
+                .asScala()
+                .toSeq();
 
         Object integers = spark.sparkContext().<Integer>parallelize(
                 seq, 1,
