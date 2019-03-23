@@ -23,6 +23,6 @@ public class BasicStructuredOperations {
 
         Dataset<Row> df = spark.read().format("json").load(PathUtils.workDir(
                 "../../../data/flight-data/json/2015-summary.json"));
-
+        df.printSchema();
     }
 }
