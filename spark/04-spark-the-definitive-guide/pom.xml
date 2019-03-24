@@ -15,6 +15,7 @@
         <module>ch0301-a-tour-of-spark-toolset</module>
         <module>ch0401-structured-api-overview</module>
         <module>ch0501-basic-structured-operations</module>
+        <module>ch0601-working-with-different-types-of-data</module>
         <module>ch0701-aggregations</module>
     </modules>
 
