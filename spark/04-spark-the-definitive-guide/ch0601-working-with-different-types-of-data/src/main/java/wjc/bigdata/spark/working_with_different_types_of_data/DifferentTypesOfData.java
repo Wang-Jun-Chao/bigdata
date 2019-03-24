@@ -1,5 +1,6 @@
 package wjc.bigdata.spark.working_with_different_types_of_data;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.spark.sql.Column;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
@@ -8,6 +9,8 @@ import org.apache.spark.sql.functions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import wjc.bigdata.spark.util.PathUtils;
+
+import java.util.Arrays;
 
 /**
  * @author: wangjunchao(王俊超)
@@ -83,6 +86,87 @@ public class DifferentTypesOfData {
                 "CustomerId",
                 "(POWER((Quantity * UnitPrice), 2.0) + 5) as realQuantity")
                 .show(2);
+
+        df.select(functions.round(
+                functions.column("UnitPrice"), 1).alias("rounded"),
+                functions.column("UnitPrice"))
+                .show(5);
+
+        df.select(
+                functions.round(functions.lit("2.5")),
+                functions.bround(functions.lit("2.5")))
+                .show(2);
+
+        df.stat().corr("Quantity", "UnitPrice");
+        df.select(functions.corr("Quantity", "UnitPrice"))
+                .show();
+
+        df.describe().show();
+
+        String colName = "UnitPrice";
+        double[] quantileProbs = new double[]{0.5};
+        double relError = 0.05;
+        double[] approxQuantile = df.stat().approxQuantile(colName, quantileProbs, relError); // 2.51
+        System.out.println(Arrays.toString(approxQuantile));
+
+        df.stat().crosstab("StockCode", "Quantity")
+                .show();
+
+        df.stat().freqItems(new String[]{"StockCode", "Quantity"})
+                .show();
+
+        df.select(functions.monotonically_increasing_id())
+                .show(2);
+
+        df.select(functions.initcap(functions.column("Description")))
+                .show(2, false);
+
+        df.select(
+                functions.col("Description"),
+                functions.lower(functions.col("Description")),
+                functions.upper(functions.lower(functions.col("Description"))))
+                .show(2);
+
+        df.select(
+                functions.ltrim(functions.lit("    HELLO    ")).as("ltrim"),
+                functions.rtrim(functions.lit("    HELLO    ")).as("rtrim"),
+                functions.trim(functions.lit("    HELLO    ")).as("trim"),
+                functions.lpad(functions.lit("HELLO"), 3, " ").as("lp"),
+                functions.rpad(functions.lit("HELLO"), 10, " ").as("rp"))
+                .show(2);
+
+
+        String regexString = StringUtils.join("black", "white", "red", "green", "blue")
+                .toUpperCase();
+        // the | signifies `OR` in regular expression syntax
+        df.select(
+                functions.regexp_replace(
+                        functions.col("Description"),
+                        regexString,
+                        "COLOR")
+                        .alias("color_clean"),
+                functions.col("Description"))
+                .show(2);
+
+        df.select(
+                functions.translate(
+                        functions.col("Description"),
+                        "LEET", "1337"),
+                functions.col("Description"))
+                .show(2);
+
+        df.select(
+                functions.regexp_extract(functions.column("Description"), regexString, 1)
+                        .alias("color_clean"),
+                functions.column("Description"))
+                .show(2);
+
+        Column containsBlack = functions.column("Description").contains("BLACK");
+        Column containsWhite = functions.column("DESCRIPTION").contains("WHITE");
+        df.withColumn("hasSimpleColor", containsBlack.or(containsWhite))
+                .where("hasSimpleColor")
+                .select("Description")
+                .show(3, false);
 
     }
 }
