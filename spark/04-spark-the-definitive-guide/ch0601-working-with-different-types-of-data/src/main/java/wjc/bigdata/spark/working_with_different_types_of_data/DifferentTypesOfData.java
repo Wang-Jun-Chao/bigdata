@@ -270,7 +270,7 @@ public class DifferentTypesOfData {
         df.select(functions.map(functions.col("Description"), functions.col("InvoiceNo")).alias("complex_map"))
                 .selectExpr("explode(complex_map)").show(2);
 
-        Dataset jsonDF = spark.range(1).selectExpr("\"{\"myJSONKey\":{\"myJSONValue\":[1,2,3]}}\" as jsonString");
+        Dataset jsonDF = spark.range(1).selectExpr("'{\"myJSONKey\":{\"myJSONValue\":[1,2,3]}}' as jsonString");
         jsonDF.take(5);
 
         jsonDF.select(
