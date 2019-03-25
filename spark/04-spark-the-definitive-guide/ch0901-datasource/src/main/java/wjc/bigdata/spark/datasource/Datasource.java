@@ -52,11 +52,11 @@ public class Datasource {
         dataFrame.write()
                 .option("path", PathUtils.outputPath("output"));
 
-//        dataFrame.write().format("csv")
-//                .option("mode", "OVERWRITE")
-//                .option("dateFormat", "yyyy-MM-dd")
-//                .option("path", PathUtils.outputPath("output2"))
-//                .save();
+        dataFrame.write().format("csv")
+                .option("mode", "OVERWRITE")
+                .option("dateFormat", "yyyy-MM-dd")
+                .option("path", PathUtils.outputPath("output2"))
+                .save();
 
         StructType myManualSchema = new StructType(new StructField[]{
                 new StructField("DEST_COUNTRY_NAME", DataTypes.StringType, true, Metadata.empty()),
@@ -78,7 +78,8 @@ public class Datasource {
 
         Object rows1 = spark.read().format("csv")
                 .option("header", "true")
-                .option("mode", "FAILFAST")
+//                .option("mode", "FAILFAST")
+                .option("mode", "DROPMALFORMED")
                 .schema(myManualSchema)
                 .load(PathUtils.workDir("../../../data/flight-data/csv/2010-summary.csv"))
                 .take(5);
@@ -87,7 +88,8 @@ public class Datasource {
         Dataset csvFile = spark.read()
                 .format("csv")
                 .option("header", "true")
-                .option("mode", "FAILFAST")
+                //                .option("mode", "FAILFAST")
+                .option("mode", "DROPMALFORMED")
                 .schema(myManualSchema)
                 .load(PathUtils.workDir("../../../data/flight-data/csv/2010-summary.csv"));
 
@@ -101,7 +103,8 @@ public class Datasource {
 
         spark.read()
                 .format("json")
-                .option("mode", "FAILFAST")
+                //                .option("mode", "FAILFAST")
+                .option("mode", "DROPMALFORMED")
                 .schema(myManualSchema)
                 .load(PathUtils.workDir("../../../data/flight-data/json/2010-summary.json"))
                 .show(5);
@@ -219,10 +222,13 @@ public class Datasource {
 //            logger.error(e.getMessage(), e);
 //        }
 
-        Dataset<String> textFile = spark.read().textFile(PathUtils.inputPath("../../../data/flight-data/csv/2010-summary.csv"));
+        Dataset<String> textFile = spark.read()
+                .textFile(PathUtils.inputPath("../../../data/flight-data/csv/2010-summary.csv"));
         textFile.selectExpr("split(value, ',') as rows")
                 .show();
-        textFile.select("DEST_COUNTRY_NAME").write().text(PathUtils.workDir("/tmp/simple-text-file.txt"));
+        textFile.select("DEST_COUNTRY_NAME")
+                .write()
+                .text(PathUtils.workDir("/tmp/simple-text-file.txt"));
         textFile.limit(10)
                 .select("DEST_COUNTRY_NAME", "count")
                 .write()
@@ -238,7 +244,8 @@ public class Datasource {
         int numberBuckets = 10;
         String columnToBucketBy = "count";
         textFile.write().format("parquet").mode("overwrite")
-                .bucketBy(numberBuckets, columnToBucketBy).saveAsTable("bucketedFiles");
+                .bucketBy(numberBuckets, columnToBucketBy)
+                .saveAsTable("bucketedFiles");
 
     }
 }
