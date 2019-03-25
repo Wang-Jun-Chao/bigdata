@@ -33,7 +33,7 @@ public class Datasource {
         StructType idStructType = new StructType(new StructField[]{
                 new StructField(
                         "DEST_COUNTRY_NAME",
-                        DataTypes.StringType,
+                        DataTypes.IntegerType,
                         true,
                         Metadata.empty())
         });
@@ -52,11 +52,11 @@ public class Datasource {
         dataFrame.write()
                 .option("path", PathUtils.outputPath("output"));
 
-        dataFrame.write().format("csv")
-                .option("mode", "OVERWRITE")
-                .option("dateFormat", "yyyy-MM-dd")
-                .option("path", PathUtils.outputPath("output2"))
-                .save();
+//        dataFrame.write().format("csv")
+//                .option("mode", "OVERWRITE")
+//                .option("dateFormat", "yyyy-MM-dd")
+//                .option("path", PathUtils.outputPath("output2"))
+//                .save();
 
         StructType myManualSchema = new StructType(new StructField[]{
                 new StructField("DEST_COUNTRY_NAME", DataTypes.StringType, true, Metadata.empty()),
@@ -76,16 +76,19 @@ public class Datasource {
                 new StructField("ORIGIN_COUNTRY_NAME", DataTypes.LongType, true, Metadata.empty()),
                 new StructField("count", DataTypes.LongType, false, Metadata.empty())});
 
-        Row[] rows1 = spark.read().format("csv")
+        Object rows1 = spark.read().format("csv")
                 .option("header", "true")
                 .option("mode", "FAILFAST")
                 .schema(myManualSchema)
                 .load(PathUtils.workDir("../../../data/flight-data/csv/2010-summary.csv"))
                 .take(5);
-        System.out.println(Arrays.toString(rows1));
+        System.out.println(Arrays.toString((Object[]) rows1));
 
-        Dataset<Row> csvFile = spark.read().format("csv")
-                .option("header", "true").option("mode", "FAILFAST").schema(myManualSchema)
+        Dataset csvFile = spark.read()
+                .format("csv")
+                .option("header", "true")
+                .option("mode", "FAILFAST")
+                .schema(myManualSchema)
                 .load(PathUtils.workDir("../../../data/flight-data/csv/2010-summary.csv"));
 
         csvFile.show(5);
