@@ -31,7 +31,7 @@ public class Joins {
         SparkSession spark = SparkSession
                 .builder()
                 .master("local[*]")
-                .appName("ch0701-aggregations")
+                .appName("ch0801-joins")
                 .config("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
                 .getOrCreate();
 
