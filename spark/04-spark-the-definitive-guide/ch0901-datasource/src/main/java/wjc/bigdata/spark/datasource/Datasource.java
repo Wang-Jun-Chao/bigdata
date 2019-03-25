@@ -223,7 +223,8 @@ public class Datasource {
 //        }
 
         Dataset<String> textFile = spark.read()
-                .textFile(PathUtils.inputPath("../../../data/flight-data/csv/2010-summary.csv"));
+                .textFile(PathUtils.workDir("../../../data/flight-data/csv/2010-summary.csv"))
+                ;
         textFile.selectExpr("split(value, ',') as rows")
                 .show();
         textFile.select("DEST_COUNTRY_NAME")
