@@ -17,6 +17,9 @@
         <module>ch0501-basic-structured-operations</module>
         <module>ch0601-working-with-different-types-of-data</module>
         <module>ch0701-aggregations</module>
+        <module>ch0801-joins</module>
+        <module>ch0901-datasource</module>
+        <module>ch1001-spark-sql</module>
     </modules>
 
     <dependencyManagement>
