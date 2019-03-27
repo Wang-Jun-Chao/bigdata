@@ -26,7 +26,7 @@ public class Datasource {
         SparkSession spark = SparkSession
                 .builder()
                 .master("local[*]")
-                .appName("ch0801-joins")
+                .appName("ch0901-datasource")
                 .config("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
                 .getOrCreate();
 
@@ -223,11 +223,17 @@ public class Datasource {
 //        }
 
         Dataset<String> textFile = spark.read()
-                .textFile(PathUtils.workDir("../../../data/flight-data/csv/2010-summary.csv"))
-                ;
+
+                .textFile(PathUtils.workDir("../../../data/flight-data/csv/2010-summary.csv"));
+
+        textFile.printSchema();
+
         textFile.selectExpr("split(value, ',') as rows")
                 .show();
-        textFile.select("DEST_COUNTRY_NAME")
+
+        Dataset<Row> rowDataset = textFile.selectExpr("split(value, ',') as rows, rows");
+        rowDataset.printSchema();
+                rowDataset.select("DEST_COUNTRY_NAME")
                 .write()
                 .text(PathUtils.workDir("/tmp/simple-text-file.txt"));
         textFile.limit(10)
