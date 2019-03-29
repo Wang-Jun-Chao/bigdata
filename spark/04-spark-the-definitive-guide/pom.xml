@@ -20,6 +20,7 @@
         <module>ch0801-joins</module>
         <module>ch0901-datasource</module>
         <module>ch1001-spark-sql</module>
+        <module>ch1101-dataset</module>
     </modules>
 
     <dependencyManagement>

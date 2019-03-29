@@ -13,6 +13,7 @@
         <module>01-learning-spark</module>
         <module>02-data-algorithms</module>
         <module>03-rdd-concurrency</module>
+        <module>04-spark-the-definitive-guide</module>
         <module>06-spark-examples</module>
     </modules>
 </project>

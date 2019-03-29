@@ -11,5 +11,6 @@
 
     <modules>
         <module>spark</module>
+        <module>flink</module>
     </modules>
 </project>
