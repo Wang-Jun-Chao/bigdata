@@ -10,12 +10,14 @@ import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.catalyst.expressions.GenericRow;
+import org.apache.spark.sql.types.DataTypes;
+import org.apache.spark.sql.types.Metadata;
+import org.apache.spark.sql.types.StructField;
+import org.apache.spark.sql.types.StructType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import scala.Tuple2;
-import scala.util.Random;
 import wjc.bigdata.spark.util.PathUtils;
-import wjc.bigdata.spark.util.SparkUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,11 +38,20 @@ public class Datasets {
                 .config("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
                 .getOrCreate();
 
-        Dataset<Row> flightsDF = spark.read()
+        StructType myManualSchema = new StructType(new StructField[]{
+                new StructField("DEST_COUNTRY_NAME", DataTypes.StringType, true, Metadata.empty()),
+                new StructField("ORIGIN_COUNTRY_NAME", DataTypes.StringType, true, Metadata.empty()),
+                new StructField("count", DataTypes.LongType, false, Metadata.empty())});
+
+        Dataset<Row> flightsDF = spark
+                .read()
+                .schema(myManualSchema)
                 .parquet(PathUtils.workDir("../../../data/flight-data/parquet/2010-summary.parquet/"));
         Dataset<Row> flights = flightsDF.as("Flight");
         flights.show(2);
-        Object destCountryName = flights.first().getAs("DEST_COUNTRY_NAME");
+        Object destCountryName = flights
+                .first()
+                .getAs("DEST_COUNTRY_NAME");
         System.out.println(destCountryName);
 
 
@@ -49,7 +60,7 @@ public class Datasets {
                         value.getAs("DEST_COUNTRY_NAME"))).first();
         System.out.println(first);
 
-        Arrays.stream((Row[])flights.collect())
+        Arrays.stream((Row[]) flights.collect())
                 .filter(row -> row.getAs("ORIGIN_COUNTRY_NAME").equals(
                         row.getAs("DEST_COUNTRY_NAME")));
 
@@ -61,23 +72,35 @@ public class Datasets {
         }, Encoders.STRING());
 
         Object localDestinations = destinations.take(5);
-        System.out.println(Arrays.toString((Object[])localDestinations));
+        System.out.println(Arrays.toString((Object[]) localDestinations));
 
-        Dataset<Row> flightsMeta = spark.range(500)
-                .map(
-                        (MapFunction<Long, Tuple2>) x -> new Tuple2<>(x, new Random().nextLong()),
-                        Encoders.bean(Tuple2.class))
-                .withColumnRenamed("_1", "count")
-                .withColumnRenamed("_2", "randomData")
-                .as("FlightMetadata");
+        {
+            // TODO
 
-        Dataset flights2 = flights
-                .joinWith(flightsMeta, flights.col("count")
-                        .$eq$eq$eq(flightsMeta.col("count")));
-        flights2.selectExpr("_1.DEST_COUNTRY_NAME").show();
+            //        Dataset<GenericRow> genericRowDataset = spark.range(500).map(
+//                (MapFunction<Long, GenericRow>) x ->
+//                        new GenericRow(new Object[]{x, new Random().nextLong()}),
+//                Encoders.bean(GenericRow.class));
+//        genericRowDataset.printSchema();
+//        genericRowDataset.show();
+//
+//        Dataset<Row> flightsMeta = genericRowDataset
+//                .withColumnRenamed("_1", "count")
+//                .withColumnRenamed("_2", "randomData")
+//                .as("FlightMetadata");
+//
+//        flightsMeta.show();
+//        flightsMeta.printSchema();
+//
+//        Dataset flights2 = flights
+//                .joinWith(flightsMeta, flights.col("count")
+//                        .$eq$eq$eq(flightsMeta.col("count")));
+//        flights2.selectExpr("_1.DEST_COUNTRY_NAME").show();
+//
+//        flights2 = flights.join(flightsMeta, SparkUtils.seq("count"));
+//        flights2.show();
+        }
 
-        flights2 = flights.join(flightsMeta, SparkUtils.seq("count"));
-        flights2.show();
 
         flights.groupBy("DEST_COUNTRY_NAME").count();
         flights.show();
@@ -100,7 +123,7 @@ public class Datasets {
                     public Iterator<Tuple2> call(String key, Iterator<Row> values) throws Exception {
                         ArrayList<Tuple2> objects = new ArrayList<>();
                         values.forEachRemaining(row -> {
-                            if ((int) row.getAs("count") > 4) {
+                            if ((long) row.getAs("count") > 4L) {
                                 objects.add(new Tuple2<>(key, row));
                             }
                         });
@@ -129,11 +152,15 @@ public class Datasets {
                 .reduceGroups(new ReduceFunction<Row>() {
                     @Override
                     public Row call(Row v1, Row v2) throws Exception {
+//                        return new GenericRow(new Object[]{
+//                                v1.getAs("DEST_COUNTRY_NAME"),
+//                                null,
+//                                (Long) v1.getAs("count") + (Long) v2.getAs("count")});
 
                         return new GenericRow(new Object[]{
-                                v1.getAs("DEST_COUNTRY_NAME"),
+                                v1.getString(0),
                                 null,
-                                (int) v1.getAs("count") + (int) v2.getAs("count")});
+                                (Long) v1.getLong(2) + (Long) v2.getLong(2)});
                     }
                 }).show();
 
