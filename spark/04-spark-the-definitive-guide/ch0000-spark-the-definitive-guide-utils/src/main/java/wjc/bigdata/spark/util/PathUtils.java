@@ -41,6 +41,17 @@ public class PathUtils {
         System.out.println(workDir());
     }
 
+    public static boolean removeDir(String s) {
+        try {
+            FileUtils.deleteDirectory(new File(s));
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
     public static boolean removeWorkDir(String s) {
         try {
             FileUtils.deleteDirectory(new File(workDir(s)));

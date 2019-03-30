@@ -13,9 +13,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import scala.Tuple3;
 import scala.util.Random;
+import wjc.bigdata.spark.util.PathUtils;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -26,7 +28,7 @@ import java.util.List;
  * @author: wangjunchao(王俊超)
  * @time: 2019-03-30 06:24
  **/
-public class RddBasic {
+public class RddBasic implements Serializable {
     private final static Logger logger = LoggerFactory.getLogger(RddBasic.class);
 
     public static void main(String[] args) {
@@ -68,19 +70,9 @@ public class RddBasic {
                 .reduce((Function2<Integer, Integer, Integer>) Integer::sum);
         System.out.println(reduce);
         context.parallelize(Lists.newArrayList(10, 20, 30, 40, 50))
-                .max(new Comparator<Integer>() {
-                    @Override
-                    public int compare(Integer o1, Integer o2) {
-                        return o1.compareTo(o2);
-                    }
-                });
+                .max(new IntComparator());
         context.parallelize(Lists.newArrayList(10, 20, 30, 40, 50))
-                .min(new Comparator<Integer>() {
-                    @Override
-                    public int compare(Integer o1, Integer o2) {
-                        return o1.compareTo(o2);
-                    }
-                });
+                .min(new IntComparator());
 
 
         words.reduce((Function2<String, String, String>) (v1, v2) -> v1.length() > v2.length() ? v1 : v2);
@@ -101,12 +93,15 @@ public class RddBasic {
         int numberToTake = 6;
         long randomSeed = 100L;
         words.takeSample(withReplacement, numberToTake, randomSeed);
+        PathUtils.removeDir("/tmp/bookTitle");
         words.saveAsTextFile("file:/tmp/bookTitle");
+        PathUtils.removeDir("/tmp/bookTitleCompressed");
         words.saveAsTextFile("file:/tmp/bookTitleCompressed", BZip2Codec.class);
 
         words.cache();
         words.getStorageLevel();
-        context.setCheckpointDir("/some/path/for/checkpointing");
+        PathUtils.removeDir("/tmp/some/path/for/checkpointing");
+        context.setCheckpointDir("file:/tmp/some/path/for/checkpointing");
         words.checkpoint();
 
         words.pipe("wc -l").collect();
@@ -143,5 +138,14 @@ public class RddBasic {
 
         context.textFile("/some/path/withTextFiles");
         context.wholeTextFiles("/some/path/withTextFiles");
+    }
+
+
+    public static class IntComparator implements Comparator<Integer>, Serializable {
+
+        @Override
+        public int compare(Integer x, Integer y) {
+            return x.compareTo(y);
+        }
     }
 }
