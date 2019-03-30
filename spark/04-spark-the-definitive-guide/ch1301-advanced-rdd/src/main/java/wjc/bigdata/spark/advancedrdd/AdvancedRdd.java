@@ -97,6 +97,25 @@ public class AdvancedRdd {
                         },
                         outputPartitions)
                 .collect();
+
+
+        kvCharacters.foldByKey(0, Integer::sum).collect();
+
+        JavaRDD<String> distinctCharsRdd = words
+                .flatMap(
+                        word -> Lists.newArrayList(word.toLowerCase()).iterator())
+                .distinct();
+
+        JavaPairRDD<String, Integer> charRDD = distinctCharsRdd.mapToPair(c -> new Tuple2<>(c, new Random().nextInt()));
+        JavaPairRDD<String, Integer> charRDD2 = distinctCharsRdd.mapToPair(c -> new Tuple2<>(c, new Random().nextInt()));
+        JavaPairRDD<String, Integer> charRDD3 = distinctCharsRdd.mapToPair(c -> new Tuple2<>(c, new Random().nextInt()));
+        charRDD.cogroup(charRDD2, charRDD3).take(5);
+
+        JavaPairRDD<String, Double> keyedChars = distinctCharsRdd.mapToPair(c -> new Tuple2<>(c, new Random().nextDouble()));
+        outputPartitions = 10;
+        kvCharacters.join(keyedChars).count();
+        kvCharacters.join(keyedChars, outputPartitions).count();
+
     }
 
 }
