@@ -26,6 +26,8 @@
         <module>ch1401-distributed-variables</module>
         <module>ch1501-how-spark-runs-on-a-cluster</module>
         <module>ch1601-spark-applications</module>
+        <module>ch1701-deploying-spark</module>
+        <module>ch1801-monitoring-and-debugging</module>
     </modules>
 
     <dependencyManagement>
