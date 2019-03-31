@@ -127,7 +127,7 @@ public class AdvancedRdd {
         kvCharacters.join(keyedChars, outputPartitions).count();
 
         JavaRDD<Integer> numRange = context.parallelize(
-                Lists.newArrayList(1, 2, 3, 4, 5, 6, 7, 8, 9),
+                Lists.newArrayList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9),
                 2);
         words.zip(numRange).collect();
 
@@ -143,8 +143,10 @@ public class AdvancedRdd {
         JavaRDD<Row> rdd = df.coalesce(10).toJavaRDD();
         df.printSchema();
 
-        rdd.map(r -> r.getString(6)).take(5).forEach(System.out::println);
-        JavaPairRDD<Double, Row> keyedRDD = rdd.keyBy(row -> Double.parseDouble(row.getString(6)));
+        // rdd 中r的数据取完后，就不存在了
+        rdd.map(r -> r.getInt(6)).take(5).forEach(System.out::println);
+        rdd = df.coalesce(10).toJavaRDD();
+        JavaPairRDD<Integer, Row> keyedRDD = rdd.keyBy(row ->(Integer) row.get(6));
         keyedRDD.partitionBy(new HashPartitioner(10)).take(10);
 
         keyedRDD
@@ -174,7 +176,10 @@ public class AdvancedRdd {
         @Override
         public int getPartition(Object key) {
 
-            int customerId = ((Double) key).intValue();
+            if (key == null) {
+                return 0;
+            }
+            int customerId =(Integer)key;
             if (customerId == 17850 || customerId == 12583) {
                 return 0;
             } else {
