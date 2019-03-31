@@ -25,6 +25,7 @@
         <module>ch1301-advanced-rdd</module>
         <module>ch1401-distributed-variables</module>
         <module>ch1501-how-spark-runs-on-a-cluster</module>
+        <module>ch1601-spark-applications</module>
     </modules>
 
     <dependencyManagement>
