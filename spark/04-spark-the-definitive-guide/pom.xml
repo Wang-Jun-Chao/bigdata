@@ -28,6 +28,8 @@
         <module>ch1601-spark-applications</module>
         <module>ch1701-deploying-spark</module>
         <module>ch1801-monitoring-and-debugging</module>
+        <module>ch1901-performance-turning</module>
+        <module>ch2001-stream-processing-fundamentals</module>
     </modules>
 
     <dependencyManagement>
