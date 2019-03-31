@@ -21,6 +21,9 @@
         <module>ch0901-datasource</module>
         <module>ch1001-spark-sql</module>
         <module>ch1101-datasets</module>
+        <module>ch1201-rdd-basic</module>
+        <module>ch1301-advanced-rdd</module>
+        <module>ch1401-distributed-variables</module>
     </modules>
 
     <dependencyManagement>
