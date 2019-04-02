@@ -30,6 +30,8 @@
         <module>ch1801-monitoring-and-debugging</module>
         <module>ch1901-performance-turning</module>
         <module>ch2001-stream-processing-fundamentals</module>
+        <module>ch2101-structured-streaming-basics</module>
+        <module>ch2201-event-time-and-stateful-processing</module>
     </modules>
 
     <dependencyManagement>
