@@ -11,14 +11,14 @@ import org.apache.ignite.internal.IgniteKernal;
 import org.apache.ignite.internal.processors.affinity.AffinityTopologyVersion;
 import org.apache.ignite.internal.processors.cache.GridCacheUtils;
 import org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi;
-import org.cord.ignite.data.domain.Student;
-import org.cord.ignite.initial.CacheKeyConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import wjc.spark.ignite.database.data.domain.Student;
+import wjc.spark.ignite.database.initial.CacheKeyConstant;
 
 import javax.cache.Cache;
 import javax.servlet.http.HttpServletRequest;
