@@ -1,6 +1,5 @@
 package wjc.bigdata.spark.eventtimeandstatefulprocessing;
 
-import com.google.common.collect.Lists;
 import org.apache.spark.api.java.function.MapFunction;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
@@ -11,6 +10,7 @@ import org.apache.spark.sql.streaming.GroupState;
 import org.apache.spark.sql.streaming.GroupStateTimeout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import scala.Function3;
 import wjc.bigdata.spark.util.PathUtils;
 
 import java.sql.Timestamp;
@@ -19,7 +19,6 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * @author: wangjunchao(王俊超)
@@ -104,7 +103,8 @@ public class EventTimeAndStatefulProcessing {
                         "cast(Creation_Time/1000000000 as timestamp) as timestamp", "gt as activity")
                 .as(Encoders.bean(InputRow.class))
                 .groupByKey((MapFunction<InputRow, String>) InputRow::getUser, Encoders.STRING())
-                .mapGroupsWithState(GroupStateTimeout.NoTimeout()) (updateAcrossEvents)
+                .mapGroupsWithState(GroupStateTimeout.NoTimeout(), new Function3<String, scala.collection.Iterator<InputRow>, GroupState<DeviceState>, Iterator<OutputRow>>() {
+                }) (updateAcrossEvents2)
                 .writeStream()
                 .queryName("events_per_window")
                 .format("memory")
@@ -112,7 +112,7 @@ public class EventTimeAndStatefulProcessing {
                 .start();
     }
 
-    public static Iterator<OutputRow> updateAcrossEvents(
+    public static Iterator<OutputRow> updateAcrossEvents2(
             String device, Iterator<InputRow2> inputs,
             GroupState<DeviceState> oldState) {
 
@@ -120,28 +120,29 @@ public class EventTimeAndStatefulProcessing {
         inputs.forEachRemaining(list::add);
         list.sort(Comparator.comparing(x -> x.timestamp));
 
-       return list.stream().flatMap(input -> {
-            DeviceState state = oldState.exists() ? oldState.get() :
-                    new DeviceState(device, new ArrayList<>(), 0);
+//       return list.stream().flatMap(input -> {
+//            DeviceState state = oldState.exists() ? oldState.get() :
+//                    new DeviceState(device, new ArrayList<>(), 0);
+//
+//            DeviceState newState = updateWithEvent(state, input);
+//            if (newState.count >= 500) {
+//                // One of our windows is complete; replace our state with an empty
+//                // DeviceState and output the average for the past 500 items from
+//                // the old state
+//                oldState.update(new DeviceState(device, new ArrayList<>(), 0));
+//                OutputRow outputRow = new OutputRow(
+//                        device,
+//                        newState.values.stream().reduce((double) 0, Double::sum) / newState.values.size());
+//                return Lists.newArrayList(outputRow).iterator();
+//            } else {
+//                // Update the current DeviceState object in place and output no
+//                // records
+//                oldState.update(newState);
+//                return Lists.newArrayList().iterator();
+//            }
+//        }).collect(Collectors.toList());
 
-            DeviceState newState = updateWithEvent(state, input);
-            if (newState.count >= 500) {
-                // One of our windows is complete; replace our state with an empty
-                // DeviceState and output the average for the past 500 items from
-                // the old state
-                oldState.update(new DeviceState(device, new ArrayList<>(), 0));
-                OutputRow outputRow = new OutputRow(
-                        device,
-                        newState.values.stream().reduce((double) 0, Double::sum) / newState.values.size());
-                return Lists.newArrayList(outputRow).iterator();
-            } else {
-                // Update the current DeviceState object in place and output no
-                // records
-                oldState.update(newState);
-                return Lists.newArrayList().iterator();
-            }
-        }).collect(Collectors.toList());
-
+        return null;
     }
 
     public static DeviceState updateWithEvent(DeviceState state, InputRow2 input) {
