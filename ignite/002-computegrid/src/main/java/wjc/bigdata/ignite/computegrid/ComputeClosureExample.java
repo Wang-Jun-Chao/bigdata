@@ -15,25 +15,28 @@
  * limitations under the License.
  */
 
-package org.apache.ignite.examples.computegrid;
+package wjc.bigdata.ignite.computegrid;
 
 import org.apache.ignite.Ignite;
-import org.apache.ignite.IgniteCompute;
 import org.apache.ignite.IgniteException;
 import org.apache.ignite.Ignition;
-import org.apache.ignite.examples.ExampleNodeStartup;
-import org.apache.ignite.lang.IgniteRunnable;
+
+import java.util.Arrays;
+import java.util.Collection;
 
 /**
- * Demonstrates a simple use of {@link IgniteRunnable}.
+ * Demonstrates a simple use of Ignite with reduce closure.
  * <p>
- * Remote nodes should always be 0started with special configuration file which
- * enables P2P class loading: {@code 'ignite.{sh|bat} examples/config/example-ignite.xml'}.
+ * This example splits a phrase into collection of words, computes their length on different
+ * nodes and then computes total amount of non-whitespaces characters in the phrase.
  * <p>
- * Alternatively you can run {@link ExampleNodeStartup} in another JVM which will start node
+ * Remote nodes should always be started with special configuration file which
+ * enables P2P class loading: {@code 'ignite.{sh|bat} example-ignite.xml'}.
+ * <p>
+ * Alternatively you can run ch000-startup ExampleNodeStartup in another JVM which will start node
  * with {@code examples/config/example-ignite.xml} configuration.
  */
-public class ComputeRunnableExample {
+public class ComputeClosureExample {
     /**
      * Executes example.
      *
@@ -41,23 +44,27 @@ public class ComputeRunnableExample {
      * @throws IgniteException If example execution failed.
      */
     public static void main(String[] args) throws IgniteException {
-        try (Ignite ignite = Ignition.start("examples/config/example-ignite.xml")) {
+        try (Ignite ignite = Ignition.start("example-ignite.xml")) {
             System.out.println();
-            System.out.println("Compute runnable example started.");
+            System.out.println(">>> Compute closure example started.");
 
-            IgniteCompute compute = ignite.compute();
-
-            // Iterate through all words in the sentence and create runnable jobs.
-            for (final String word : "Print words using runnable".split(" ")) {
-                // Execute runnable on some node.
-                compute.run(() -> {
+            // Execute closure on all cluster nodes.
+            Collection<Integer> res = ignite.compute().apply(
+                (String word) -> {
                     System.out.println();
                     System.out.println(">>> Printing '" + word + "' on this node from ignite job.");
-                });
-            }
+
+                    // Return number of letters in the word.
+                    return word.length();
+                },
+                // Job parameters. Ignite will create as many jobs as there are parameters.
+                Arrays.asList("Count characters using closure".split(" "))
+            );
+
+            int sum = res.stream().mapToInt(i -> i).sum();
 
             System.out.println();
-            System.out.println(">>> Finished printing words using runnable execution.");
+            System.out.println(">>> Total number of characters in the phrase is '" + sum + "'.");
             System.out.println(">>> Check all nodes for output (this node is also part of the cluster).");
         }
     }
