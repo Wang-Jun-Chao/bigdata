@@ -55,7 +55,7 @@ import java.util.List;
  *     </li>
  * </ul>
  * <p>
- * Remote nodes should be started using ch000-startup ExampleNodeStartup which will
+ * Remote nodes should be started using 000-startup ExampleNodeStartup which will
  * start node with {@code example-ignite.xml} configuration.
  */
 public class SqlQueriesExample {
