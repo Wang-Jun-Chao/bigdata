@@ -15,12 +15,11 @@
  * limitations under the License.
  */
 
-package org.apache.ignite.examples.computegrid;
+package wjc.bigdata.ignite.computegrid;
 
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteException;
 import org.apache.ignite.Ignition;
-import org.apache.ignite.examples.ExampleNodeStartup;
 import org.apache.ignite.lang.IgniteClosure;
 import org.apache.ignite.lang.IgniteReducer;
 
@@ -34,10 +33,10 @@ import java.util.concurrent.atomic.AtomicInteger;
  * calculated. Then total phrase length is calculated using reducer.
  * <p>
  * Remote nodes should always be started with special configuration file which
- * enables P2P class loading: {@code 'ignite.{sh|bat} examples/config/example-ignite.xml'}.
+ * enables P2P class loading: {@code 'ignite.{sh|bat} example-ignite.xml'}.
  * <p>
- * Alternatively you can run {@link ExampleNodeStartup} in another JVM which will start Ignite node
- * with {@code examples/config/example-ignite.xml} configuration.
+ * Alternatively you can run 000-startup ExampleNodeStartup in another JVM which will start Ignite node
+ * with {@code example-ignite.xml} configuration.
  */
 public class ComputeReducerExample {
     /**
@@ -47,7 +46,7 @@ public class ComputeReducerExample {
      * @throws IgniteException If example execution failed.
      */
     public static void main(String[] args) throws IgniteException {
-        try (Ignite ignite = Ignition.start("examples/config/example-ignite.xml")) {
+        try (Ignite ignite = Ignition.start("example-ignite.xml")) {
             System.out.println();
             System.out.println("Compute reducer example started.");
 
