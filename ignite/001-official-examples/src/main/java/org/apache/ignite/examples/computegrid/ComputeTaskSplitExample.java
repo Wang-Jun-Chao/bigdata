@@ -74,16 +74,19 @@ public class ComputeTaskSplitExample {
          * these jobs to other nodes for processing. Each such job simply prints out the received word.
          *
          * @param clusterSize Number of available cluster nodes. Note that returned number of
-         *      jobs can be less, equal or greater than this cluster size.
-         * @param arg Task execution argument. Can be {@code null}.
+         *                    jobs can be less, equal or greater than this cluster size.
+         * @param arg         Task execution argument. Can be {@code null}.
          * @return The list of child jobs.
          */
-        @Override protected Collection<? extends ComputeJob> split(int clusterSize, String arg) {
+        @Override
+        protected Collection<? extends ComputeJob> split(int clusterSize, String arg) {
             Collection<ComputeJob> jobs = new LinkedList<>();
 
             for (final String word : arg.split(" ")) {
                 jobs.add(new ComputeJobAdapter() {
-                    @Nullable @Override public Object execute() {
+                    @Nullable
+                    @Override
+                    public Object execute() {
                         System.out.println();
                         System.out.println(">>> Printing '" + word + "' on this node from ignite job.");
 
@@ -96,12 +99,17 @@ public class ComputeTaskSplitExample {
             return jobs;
         }
 
-        /** {@inheritDoc} */
-        @Nullable @Override public Integer reduce(List<ComputeJobResult> results) {
+        /**
+         * {@inheritDoc}
+         */
+        @Nullable
+        @Override
+        public Integer reduce(List<ComputeJobResult> results) {
             int sum = 0;
 
-            for (ComputeJobResult res : results)
+            for (ComputeJobResult res : results) {
                 sum += res.<Integer>getData();
+            }
 
             return sum;
         }

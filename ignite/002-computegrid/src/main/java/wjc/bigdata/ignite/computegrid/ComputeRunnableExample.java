@@ -15,31 +15,24 @@
  * limitations under the License.
  */
 
-package org.apache.ignite.examples.computegrid;
+package wjc.bigdata.ignite.computegrid;
 
 import org.apache.ignite.Ignite;
+import org.apache.ignite.IgniteCompute;
 import org.apache.ignite.IgniteException;
 import org.apache.ignite.Ignition;
-import org.apache.ignite.examples.ExampleNodeStartup;
-import org.apache.ignite.lang.IgniteCallable;
-
-import java.util.ArrayList;
-import java.util.Collection;
+import org.apache.ignite.lang.IgniteRunnable;
 
 /**
- * Demonstrates using of {@link IgniteCallable} job execution on the cluster.
+ * Demonstrates a simple use of {@link IgniteRunnable}.
  * <p>
- * This example takes a sentence composed of multiple words and counts number of non-space
- * characters in the sentence by having each compute job count characters in each individual
- * word.
- * <p>
- * Remote nodes should always be started with special configuration file which
+ * Remote nodes should always be 0started with special configuration file which
  * enables P2P class loading: {@code 'ignite.{sh|bat} examples/config/example-ignite.xml'}.
  * <p>
- * Alternatively you can run {@link ExampleNodeStartup} in another JVM which will start node
+ * Alternatively you can run ch000-startup ExampleNodeStartup in another JVM which will start node
  * with {@code examples/config/example-ignite.xml} configuration.
  */
-public class ComputeCallableExample {
+public class ComputeRunnableExample {
     /**
      * Executes example.
      *
@@ -47,29 +40,23 @@ public class ComputeCallableExample {
      * @throws IgniteException If example execution failed.
      */
     public static void main(String[] args) throws IgniteException {
-        try (Ignite ignite = Ignition.start("examples/config/example-ignite.xml")) {
+        try (Ignite ignite = Ignition.start("example-ignite.xml")) {
             System.out.println();
-            System.out.println(">>> Compute callable example started.");
+            System.out.println("Compute runnable example started.");
 
-            Collection<IgniteCallable<Integer>> calls = new ArrayList<>();
+            IgniteCompute compute = ignite.compute();
 
-            // Iterate through all words in the sentence and create callable jobs.
-            for (String word : "Count characters using callable".split(" ")) {
-                calls.add(() -> {
+            // Iterate through all words in the sentence and create runnable jobs.
+            for (final String word : "Print words using runnable".split(" ")) {
+                // Execute runnable on some node.
+                compute.run(() -> {
                     System.out.println();
                     System.out.println(">>> Printing '" + word + "' on this node from ignite job.");
-
-                    return word.length();
                 });
             }
 
-            // Execute collection of callables on the ignite.
-            Collection<Integer> res = ignite.compute().call(calls);
-
-            int sum = res.stream().mapToInt(i -> i).sum();
-
             System.out.println();
-            System.out.println(">>> Total number of characters in the phrase is '" + sum + "'.");
+            System.out.println(">>> Finished printing words using runnable execution.");
             System.out.println(">>> Check all nodes for output (this node is also part of the cluster).");
         }
     }
