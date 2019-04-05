@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.ignite.examples.sql;
+package wjc.spark.ignite.sql;
 
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCache;
@@ -26,9 +26,8 @@ import org.apache.ignite.cache.query.QueryCursor;
 import org.apache.ignite.cache.query.SqlFieldsQuery;
 import org.apache.ignite.cache.query.SqlQuery;
 import org.apache.ignite.configuration.CacheConfiguration;
-import org.apache.ignite.examples.ExampleNodeStartup;
-import org.apache.ignite.examples.model.Organization;
-import org.apache.ignite.examples.model.Person;
+import wjc.spark.ignite.sql.model.Organization;
+import wjc.spark.ignite.sql.model.Person;
 
 import java.util.List;
 
@@ -56,8 +55,8 @@ import java.util.List;
  *     </li>
  * </ul>
  * <p>
- * Remote nodes should be started using {@link ExampleNodeStartup} which will
- * start node with {@code examples/config/example-ignite.xml} configuration.
+ * Remote nodes should be started using ch000-startup ExampleNodeStartup which will
+ * start node with {@code example-ignite.xml} configuration.
  */
 public class SqlQueriesExample {
     /** Organizations cache name. */
@@ -76,7 +75,7 @@ public class SqlQueriesExample {
      * @throws Exception If example execution failed.
      */
     public static void main(String[] args) throws Exception {
-        try (Ignite ignite = Ignition.start("examples/config/example-ignite.xml")) {
+        try (Ignite ignite = Ignition.start("example-ignite.xml")) {
             System.out.println();
             System.out.println(">>> SQL queries example started.");
 
@@ -85,8 +84,7 @@ public class SqlQueriesExample {
             orgCacheCfg.setCacheMode(CacheMode.PARTITIONED); // Default.
             orgCacheCfg.setIndexedTypes(Long.class, Organization.class);
 
-            CacheConfiguration<AffinityKey<Long>, Person> colPersonCacheCfg =
-                new CacheConfiguration<>(COLLOCATED_PERSON_CACHE);
+            CacheConfiguration<AffinityKey<Long>, Person> colPersonCacheCfg = new CacheConfiguration<>(COLLOCATED_PERSON_CACHE);
 
             colPersonCacheCfg.setCacheMode(CacheMode.PARTITIONED); // Default.
             colPersonCacheCfg.setIndexedTypes(AffinityKey.class, Person.class);
@@ -168,6 +166,7 @@ public class SqlQueriesExample {
             "from Person, \"" + ORG_CACHE + "\".Organization as org " +
             "where Person.orgId = org.id " +
             "and lower(org.name) = lower(?)";
+
 
         // Execute queries for find employees for different organizations.
         print("Following people are 'ApacheIgnite' employees: ",

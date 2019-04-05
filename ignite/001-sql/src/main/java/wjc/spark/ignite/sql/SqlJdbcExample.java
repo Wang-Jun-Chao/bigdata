@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package wjc.spark.ignite.jdbc;
+package wjc.spark.ignite.sql;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

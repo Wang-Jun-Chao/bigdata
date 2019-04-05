@@ -15,15 +15,15 @@
  * limitations under the License.
  */
 
-package wjc.spark.ignite.jdbc;
+package wjc.spark.ignite.sql;
 
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCache;
 import org.apache.ignite.Ignition;
 import org.apache.ignite.cache.query.SqlFieldsQuery;
 import org.apache.ignite.configuration.CacheConfiguration;
-import wjc.spark.ignite.jdbc.model.Organization;
-import wjc.spark.ignite.jdbc.model.Person;
+import wjc.spark.ignite.sql.model.Organization;
+import wjc.spark.ignite.sql.model.Person;
 
 import java.util.List;
 

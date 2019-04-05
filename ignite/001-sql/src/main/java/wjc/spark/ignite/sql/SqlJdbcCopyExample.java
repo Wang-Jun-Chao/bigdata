@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package wjc.spark.ignite.jdbc;
+package wjc.spark.ignite.sql;
 
 import org.springframework.util.ResourceUtils;
 

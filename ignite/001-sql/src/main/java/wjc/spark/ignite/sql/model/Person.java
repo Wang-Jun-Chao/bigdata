@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package wjc.spark.ignite.jdbc.model;
+package wjc.spark.ignite.sql.model;
 
 import org.apache.ignite.cache.affinity.AffinityKey;
 import org.apache.ignite.cache.query.annotations.QuerySqlField;
