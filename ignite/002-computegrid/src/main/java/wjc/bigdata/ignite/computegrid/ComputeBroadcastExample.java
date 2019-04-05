@@ -15,12 +15,11 @@
  * limitations under the License.
  */
 
-package org.apache.ignite.examples.computegrid;
+package wjc.bigdata.ignite.computegrid;
 
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteException;
 import org.apache.ignite.Ignition;
-import org.apache.ignite.examples.ExampleNodeStartup;
 
 import java.util.Collection;
 
@@ -28,10 +27,10 @@ import java.util.Collection;
  * Demonstrates broadcasting computations within cluster.
  * <p>
  * Remote nodes should always be started with special configuration file which
- * enables P2P class loading: {@code 'ignite.{sh|bat} examples/config/example-ignite.xml'}.
+ * enables P2P class loading: {@code 'ignite.{sh|bat} example-ignite.xml'}.
  * <p>
- * Alternatively you can run {@link ExampleNodeStartup} in another JVM which will start node
- * with {@code examples/config/example-ignite.xml} configuration.
+ * Alternatively you can run 000-startup ExampleNodeStartup in another JVM which will start node
+ * with {@code example-ignite.xml} configuration.
  */
 public class ComputeBroadcastExample {
     /**
@@ -41,7 +40,7 @@ public class ComputeBroadcastExample {
      * @throws IgniteException If example execution failed.
      */
     public static void main(String[] args) throws IgniteException {
-        try (Ignite ignite = Ignition.start("examples/config/example-ignite.xml")) {
+        try (Ignite ignite = Ignition.start("example-ignite.xml")) {
             System.out.println();
             System.out.println(">>> Compute broadcast example started.");
 
@@ -50,7 +49,7 @@ public class ComputeBroadcastExample {
 
             // Gather system info from all nodes.
             gatherSystemInfo(ignite);
-       }
+        }
     }
 
     /**
@@ -83,11 +82,12 @@ public class ComputeBroadcastExample {
             System.out.println("Executing task on node: " + ignite.cluster().localNode().id());
 
             return "Node ID: " + ignite.cluster().localNode().id() + "\n" +
-                "OS: " + System.getProperty("os.name") + " " + System.getProperty("os.version") + " " +
-                System.getProperty("os.arch") + "\n" +
-                "User: " + System.getProperty("user.name") + "\n" +
-                "JRE: " + System.getProperty("java.runtime.name") + " " +
-                System.getProperty("java.runtime.version");
+                    "OS: " + System.getProperty("os.name") + " " +
+                    System.getProperty("os.version") + " " +
+                    System.getProperty("os.arch") + "\n" +
+                    "User: " + System.getProperty("user.name") + "\n" +
+                    "JRE: " + System.getProperty("java.runtime.name") + " " +
+                    System.getProperty("java.runtime.version");
         });
 
         // Print result.
