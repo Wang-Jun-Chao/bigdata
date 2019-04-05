@@ -18,36 +18,39 @@
 -->
 
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-       http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util
+       http://www.springframework.org/schema/util/spring-util.xsd">
     <!--
         Alter configuration below as needed.
     -->
-	
-	<bean id="igniteCfg" class="org.apache.ignite.configuration.IgniteConfiguration">
+
+    <bean id="igniteCfg" class="org.apache.ignite.configuration.IgniteConfiguration">
         <!-- Consistent globally unique node identifier which survives node restarts.-->
         <!--<property name="consistentId" value="cording"/>-->
 
-	    <!-- Set to true to enable distributed class loading for examples, default is false. -->
+        <!-- Set to true to enable distributed class loading for examples, default is false. -->
         <property name="peerClassLoadingEnabled" value="true"/>
-		
-		<!-- Set deployment mode. -->
+
+        <!-- Set deployment mode. -->
         <property name="deploymentMode" value="CONTINUOUS"/>
-		
-		<!-- Disable missed resources caching. -->
+
+        <!-- Disable missed resources caching. -->
         <property name="peerClassLoadingMissedResourcesCacheSize" value="0"/>
 
         <!-- config client mode -->
         <property name="clientMode" value="false"/>
-		
-		<!--
+
+        <!--
             Exclude force peer class loading of a class,
             even if exists locally.
         -->
         <property name="peerClassLoadingLocalClassPathExclude">
             <list>
-               <value>org.cord.ignite.*</value>
+                <value>org.cord.ignite.*</value>
             </list>
         </property>
 
@@ -120,14 +123,14 @@
 
             </bean>
         </property>
-		
-	    <property name="cacheConfiguration">
+
+        <property name="cacheConfiguration">
             <list>
                 <bean class="org.apache.ignite.configuration.CacheConfiguration">
                     <property name="name" value="student"/>
                     <property name="cacheMode" value="REPLICATED"/>
                     <property name="backups" value="1"/>
-					<property name="atomicityMode" value="ATOMIC"/>
+                    <property name="atomicityMode" value="ATOMIC"/>
                     <!-- Force cache to return the instance that is stored in cache instead of creating a copy. -->
                     <property name="copyOnRead" value="false"/>
                     <property name="dataRegionName" value="Default_Region"/>
@@ -172,8 +175,8 @@
 
                     <!-- Service implementation's class -->
                     <property name="service">
-<!--                        <bean class="org.cord.ignite.servicegrid.MyCounterServiceImpl"/>-->
-                        <ref bean="myCounterServiceImpl" />
+                        <!--                        <bean class="org.cord.ignite.servicegrid.MyCounterServiceImpl"/>-->
+                        <ref bean="myCounterServiceImpl"/>
                     </property>
 
                     <!-- Only one instance of the service will be deployed cluster wide. -->
@@ -201,27 +204,27 @@
             </bean>
         </property>
 
-	    <property name="discoverySpi">
-		    <bean class="org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi">
-			    <property name="localPort" value="48500"/>
-				<property name="localPortRange" value="20"/>
-				<property name="ipFinder">
-				    <bean class="org.apache.ignite.spi.discovery.tcp.ipfinder.vm.TcpDiscoveryVmIpFinder">
-					    <property name="addresses">
-						    <list>
-							    <value>127.0.0.1:48500..48520</value>
-							</list>
-						</property>
-					</bean>
-				</property>
-			</bean>
-		</property>
-		<property name="communicationSpi">
-		    <bean class="org.apache.ignite.spi.communication.tcp.TcpCommunicationSpi">
-			    <property name="localPort" value="48100"/>
-			</bean>
-		</property>
-	</bean>
+        <property name="discoverySpi">
+            <bean class="org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi">
+                <property name="localPort" value="48500"/>
+                <property name="localPortRange" value="20"/>
+                <property name="ipFinder">
+                    <bean class="org.apache.ignite.spi.discovery.tcp.ipfinder.vm.TcpDiscoveryVmIpFinder">
+                        <property name="addresses">
+                            <list>
+                                <value>127.0.0.1:48500..48520</value>
+                            </list>
+                        </property>
+                    </bean>
+                </property>
+            </bean>
+        </property>
+        <property name="communicationSpi">
+            <bean class="org.apache.ignite.spi.communication.tcp.TcpCommunicationSpi">
+                <property name="localPort" value="48100"/>
+            </bean>
+        </property>
+    </bean>
 </beans>
 
 
