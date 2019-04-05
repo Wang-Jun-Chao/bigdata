@@ -15,29 +15,28 @@
  * limitations under the License.
  */
 
-package org.apache.ignite.examples.computegrid;
+package wjc.bigdata.ignite.computegrid;
 
 import org.apache.ignite.Ignite;
+import org.apache.ignite.IgniteCompute;
 import org.apache.ignite.IgniteException;
 import org.apache.ignite.Ignition;
-import org.apache.ignite.examples.ExampleNodeStartup;
+import org.apache.ignite.lang.IgniteFuture;
+import org.apache.ignite.lang.IgniteRunnable;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Demonstrates a simple use of Ignite with reduce closure.
- * <p>
- * This example splits a phrase into collection of words, computes their length on different
- * nodes and then computes total amount of non-whitespaces characters in the phrase.
+ * Demonstrates a simple use of {@link IgniteRunnable}.
  * <p>
  * Remote nodes should always be started with special configuration file which
- * enables P2P class loading: {@code 'ignite.{sh|bat} examples/config/example-ignite.xml'}.
+ * enables P2P class loading: {@code 'ignite.{sh|bat} example-ignite.xml'}.
  * <p>
- * Alternatively you can run {@link ExampleNodeStartup} in another JVM which will start node
- * with {@code examples/config/example-ignite.xml} configuration.
+ * Alternatively you can run ch000-startup ExampleNodeStartup in another JVM which will start node
+ * with {@code example-ignite.xml} configuration.
  */
-public class ComputeClosureExample {
+public class ComputeAsyncExample {
     /**
      * Executes example.
      *
@@ -45,27 +44,31 @@ public class ComputeClosureExample {
      * @throws IgniteException If example execution failed.
      */
     public static void main(String[] args) throws IgniteException {
-        try (Ignite ignite = Ignition.start("examples/config/example-ignite.xml")) {
+        try (Ignite ignite = Ignition.start("example-ignite.xml")) {
             System.out.println();
-            System.out.println(">>> Compute closure example started.");
+            System.out.println("Compute asynchronous example started.");
 
-            // Execute closure on all cluster nodes.
-            Collection<Integer> res = ignite.compute().apply(
-                (String word) -> {
+            // Enable asynchronous mode.
+            IgniteCompute compute = ignite.compute().withAsync();
+
+            Collection<IgniteFuture<?>> futs = new ArrayList<>();
+
+            // Iterate through all words in the sentence and create runnable jobs.
+            for (final String word : "Print words using runnable".split(" ")) {
+                // Execute runnable on some node.
+                compute.run(() -> {
                     System.out.println();
                     System.out.println(">>> Printing '" + word + "' on this node from ignite job.");
+                });
 
-                    // Return number of letters in the word.
-                    return word.length();
-                },
-                // Job parameters. Ignite will create as many jobs as there are parameters.
-                Arrays.asList("Count characters using closure".split(" "))
-            );
+                futs.add(compute.future());
+            }
 
-            int sum = res.stream().mapToInt(i -> i).sum();
+            // Wait for completion of all futures.
+            futs.forEach(IgniteFuture::get);
 
             System.out.println();
-            System.out.println(">>> Total number of characters in the phrase is '" + sum + "'.");
+            System.out.println(">>> Finished printing words using runnable execution.");
             System.out.println(">>> Check all nodes for output (this node is also part of the cluster).");
         }
     }
