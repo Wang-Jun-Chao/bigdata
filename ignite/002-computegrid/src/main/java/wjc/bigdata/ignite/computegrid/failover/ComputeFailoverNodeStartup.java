@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.ignite.examples.computegrid.failover;
+package wjc.bigdata.ignite.computegrid.failover;
 
 import org.apache.ignite.IgniteException;
 import org.apache.ignite.Ignition;
@@ -24,7 +24,6 @@ import org.apache.ignite.spi.checkpoint.sharedfs.SharedFsCheckpointSpi;
 import org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi;
 import org.apache.ignite.spi.discovery.tcp.ipfinder.vm.TcpDiscoveryVmIpFinder;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 /**
@@ -68,7 +67,7 @@ public class ComputeFailoverNodeStartup {
 
         TcpDiscoveryVmIpFinder ipFinder = new TcpDiscoveryVmIpFinder();
 
-        ipFinder.setAddresses(Arrays.asList("127.0.0.1:47500..47509"));
+        ipFinder.setAddresses(Collections.singletonList("127.0.0.1:47500..47509"));
 
         discoSpi.setIpFinder(ipFinder);
 

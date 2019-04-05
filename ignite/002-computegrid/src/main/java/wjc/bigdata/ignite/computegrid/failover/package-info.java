@@ -17,6 +17,6 @@
 
 /**
  * <!-- Package description. -->
- * Monte-Carlo simulation example.
+ * Compute failover example.
  */
-package org.apache.ignite.examples.computegrid.montecarlo;
+package wjc.bigdata.ignite.computegrid.failover;

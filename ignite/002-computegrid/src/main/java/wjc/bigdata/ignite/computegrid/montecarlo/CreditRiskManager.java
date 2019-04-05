@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.ignite.examples.computegrid.montecarlo;
+package wjc.bigdata.ignite.computegrid.montecarlo;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -23,7 +23,6 @@ import java.util.Random;
 /**
  * This class abstracts out the calculation of risk for a credit portfolio.
  */
-@SuppressWarnings({"FloatingPointEquality"})
 public class CreditRiskManager {
     /**
      * Default randomizer with normal distribution.
@@ -41,16 +40,16 @@ public class CreditRiskManager {
      * Calculates credit risk for a given credit portfolio. This calculation uses
      * Monte-Carlo Simulation to produce risk value.
      *
-     * @param portfolio Credit portfolio.
-     * @param horizon Forecast horizon (in days).
-     * @param num Number of Monte-Carlo iterations.
+     * @param portfolio  Credit portfolio.
+     * @param horizon    Forecast horizon (in days).
+     * @param num        Number of Monte-Carlo iterations.
      * @param percentile Cutoff level.
      * @return Credit risk value, i.e. the minimal amount that creditor has to
-     *      have available to cover possible defaults.
+     * have available to cover possible defaults.
      */
     public double calculateCreditRiskMonteCarlo(Credit[] portfolio, int horizon, int num, double percentile) {
         System.out.println(">>> Calculating credit risk for portfolio [size=" + portfolio.length + ", horizon=" +
-            horizon + ", percentile=" + percentile + ", iterations=" + num + "] <<<");
+                horizon + ", percentile=" + percentile + ", iterations=" + num + "] <<<");
 
         long start = System.currentTimeMillis();
 
@@ -62,29 +61,30 @@ public class CreditRiskManager {
 
         // Count variational numbers.
         // Every next one either has the same value or previous one plus probability of loss.
-        for (int i = 0; i < losses.length; i++)
-            if (i == 0)
+        for (int i = 0; i < losses.length; i++) {
+            if (i == 0) {
                 // First time it's just a probability of first value.
                 lossProbs[i] = getLossProbability(losses, 0);
-            else if (losses[i] != losses[i - 1])
+            } else if (losses[i] != losses[i - 1]) {
                 // Probability of this loss plus previous one.
                 lossProbs[i] = getLossProbability(losses, i) + lossProbs[i - 1];
-            else
+            } else {
                 // The same loss the same probability.
                 lossProbs[i] = lossProbs[i - 1];
-
+            }
+        }
         // Count percentile.
         double crdRisk = 0;
 
-        for (int i = 0; i < lossProbs.length; i++)
+        for (int i = 0; i < lossProbs.length; i++) {
             if (lossProbs[i] > percentile) {
                 crdRisk = losses[i - 1];
 
                 break;
             }
-
+        }
         System.out.println(">>> Finished calculating portfolio risk [risk=" + crdRisk +
-            ", time=" + (System.currentTimeMillis() - start) + "ms]");
+                ", time=" + (System.currentTimeMillis() - start) + "ms]");
 
         return crdRisk;
     }
@@ -94,8 +94,8 @@ public class CreditRiskManager {
      * Simulates probability of default only.
      *
      * @param portfolio Credit portfolio.
-     * @param horizon Forecast horizon.
-     * @param num Number of Monte-Carlo iterations.
+     * @param horizon   Forecast horizon.
+     * @param num       Number of Monte-Carlo iterations.
      * @return Losses array simulated by Monte Carlo method.
      */
     private double[] calculateLosses(Credit[] portfolio, int horizon, int num) {
@@ -103,24 +103,25 @@ public class CreditRiskManager {
 
         // Count losses using Monte-Carlo method. We generate random probability of default,
         // if it exceeds certain credit default value we count losses - otherwise count income.
-        for (int i = 0; i < num; i++)
+        for (int i = 0; i < num; i++) {
             for (Credit crd : portfolio) {
                 int remDays = Math.min(crd.getRemainingTerm(), horizon);
 
-                if (rndGen.nextDouble() >= 1 - crd.getDefaultProbability(remDays))
+                if (rndGen.nextDouble() >= 1 - crd.getDefaultProbability(remDays)) {
                     // (1 + 'r' * min(H, W) / 365) * S.
                     // Where W is a horizon, H is a remaining crediting term, 'r' is an annual credit rate,
                     // S is a remaining credit amount.
                     losses[i] += (1 + crd.getAnnualRate() * Math.min(horizon, crd.getRemainingTerm()) / 365)
-                        * crd.getRemainingAmount();
-                else
+                            * crd.getRemainingAmount();
+                }else {
                     // - 'r' * min(H,W) / 365 * S
                     // Where W is a horizon, H is a remaining crediting term, 'r' is a annual credit rate,
                     // S is a remaining credit amount.
                     losses[i] -= crd.getAnnualRate() * Math.min(horizon, crd.getRemainingTerm()) / 365 *
-                        crd.getRemainingAmount();
+                            crd.getRemainingAmount();
+                }
             }
-
+        }
         return losses;
     }
 
@@ -128,17 +129,18 @@ public class CreditRiskManager {
      * Calculates probability of certain loss in array of losses.
      *
      * @param losses Array of losses.
-     * @param i Index of certain loss in array.
+     * @param i      Index of certain loss in array.
      * @return Probability of loss with given index.
      */
     private double getLossProbability(double[] losses, int i) {
         double cnt = 0;
         double loss = losses[i];
 
-        for (double tmp : losses)
-            if (loss == tmp)
+        for (double tmp : losses) {
+            if (loss == tmp) {
                 cnt++;
-
+            }
+        }
         return cnt / losses.length;
     }
 }

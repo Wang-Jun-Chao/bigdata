@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.ignite.examples.computegrid.montecarlo;
+package wjc.bigdata.ignite.computegrid.montecarlo;
 
 import java.io.Serializable;
 

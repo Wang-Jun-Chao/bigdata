@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.ignite.examples.computegrid.failover;
+package wjc.bigdata.ignite.computegrid.failover;
 
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteException;
@@ -24,11 +24,11 @@ import org.apache.ignite.Ignition;
 import org.apache.ignite.compute.ComputeJobFailoverException;
 import org.apache.ignite.compute.ComputeTaskSession;
 import org.apache.ignite.compute.ComputeTaskSessionFullSupport;
-import org.apache.ignite.examples.ExamplesUtils;
 import org.apache.ignite.lang.IgniteBiTuple;
 import org.apache.ignite.lang.IgniteClosure;
 import org.apache.ignite.resources.LoggerResource;
 import org.apache.ignite.resources.TaskSessionResource;
+import wjc.bigdata.ignite.computegrid.ExamplesUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -48,10 +48,11 @@ public class ComputeFailoverExample {
      * @param args Command line arguments, none required.
      * @throws IgniteException If example execution failed.
      */
-    public static void main(String[] args) throws IgniteException{
+    public static void main(String[] args) throws IgniteException {
         try (Ignite ignite = Ignition.start(ComputeFailoverNodeStartup.configuration())) {
-            if (!ExamplesUtils.checkMinTopologySize(ignite.cluster(), 2))
+            if (!ExamplesUtils.checkMinTopologySize(ignite.cluster(), 2)) {
                 return;
+            }
 
             System.out.println();
             System.out.println("Compute failover example started.");
@@ -69,18 +70,26 @@ public class ComputeFailoverExample {
 
     @ComputeTaskSessionFullSupport
     private static final class CheckPointJob implements IgniteClosure<String, Integer> {
-        /** Injected distributed task session. */
+        /**
+         * Injected distributed task session.
+         */
         @TaskSessionResource
         private ComputeTaskSession jobSes;
 
-        /** Injected ignite logger. */
+        /**
+         * Injected ignite logger.
+         */
         @LoggerResource
         private IgniteLogger log;
 
-        /** */
+        /**
+         *
+         */
         private IgniteBiTuple<Integer, Integer> state;
 
-        /** */
+        /**
+         *
+         */
         private String phrase;
 
         /**
@@ -88,7 +97,8 @@ public class ComputeFailoverExample {
          * it's {@code true} it will throw exception to simulate a failure.
          * Otherwise, it will execute enabled method.
          */
-        @Override public Integer apply(String phrase) {
+        @Override
+        public Integer apply(String phrase) {
             System.out.println();
             System.out.println(">>> Executing fail-over example job.");
 
