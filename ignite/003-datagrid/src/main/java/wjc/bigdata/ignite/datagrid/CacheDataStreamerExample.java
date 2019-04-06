@@ -73,8 +73,9 @@ public class CacheDataStreamerExample {
                         stmr.addData(i, Integer.toString(i));
 
                         // Print out progress while loading cache.
-                        if (i > 0 && i % 10000 == 0)
+                        if (i > 0 && i % 10000 == 0) {
                             System.out.println("Loaded " + i + " keys.");
+                        }
                     }
                 }
 

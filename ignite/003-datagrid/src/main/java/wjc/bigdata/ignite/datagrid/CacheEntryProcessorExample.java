@@ -54,8 +54,9 @@ public class CacheEntryProcessorExample {
     static {
         KEYS_SET = new HashSet<>();
 
-        for (int i = 0; i < KEY_CNT; i++)
+        for (int i = 0; i < KEY_CNT; i++) {
             KEYS_SET.add(i);
+        }
     }
 
     /**
@@ -100,8 +101,9 @@ public class CacheEntryProcessorExample {
         for (int i = 0; i < KEY_CNT; i++) {
             cache.invoke(i, (entry, object) -> {
                 // Initializes entry's value if it's not set.
-                if (entry.getValue() == null)
+                if (entry.getValue() == null) {
                     entry.setValue((entry.getKey() + 1) * 10);
+                }
                 return null;
             });
         }
@@ -142,11 +144,12 @@ public class CacheEntryProcessorExample {
 
         Map<Integer, Integer> entries = cache.getAll(KEYS_SET);
 
-        if (entries.isEmpty())
+        if (entries.isEmpty()) {
             System.out.println("No entries in the cache.");
-        else {
-            for (Map.Entry<Integer, Integer> entry : entries.entrySet())
+        }else {
+            for (Map.Entry<Integer, Integer> entry : entries.entrySet()) {
                 System.out.println("Entry [key=" + entry.getKey() + ", value=" + entry.getValue() + ']');
+            }
         }
     }
 }
