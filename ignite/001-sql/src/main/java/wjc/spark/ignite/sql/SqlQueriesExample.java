@@ -39,33 +39,39 @@ import java.util.List;
  * across several nodes, they may not work as expected. Keep in mind following
  * limitations (not applied if data is queried from one node only):
  * <ul>
- *     <li>
- *         Non-distributed joins will work correctly only if joined objects are stored in
- *         collocated mode. Refer to {@link AffinityKey} javadoc for more details.
- *         <p>
- *         To use distributed joins it is necessary to set query 'distributedJoin' flag using
- *         {@link SqlFieldsQuery#setDistributedJoins(boolean)} or {@link SqlQuery#setDistributedJoins(boolean)}.
- *     </li>
- *     <li>
- *         Note that if you created query on to replicated cache, all data will
- *         be queried only on one node, not depending on what caches participate in
- *         the query (some data from partitioned cache can be lost). And visa versa,
- *         if you created it on partitioned cache, data from replicated caches
- *         will be duplicated.
- *     </li>
+ * <li>
+ * Non-distributed joins will work correctly only if joined objects are stored in
+ * collocated mode. Refer to {@link AffinityKey} javadoc for more details.
+ * <p>
+ * To use distributed joins it is necessary to set query 'distributedJoin' flag using
+ * {@link SqlFieldsQuery#setDistributedJoins(boolean)} or {@link SqlQuery#setDistributedJoins(boolean)}.
+ * </li>
+ * <li>
+ * Note that if you created query on to replicated cache, all data will
+ * be queried only on one node, not depending on what caches participate in
+ * the query (some data from partitioned cache can be lost). And visa versa,
+ * if you created it on partitioned cache, data from replicated caches
+ * will be duplicated.
+ * </li>
  * </ul>
  * <p>
  * Remote nodes should be started using {@link ExampleNodeStartup} which will
  * start node with {@code example-ignite.xml} configuration.
  */
 public class SqlQueriesExample {
-    /** Organizations cache name. */
+    /**
+     * Organizations cache name.
+     */
     private static final String ORG_CACHE = SqlQueriesExample.class.getSimpleName() + "Organizations";
 
-    /** Persons collocated with Organizations cache name. */
+    /**
+     * Persons collocated with Organizations cache name.
+     */
     private static final String COLLOCATED_PERSON_CACHE = SqlQueriesExample.class.getSimpleName() + "CollocatedPersons";
 
-    /** Persons cache name. */
+    /**
+     * Persons cache name.
+     */
     private static final String PERSON_CACHE = SqlQueriesExample.class.getSimpleName() + "Persons";
 
     /**
@@ -124,8 +130,7 @@ public class SqlQueriesExample {
 
                 // Example for SQL-based fields queries that uses joins.
                 sqlFieldsQueryWithJoin();
-            }
-            finally {
+            } finally {
                 // Distributed cache could be removed from cluster only by Ignite.destroyCache() call.
                 ignite.destroyCache(COLLOCATED_PERSON_CACHE);
                 ignite.destroyCache(PERSON_CACHE);
@@ -147,12 +152,12 @@ public class SqlQueriesExample {
 
         // Execute queries for salary ranges.
         print("People with salaries between 0 and 1000 (queried with SQL query): ",
-            cache.query(new SqlQuery<AffinityKey<Long>, Person>(Person.class, sql).
-                setArgs(0, 1000)).getAll());
+                cache.query(new SqlQuery<AffinityKey<Long>, Person>(Person.class, sql).
+                        setArgs(0, 1000)).getAll());
 
         print("People with salaries between 1000 and 2000 (queried with SQL query): ",
-            cache.query(new SqlQuery<AffinityKey<Long>, Person>(Person.class, sql).
-                setArgs(1000, 2000)).getAll());
+                cache.query(new SqlQuery<AffinityKey<Long>, Person>(Person.class, sql).
+                        setArgs(1000, 2000)).getAll());
     }
 
     /**
@@ -163,19 +168,19 @@ public class SqlQueriesExample {
 
         // SQL clause query which joins on 2 types to select people for a specific organization.
         String joinSql =
-            "from Person, \"" + ORG_CACHE + "\".Organization as org " +
-            "where Person.orgId = org.id " +
-            "and lower(org.name) = lower(?)";
+                "from Person, \"" + ORG_CACHE + "\".Organization as org " +
+                        "where Person.orgId = org.id " +
+                        "and lower(org.name) = lower(?)";
 
 
         // Execute queries for find employees for different organizations.
         print("Following people are 'ApacheIgnite' employees: ",
-            cache.query(new SqlQuery<AffinityKey<Long>, Person>(Person.class, joinSql).
-                setArgs("ApacheIgnite")).getAll());
+                cache.query(new SqlQuery<AffinityKey<Long>, Person>(Person.class, joinSql).
+                        setArgs("ApacheIgnite")).getAll());
 
         print("Following people are 'Other' employees: ",
-            cache.query(new SqlQuery<AffinityKey<Long>, Person>(Person.class, joinSql).
-                setArgs("Other")).getAll());
+                cache.query(new SqlQuery<AffinityKey<Long>, Person>(Person.class, joinSql).
+                        setArgs("Other")).getAll());
     }
 
     /**
@@ -187,12 +192,12 @@ public class SqlQueriesExample {
 
         // SQL clause query which joins on 2 types to select people for a specific organization.
         String joinSql =
-            "from Person, \"" + ORG_CACHE + "\".Organization as org " +
-            "where Person.orgId = org.id " +
-            "and lower(org.name) = lower(?)";
+                "from Person, \"" + ORG_CACHE + "\".Organization as org " +
+                        "where Person.orgId = org.id " +
+                        "and lower(org.name) = lower(?)";
 
         SqlQuery qry = new SqlQuery<Long, Person>(Person.class, joinSql).
-            setArgs("ApacheIgnite");
+                setArgs("ApacheIgnite");
 
         // Enable distributed joins for query.
         qry.setDistributedJoins(true);
@@ -214,10 +219,10 @@ public class SqlQueriesExample {
         // Calculate average of salary of all persons in ApacheIgnite.
         // Note that we also join on Organization cache as well.
         String sql =
-            "select avg(salary) " +
-            "from Person, \"" + ORG_CACHE + "\".Organization as org " +
-            "where Person.orgId = org.id " +
-            "and lower(org.name) = lower(?)";
+                "select avg(salary) " +
+                        "from Person, \"" + ORG_CACHE + "\".Organization as org " +
+                        "where Person.orgId = org.id " +
+                        "and lower(org.name) = lower(?)";
 
         QueryCursor<List<?>> cursor = cache.query(new SqlFieldsQuery(sql).setArgs("ApacheIgnite"));
 
@@ -234,7 +239,7 @@ public class SqlQueriesExample {
 
         // Execute query to get names of all employees.
         QueryCursor<List<?>> cursor = cache.query(new SqlFieldsQuery(
-            "select concat(firstName, ' ', lastName) from Person"));
+                "select concat(firstName, ' ', lastName) from Person"));
 
         // In this particular case each row will have one element with full name of an employees.
         List<List<?>> res = cursor.getAll();
@@ -252,9 +257,9 @@ public class SqlQueriesExample {
 
         // Execute query to get names of all employees.
         String sql =
-            "select concat(firstName, ' ', lastName), org.name " +
-            "from Person, \"" + ORG_CACHE + "\".Organization as org " +
-            "where Person.orgId = org.id";
+                "select concat(firstName, ' ', lastName), org.name " +
+                        "from Person, \"" + ORG_CACHE + "\".Organization as org " +
+                        "where Person.orgId = org.id";
 
         QueryCursor<List<?>> cursor = cache.query(new SqlFieldsQuery(sql));
 

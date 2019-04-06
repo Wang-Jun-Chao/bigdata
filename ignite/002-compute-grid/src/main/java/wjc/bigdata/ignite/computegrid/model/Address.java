@@ -30,10 +30,14 @@ import org.apache.ignite.binary.Binarylizable;
  * binary objects.
  */
 public class Address implements Binarylizable {
-    /** Street. */
+    /**
+     * Street.
+     */
     private String street;
 
-    /** ZIP code. */
+    /**
+     * ZIP code.
+     */
     private int zip;
 
     /**
@@ -45,27 +49,36 @@ public class Address implements Binarylizable {
 
     /**
      * @param street Street.
-     * @param zip ZIP code.
+     * @param zip    ZIP code.
      */
     public Address(String street, int zip) {
         this.street = street;
         this.zip = zip;
     }
 
-    /** {@inheritDoc} */
-    @Override public void writeBinary(BinaryWriter writer) throws BinaryObjectException {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void writeBinary(BinaryWriter writer) throws BinaryObjectException {
         writer.writeString("street", street);
         writer.writeInt("zip", zip);
     }
 
-    /** {@inheritDoc} */
-    @Override public void readBinary(BinaryReader reader) throws BinaryObjectException {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void readBinary(BinaryReader reader) throws BinaryObjectException {
         street = reader.readString("street");
         zip = reader.readInt("zip");
     }
 
-    /** {@inheritDoc} */
-    @Override public String toString() {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
         return "Address [street=" + street +
                 ", zip=" + zip + ']';
     }

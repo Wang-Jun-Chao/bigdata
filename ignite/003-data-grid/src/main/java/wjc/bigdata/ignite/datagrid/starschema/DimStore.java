@@ -26,26 +26,34 @@ import org.apache.ignite.cache.query.annotations.QuerySqlField;
  * cache.
  */
 public class DimStore {
-    /** Primary key. */
+    /**
+     * Primary key.
+     */
     @QuerySqlField(index = true)
     private int id;
 
-    /** Store name. */
+    /**
+     * Store name.
+     */
     @QuerySqlField
     private String name;
 
-    /** Zip code. */
+    /**
+     * Zip code.
+     */
     private String zip;
 
-    /** Address. */
+    /**
+     * Address.
+     */
     private String addr;
 
     /**
      * Constructs a store instance.
      *
-     * @param id Store ID.
+     * @param id   Store ID.
      * @param name Store name.
-     * @param zip Store zip code.
+     * @param zip  Store zip code.
      * @param addr Store address.
      */
     public DimStore(int id, String name, String zip, String addr) {
@@ -91,11 +99,14 @@ public class DimStore {
         return addr;
     }
 
-    /** {@inheritDoc} */
-    @Override public String toString() {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
         return "DimStore [id=" + id +
-            ", name=" + name +
-            ", zip=" + zip +
-            ", addr=" + addr + ']';
+                ", name=" + name +
+                ", zip=" + zip +
+                ", addr=" + addr + ']';
     }
 }

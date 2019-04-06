@@ -28,34 +28,50 @@ import java.util.concurrent.atomic.AtomicLong;
  * Person class.
  */
 public class Person implements Serializable {
-    /** */
+    /**
+     *
+     */
     private static final AtomicLong ID_GEN = new AtomicLong();
 
-    /** Person ID (indexed). */
+    /**
+     * Person ID (indexed).
+     */
     @QuerySqlField(index = true)
     public Long id;
 
-    /** Organization ID (indexed). */
+    /**
+     * Organization ID (indexed).
+     */
     @QuerySqlField(index = true)
     public Long orgId;
 
-    /** First name (not-indexed). */
+    /**
+     * First name (not-indexed).
+     */
     @QuerySqlField
     public String firstName;
 
-    /** Last name (not indexed). */
+    /**
+     * Last name (not indexed).
+     */
     @QuerySqlField
     public String lastName;
 
-    /** Resume text (create LUCENE-based TEXT index for this field). */
+    /**
+     * Resume text (create LUCENE-based TEXT index for this field).
+     */
     @QueryTextField
     public String resume;
 
-    /** Salary (indexed). */
+    /**
+     * Salary (indexed).
+     */
     @QuerySqlField(index = true)
     public double salary;
 
-    /** Custom cache key to guarantee that person is always collocated with its organization. */
+    /**
+     * Custom cache key to guarantee that person is always collocated with its organization.
+     */
     private transient AffinityKey<Long> key;
 
     /**
@@ -89,10 +105,10 @@ public class Person implements Serializable {
     /**
      * Constructs person record.
      *
-     * @param id Person ID.
-     * @param orgId Organization ID.
+     * @param id        Person ID.
+     * @param orgId     Organization ID.
      * @param firstName First name.
-     * @param lastName Last name.
+     * @param lastName  Last name.
      * @param salary    Salary.
      * @param resume    Resume text.
      */
@@ -108,9 +124,9 @@ public class Person implements Serializable {
     /**
      * Constructs person record.
      *
-     * @param id Person ID.
+     * @param id        Person ID.
      * @param firstName First name.
-     * @param lastName Last name.
+     * @param lastName  Last name.
      */
     public Person(Long id, String firstName, String lastName) {
         this.id = id;
@@ -135,7 +151,8 @@ public class Person implements Serializable {
     /**
      * {@inheritDoc}
      */
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return "Person [id=" + id +
                 ", orgId=" + orgId +
                 ", lastName=" + lastName +

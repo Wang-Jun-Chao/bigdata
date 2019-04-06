@@ -40,13 +40,19 @@ import org.apache.ignite.configuration.DataStorageConfiguration;
  * {@code example-data-regions.xml} configuration to it.
  */
 public class DataRegionsExample {
-    /** Name of the default data region defined in 'example-data-regions.xml'. */
+    /**
+     * Name of the default data region defined in 'example-data-regions.xml'.
+     */
     public static final String REGION_DEFAULT = "Default_Region";
 
-    /** Name of the data region that creates a memory region limited by 40 MB with eviction enabled */
+    /**
+     * Name of the data region that creates a memory region limited by 40 MB with eviction enabled
+     */
     public static final String REGION_40MB_EVICTION = "40MB_Region_Eviction";
 
-    /** Name of the data region that creates a memory region mapped to a memory-mapped file. */
+    /**
+     * Name of the data region that creates a memory region mapped to a memory-mapped file.
+     */
     public static final String REGION_30MB_MEMORY_MAPPED_FILE = "30MB_Region_Swapping";
 
     /**

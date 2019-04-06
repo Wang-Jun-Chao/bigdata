@@ -43,25 +43,31 @@ import static org.apache.ignite.cache.CacheAtomicityMode.TRANSACTIONAL;
  * <p>
  * To start the example, you should:
  * <ul>
- *     <li>Start H2 database TCP server using {@link DbH2ServerStartup}.</li>
- *     <li>Start a few nodes using {@link ExampleNodeStartup}.</li>
- *     <li>Start example using {@link CacheJdbcStoreExample}.</li>
+ * <li>Start H2 database TCP server using {@link DbH2ServerStartup}.</li>
+ * <li>Start a few nodes using {@link ExampleNodeStartup}.</li>
+ * <li>Start example using {@link CacheJdbcStoreExample}.</li>
  * </ul>
  * <p>
  * Remote nodes can be started with {@link ExampleNodeStartup} in another JVM which will
  * start node with {@code example-ignite.xml} configuration.
  */
 public class CacheJdbcStoreExample {
-    /** Cache name. */
-    private static final String CACHE_NAME = CacheJdbcStoreExample.class.getSimpleName();
-
-    /** Heap size required to run this example. */
+    /**
+     * Heap size required to run this example.
+     */
     public static final int MIN_MEMORY = 1024 * 1024 * 1024;
-
-    /** Number of entries to load. */
+    /**
+     * Cache name.
+     */
+    private static final String CACHE_NAME = CacheJdbcStoreExample.class.getSimpleName();
+    /**
+     * Number of entries to load.
+     */
     private static final int ENTRY_COUNT = 100_000;
 
-    /** Global person ID to use across entire example. */
+    /**
+     * Global person ID to use across entire example.
+     */
     private static final Long id = Math.abs(UUID.randomUUID().getLeastSignificantBits());
 
     /**
@@ -88,7 +94,8 @@ public class CacheJdbcStoreExample {
 
             // Configure JDBC session listener.
             cacheCfg.setCacheStoreSessionListenerFactories(new Factory<CacheStoreSessionListener>() {
-                @Override public CacheStoreSessionListener create() {
+                @Override
+                public CacheStoreSessionListener create() {
                     CacheJdbcStoreSessionListener lsnr = new CacheJdbcStoreSessionListener();
 
                     lsnr.setDataSource(JdbcConnectionPool.create("jdbc:h2:tcp://localhost/mem:ExampleDb", "sa", ""));
@@ -110,8 +117,7 @@ public class CacheJdbcStoreExample {
                 // Start transaction and execute several cache operations with
                 // read/write-through to persistent store.
                 executeTransaction(cache);
-            }
-            finally {
+            } finally {
                 // Distributed cache could be removed from cluster only by #destroyCache() call.
                 ignite.destroyCache(CACHE_NAME);
             }

@@ -44,7 +44,9 @@ import javax.cache.event.CacheEntryUpdatedListener;
  * start node with {@code example-ignite.xml} configuration.
  */
 public class CacheContinuousAsyncQueryExample {
-    /** Cache name. */
+    /**
+     * Cache name.
+     */
     private static final String CACHE_NAME = CacheContinuousAsyncQueryExample.class.getSimpleName();
 
     /**
@@ -114,8 +116,7 @@ public class CacheContinuousAsyncQueryExample {
                 for (int i = 0; i < 10; i++) {
                     System.out.println("Entry updated from filter [key=" + i + ", val=" + cache.get(i) + ']');
                 }
-            }
-            finally {
+            } finally {
                 // Distributed cache could be removed from cluster only by #destroyCache() call.
                 ignite.destroyCache(CACHE_NAME);
             }
@@ -127,13 +128,18 @@ public class CacheContinuousAsyncQueryExample {
      */
     @IgniteAsyncCallback
     private static class CacheEntryFilter implements CacheEntryEventFilter<Integer, String> {
-        /** Ignite instance. */
+        /**
+         * Ignite instance.
+         */
         @IgniteInstanceResource
         private Ignite ignite;
 
-        /** {@inheritDoc} */
-        @Override public boolean evaluate(CacheEntryEvent<? extends Integer, ? extends String> e)
-            throws CacheEntryListenerException {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean evaluate(CacheEntryEvent<? extends Integer, ? extends String> e)
+                throws CacheEntryListenerException {
             // This cache operation is safe because filter has Ignite AsyncCallback annotation.
             if (e.getKey() < 10 && String.valueOf(e.getKey()).equals(e.getValue())) {
                 ignite.cache(CACHE_NAME).put(e.getKey(), e.getValue() + "_less_than_10");

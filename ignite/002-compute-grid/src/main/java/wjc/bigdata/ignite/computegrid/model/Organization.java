@@ -26,24 +26,36 @@ import java.util.concurrent.atomic.AtomicLong;
  * This class represents organization object.
  */
 public class Organization {
-    /** */
+    /**
+     *
+     */
     private static final AtomicLong ID_GEN = new AtomicLong();
 
-    /** Organization ID (indexed). */
+    /**
+     * Organization ID (indexed).
+     */
     @QuerySqlField(index = true)
     private Long id;
 
-    /** Organization name (indexed). */
+    /**
+     * Organization name (indexed).
+     */
     @QuerySqlField(index = true)
     private String name;
 
-    /** Address. */
+    /**
+     * Address.
+     */
     private Address addr;
 
-    /** Type. */
+    /**
+     * Type.
+     */
     private OrganizationType type;
 
-    /** Last update time. */
+    /**
+     * Last update time.
+     */
     private Timestamp lastUpdated;
 
     /**
@@ -63,7 +75,7 @@ public class Organization {
     }
 
     /**
-     * @param id Organization ID.
+     * @param id   Organization ID.
      * @param name Organization name.
      */
     public Organization(long id, String name) {
@@ -72,9 +84,9 @@ public class Organization {
     }
 
     /**
-     * @param name Name.
-     * @param addr Address.
-     * @param type Type.
+     * @param name        Name.
+     * @param addr        Address.
+     * @param type        Type.
      * @param lastUpdated Last update time.
      */
     public Organization(String name, Address addr, OrganizationType type, Timestamp lastUpdated) {
@@ -122,12 +134,15 @@ public class Organization {
         return lastUpdated;
     }
 
-    /** {@inheritDoc} */
-    @Override public String toString() {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
         return "Organization [id=" + id +
-            ", name=" + name +
-            ", address=" + addr +
-            ", type=" + type +
-            ", lastUpdated=" + lastUpdated + ']';
+                ", name=" + name +
+                ", address=" + addr +
+                ", type=" + type +
+                ", lastUpdated=" + lastUpdated + ']';
     }
 }

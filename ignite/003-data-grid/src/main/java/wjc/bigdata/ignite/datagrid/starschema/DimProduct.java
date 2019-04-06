@@ -26,27 +26,35 @@ import org.apache.ignite.cache.query.annotations.QuerySqlField;
  * cache.
  */
 public class DimProduct {
-    /** Primary key. */
+    /**
+     * Primary key.
+     */
     @QuerySqlField(index = true)
     private int id;
 
-    /** Product name. */
+    /**
+     * Product name.
+     */
     private String name;
 
-    /** Product list price. */
+    /**
+     * Product list price.
+     */
     @QuerySqlField
     private float price;
 
-    /** Available product quantity. */
+    /**
+     * Available product quantity.
+     */
     private int qty;
 
     /**
      * Constructs a product instance.
      *
-     * @param id Product ID.
-     * @param name Product name.
+     * @param id    Product ID.
+     * @param name  Product name.
      * @param price Product list price.
-     * @param qty Available product quantity.
+     * @param qty   Available product quantity.
      */
     public DimProduct(int id, String name, float price, int qty) {
         this.id = id;
@@ -91,11 +99,14 @@ public class DimProduct {
         return qty;
     }
 
-    /** {@inheritDoc} */
-    @Override public String toString() {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
         return "DimProduct [id=" + id +
-            ", name=" + name +
-            ", price=" + price +
-            ", qty=" + qty + ']';
+                ", name=" + name +
+                ", price=" + price +
+                ", qty=" + qty + ']';
     }
 }

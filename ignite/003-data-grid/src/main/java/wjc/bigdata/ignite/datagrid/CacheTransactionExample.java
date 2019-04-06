@@ -40,7 +40,9 @@ import static org.apache.ignite.transactions.TransactionIsolation.REPEATABLE_REA
  * start node with {@code example-ignite.xml} configuration.
  */
 public class CacheTransactionExample {
-    /** Cache name. */
+    /**
+     * Cache name.
+     */
     private static final String CACHE_NAME = CacheTransactionExample.class.getSimpleName();
 
     /**
@@ -79,8 +81,7 @@ public class CacheTransactionExample {
                 System.out.println(">>> " + cache.get(2));
 
                 System.out.println(">>> Cache transaction example finished.");
-            }
-            finally {
+            } finally {
                 // Distributed cache could be removed from cluster only by #destroyCache() call.
                 ignite.destroyCache(CACHE_NAME);
             }
@@ -117,14 +118,18 @@ public class CacheTransactionExample {
      * Account.
      */
     private static class Account implements Serializable {
-        /** Account ID. */
+        /**
+         * Account ID.
+         */
         private int id;
 
-        /** Account balance. */
+        /**
+         * Account balance.
+         */
         private double balance;
 
         /**
-         * @param id Account ID.
+         * @param id      Account ID.
          * @param balance Balance.
          */
         Account(int id, double balance) {
@@ -141,8 +146,11 @@ public class CacheTransactionExample {
             balance += amount;
         }
 
-        /** {@inheritDoc} */
-        @Override public String toString() {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String toString() {
             return "Account [id=" + id + ", balance=$" + balance + ']';
         }
     }

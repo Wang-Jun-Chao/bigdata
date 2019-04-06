@@ -89,20 +89,18 @@ public class ComputeContinuousMapperExample {
     @ComputeTaskNoResultCache
     private static class ContinuousMapperTask extends ComputeTaskAdapter<String, Integer> {
         /**
-         * This field will be injected with task continuous mapper.
-         */
-        @TaskContinuousMapperResource
-        private ComputeTaskContinuousMapper mapper;
-
-        /**
          * Word queue.
          */
         private final Queue<String> words = new ConcurrentLinkedQueue<>();
-
         /**
          * Total character count.
          */
         private final AtomicInteger totalChrCnt = new AtomicInteger(0);
+        /**
+         * This field will be injected with task continuous mapper.
+         */
+        @TaskContinuousMapperResource
+        private ComputeTaskContinuousMapper mapper;
 
         /**
          * {@inheritDoc}

@@ -56,10 +56,10 @@ public final class CreditRiskExample {
             // Generate some test portfolio items.
             for (int i = 0; i < portfolio.length; i++) {
                 portfolio[i] = new Credit(
-                    50000 * rnd.nextDouble(), // Credit amount.
-                    rnd.nextInt(1000), // Credit term in days.
-                    rnd.nextDouble() / 10, // APR.
-                    rnd.nextDouble() / 20 + 0.02 // EDF.
+                        50000 * rnd.nextDouble(), // Credit amount.
+                        rnd.nextInt(1000), // Credit term in days.
+                        rnd.nextDouble() / 10, // APR.
+                        rnd.nextDouble() / 20 + 0.02 // EDF.
                 );
             }
 
@@ -83,32 +83,32 @@ public final class CreditRiskExample {
             // available to cover possible defaults.
 
             double crdRisk = ignite.compute().call(jobs(ignite.cluster().nodes().size(), portfolio, horizon, iter, percentile),
-                new IgniteReducer<Double, Double>() {
-                    /** Collected values sum. */
-                    private double sum;
+                    new IgniteReducer<Double, Double>() {
+                        /** Collected values sum. */
+                        private double sum;
 
-                    /** Collected values count. */
-                    private int cnt;
+                        /** Collected values count. */
+                        private int cnt;
 
-                    /** {@inheritDoc} */
-                    @Override
-                    public synchronized boolean collect(Double e) {
-                        sum += e;
-                        cnt++;
+                        /** {@inheritDoc} */
+                        @Override
+                        public synchronized boolean collect(Double e) {
+                            sum += e;
+                            cnt++;
 
-                        return true;
-                    }
+                            return true;
+                        }
 
-                    /** {@inheritDoc} */
-                    @Override
-                    public synchronized Double reduce() {
-                        return sum / cnt;
-                    }
-                });
+                        /** {@inheritDoc} */
+                        @Override
+                        public synchronized Double reduce() {
+                            return sum / cnt;
+                        }
+                    });
 
             System.out.println();
             System.out.println("Credit risk [crdRisk=" + crdRisk + ", duration=" +
-                (System.currentTimeMillis() - start) + "ms]");
+                    (System.currentTimeMillis() - start) + "ms]");
         }
         // We specifically don't do any error handling here to
         // simplify the example. Real application may want to
@@ -119,16 +119,16 @@ public final class CreditRiskExample {
      * Creates closures for calculating credit risks.
      *
      * @param clusterSize Size of the cluster.
-     * @param portfolio Portfolio.
-     * @param horizon Forecast horizon in days.
-     * @param iter Number of Monte-Carlo iterations.
-     * @param percentile Percentile.
+     * @param portfolio   Portfolio.
+     * @param horizon     Forecast horizon in days.
+     * @param iter        Number of Monte-Carlo iterations.
+     * @param percentile  Percentile.
      * @return Collection of closures.
      */
     private static Collection<IgniteCallable<Double>> jobs(int clusterSize, final Credit[] portfolio,
-        final int horizon, int iter, final double percentile) {
+                                                           final int horizon, int iter, final double percentile) {
         // Number of iterations should be done by each node.
-        int iterPerNode = Math.round(iter / (float)clusterSize);
+        int iterPerNode = Math.round(iter / (float) clusterSize);
 
         // Number of iterations for the last/the only node.
         int lastNodeIter = iter - (clusterSize - 1) * iterPerNode;
@@ -147,9 +147,10 @@ public final class CreditRiskExample {
 
             clos.add(new IgniteCallable<Double>() {
                 /** {@inheritDoc} */
-                @Override public Double call() {
+                @Override
+                public Double call() {
                     return new CreditRiskManager().calculateCreditRiskMonteCarlo(
-                        portfolio, horizon, nodeIter, percentile);
+                            portfolio, horizon, nodeIter, percentile);
                 }
             });
         }

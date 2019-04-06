@@ -35,7 +35,9 @@ import java.util.Map;
  * start node with {@code example-ignite.xml} configuration.
  */
 public class CachePutGetExample {
-    /** Cache name. */
+    /**
+     * Cache name.
+     */
     private static final String CACHE_NAME = CachePutGetExample.class.getSimpleName();
 
     /**

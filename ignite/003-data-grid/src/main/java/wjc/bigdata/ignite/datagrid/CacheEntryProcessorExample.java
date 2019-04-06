@@ -39,13 +39,19 @@ import java.util.Set;
  * {@code example-ignite.xml} configuration.
  */
 public class CacheEntryProcessorExample {
-    /** Cache name. */
+    /**
+     * Cache name.
+     */
     private static final String CACHE_NAME = CacheEntryProcessorExample.class.getSimpleName();
 
-    /** Number of keys. */
+    /**
+     * Number of keys.
+     */
     private static final int KEY_CNT = 20;
 
-    /** Set of predefined keys. */
+    /**
+     * Set of predefined keys.
+     */
     private static final Set<Integer> KEYS_SET;
 
     /**
@@ -77,8 +83,7 @@ public class CacheEntryProcessorExample {
 
                 // Demonstrates usage of EntryProcessor.invokeAll(...) method.
                 incrementEntriesWithInvokeAll(cache);
-            }
-            finally {
+            } finally {
                 // Distributed cache could be removed from cluster only by #destroyCache() call.
                 ignite.destroyCache(CACHE_NAME);
             }
@@ -146,7 +151,7 @@ public class CacheEntryProcessorExample {
 
         if (entries.isEmpty()) {
             System.out.println("No entries in the cache.");
-        }else {
+        } else {
             for (Map.Entry<Integer, Integer> entry : entries.entrySet()) {
                 System.out.println("Entry [key=" + entry.getKey() + ", value=" + entry.getValue() + ']');
             }

@@ -38,7 +38,9 @@ import java.util.Collection;
  * start node with {@code example-ignite.xml} configuration.
  */
 public class CacheAsyncApiExample {
-    /** Cache name. */
+    /**
+     * Cache name.
+     */
     private static final String CACHE_NAME = CacheAsyncApiExample.class.getSimpleName();
 
     /**
@@ -79,9 +81,8 @@ public class CacheAsyncApiExample {
 
                 // Asynchronously wait for result.
                 asyncCache.<String>future().listen(fut ->
-                    System.out.println("Get operation completed [value=" + fut.get() + ']'));
-            }
-            finally {
+                        System.out.println("Get operation completed [value=" + fut.get() + ']'));
+            } finally {
                 // Distributed cache could be removed from cluster only by #destroyCache() call.
                 ignite.destroyCache(CACHE_NAME);
             }

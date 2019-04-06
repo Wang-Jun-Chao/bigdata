@@ -38,14 +38,18 @@ import wjc.bigdata.ignite.datagrid.util.ExamplesUtils;
  * start node with {@code example-ignite.xml} configuration.
  */
 public class CacheDataStreamerExample {
-    /** Cache name. */
-    private static final String CACHE_NAME = CacheDataStreamerExample.class.getSimpleName();
-
-    /** Number of entries to load. */
-    private static final int ENTRY_COUNT = 500000;
-
-    /** Heap size required to run this example. */
+    /**
+     * Heap size required to run this example.
+     */
     public static final int MIN_MEMORY = 512 * 1024 * 1024;
+    /**
+     * Cache name.
+     */
+    private static final String CACHE_NAME = CacheDataStreamerExample.class.getSimpleName();
+    /**
+     * Number of entries to load.
+     */
+    private static final int ENTRY_COUNT = 500000;
 
     /**
      * Executes example.
@@ -82,8 +86,7 @@ public class CacheDataStreamerExample {
                 long end = System.currentTimeMillis();
 
                 System.out.println(">>> Loaded " + ENTRY_COUNT + " keys in " + (end - start) + "ms.");
-            }
-            finally {
+            } finally {
                 // Distributed cache could be removed from cluster only by #destroyCache() call.
                 ignite.destroyCache(CACHE_NAME);
             }

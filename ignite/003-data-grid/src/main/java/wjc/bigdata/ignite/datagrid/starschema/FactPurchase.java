@@ -26,28 +26,36 @@ import org.apache.ignite.cache.query.annotations.QuerySqlField;
  * cache.
  */
 public class FactPurchase {
-    /** Primary key. */
+    /**
+     * Primary key.
+     */
     @QuerySqlField(index = true)
     private int id;
 
-    /** Foreign key to store at which purchase occurred. */
+    /**
+     * Foreign key to store at which purchase occurred.
+     */
     @QuerySqlField
     private int storeId;
 
-    /** Foreign key to purchased product. */
+    /**
+     * Foreign key to purchased product.
+     */
     @QuerySqlField
     private int productId;
 
-    /** Purchase price. */
+    /**
+     * Purchase price.
+     */
     @QuerySqlField
     private float purchasePrice;
 
     /**
      * Constructs a purchase record.
      *
-     * @param id Purchase ID.
-     * @param productId Purchased product ID.
-     * @param storeId Store ID.
+     * @param id            Purchase ID.
+     * @param productId     Purchased product ID.
+     * @param storeId       Store ID.
      * @param purchasePrice Purchase price.
      */
     public FactPurchase(int id, int productId, int storeId, float purchasePrice) {
@@ -93,11 +101,14 @@ public class FactPurchase {
         return purchasePrice;
     }
 
-    /** {@inheritDoc} */
-    @Override public String toString() {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
         return "FactPurchase [id=" + id +
-            ", productId=" + productId +
-            ", storeId=" + storeId +
-            ", purchasePrice=" + purchasePrice + ']';
+                ", productId=" + productId +
+                ", storeId=" + storeId +
+                ", purchasePrice=" + purchasePrice + ']';
     }
 }

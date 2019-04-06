@@ -37,12 +37,17 @@ import java.sql.SQLException;
  * transaction with cache transactions and maps {@link Long} to {@link Person}.
  */
 public class CacheJdbcPersonStore extends CacheStoreAdapter<Long, Person> {
-    /** Store session. */
+    /**
+     * Store session.
+     */
     @CacheStoreSessionResource
     private CacheStoreSession ses;
 
-    /** {@inheritDoc} */
-    @Override public Person load(Long key) {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Person load(Long key) {
         System.out.println(">>> Store load [key=" + key + ']');
 
         Connection conn = ses.attachment();
@@ -53,14 +58,16 @@ public class CacheJdbcPersonStore extends CacheStoreAdapter<Long, Person> {
             ResultSet rs = st.executeQuery();
 
             return rs.next() ? new Person(rs.getLong(1), rs.getString(2), rs.getString(3)) : null;
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new CacheLoaderException("Failed to load object [key=" + key + ']', e);
         }
     }
 
-    /** {@inheritDoc} */
-    @Override public void write(Cache.Entry<? extends Long, ? extends Person> entry) {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void write(Cache.Entry<? extends Long, ? extends Person> entry) {
         Long key = entry.getKey();
         Person val = entry.getValue();
 
@@ -74,7 +81,7 @@ public class CacheJdbcPersonStore extends CacheStoreAdapter<Long, Person> {
             // Try update first. If it does not work, then try insert.
             // Some databases would allow these to be done in one 'upsert' operation.
             try (PreparedStatement st = conn.prepareStatement(
-                "update PERSON set first_name = ?, last_name = ? where id = ?")) {
+                    "update PERSON set first_name = ?, last_name = ? where id = ?")) {
                 st.setString(1, val.firstName);
                 st.setString(2, val.lastName);
                 st.setLong(3, val.id);
@@ -85,7 +92,7 @@ public class CacheJdbcPersonStore extends CacheStoreAdapter<Long, Person> {
             // If update failed, try to insert.
             if (updated == 0) {
                 try (PreparedStatement st = conn.prepareStatement(
-                    "insert into PERSON (id, first_name, last_name) values (?, ?, ?)")) {
+                        "insert into PERSON (id, first_name, last_name) values (?, ?, ?)")) {
                     st.setLong(1, val.id);
                     st.setString(2, val.firstName);
                     st.setString(3, val.lastName);
@@ -93,35 +100,39 @@ public class CacheJdbcPersonStore extends CacheStoreAdapter<Long, Person> {
                     st.executeUpdate();
                 }
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new CacheWriterException("Failed to write object [key=" + key + ", val=" + val + ']', e);
         }
     }
 
-    /** {@inheritDoc} */
-    @Override public void delete(Object key) {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void delete(Object key) {
         System.out.println(">>> Store delete [key=" + key + ']');
 
         Connection conn = ses.attachment();
 
         try (PreparedStatement st = conn.prepareStatement("delete from PERSON where id=?")) {
-            st.setLong(1, (Long)key);
+            st.setLong(1, (Long) key);
 
             st.executeUpdate();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new CacheWriterException("Failed to delete object [key=" + key + ']', e);
         }
     }
 
-    /** {@inheritDoc} */
-    @Override public void loadCache(IgniteBiInClosure<Long, Person> clo, Object... args) {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void loadCache(IgniteBiInClosure<Long, Person> clo, Object... args) {
         if (args == null || args.length == 0 || args[0] == null) {
             throw new CacheLoaderException("Expected entry count parameter is not provided.");
         }
 
-        final int entryCnt = (Integer)args[0];
+        final int entryCnt = (Integer) args[0];
 
         Connection conn = ses.attachment();
 
@@ -141,8 +152,7 @@ public class CacheJdbcPersonStore extends CacheStoreAdapter<Long, Person> {
             }
 
             System.out.println(">>> Loaded " + cnt + " values into cache.");
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new CacheLoaderException("Failed to load values from cache store.", e);
         }
     }

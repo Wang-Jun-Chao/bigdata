@@ -50,15 +50,15 @@ public class ComputeClosureExample {
 
             // Execute closure on all cluster nodes.
             Collection<Integer> res = ignite.compute().apply(
-                (String word) -> {
-                    System.out.println();
-                    System.out.println(">>> Printing '" + word + "' on this node from ignite job.");
+                    (String word) -> {
+                        System.out.println();
+                        System.out.println(">>> Printing '" + word + "' on this node from ignite job.");
 
-                    // Return number of letters in the word.
-                    return word.length();
-                },
-                // Job parameters. Ignite will create as many jobs as there are parameters.
-                Arrays.asList("Count characters using closure".split(" "))
+                        // Return number of letters in the word.
+                        return word.length();
+                    },
+                    // Job parameters. Ignite will create as many jobs as there are parameters.
+                    Arrays.asList("Count characters using closure".split(" "))
             );
 
             int sum = res.stream().mapToInt(i -> i).sum();

@@ -98,31 +98,27 @@ public final class ComputeFibonacciContinuationExample {
      */
     private static class ContinuationFibonacciClosure implements IgniteClosure<Long, BigInteger> {
         /**
+         * Predicate.
+         */
+        private final IgnitePredicate<ClusterNode> nodeFilter;
+        /**
          * Future for spawned task.
          */
         private IgniteFuture<BigInteger> fut1;
-
         /**
          * Future for spawned task.
          */
         private IgniteFuture<BigInteger> fut2;
-
         /**
          * Auto-inject job context.
          */
         @JobContextResource
         private ComputeJobContext jobCtx;
-
         /**
          * Auto-inject ignite instance.
          */
         @IgniteInstanceResource
         private Ignite ignite;
-
-        /**
-         * Predicate.
-         */
-        private final IgnitePredicate<ClusterNode> nodeFilter;
 
         /**
          * @param nodeFilter Predicate to filter nodes.

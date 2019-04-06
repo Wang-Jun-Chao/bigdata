@@ -41,7 +41,9 @@ import javax.cache.event.CacheEntryUpdatedListener;
  * start node with {@code example-ignite.xml} configuration.
  */
 public class CacheContinuousQueryExample {
-    /** Cache name. */
+    /**
+     * Cache name.
+     */
     private static final String CACHE_NAME = CacheContinuousQueryExample.class.getSimpleName();
 
     /**
@@ -68,14 +70,16 @@ public class CacheContinuousQueryExample {
                 ContinuousQuery<Integer, String> qry = new ContinuousQuery<>();
 
                 qry.setInitialQuery(new ScanQuery<>(new IgniteBiPredicate<Integer, String>() {
-                    @Override public boolean apply(Integer key, String val) {
+                    @Override
+                    public boolean apply(Integer key, String val) {
                         return key > 10;
                     }
                 }));
 
                 // Callback that is called locally when update notifications are received.
                 qry.setLocalListener(new CacheEntryUpdatedListener<Integer, String>() {
-                    @Override public void onUpdated(Iterable<CacheEntryEvent<? extends Integer, ? extends String>> evts) {
+                    @Override
+                    public void onUpdated(Iterable<CacheEntryEvent<? extends Integer, ? extends String>> evts) {
                         for (CacheEntryEvent<? extends Integer, ? extends String> e : evts) {
                             System.out.println("Updated entry [key=" + e.getKey() + ", val=" + e.getValue() + ']');
                         }
@@ -85,9 +89,11 @@ public class CacheContinuousQueryExample {
                 // This filter will be evaluated remotely on all nodes.
                 // Entry that pass this filter will be sent to the caller.
                 qry.setRemoteFilterFactory(new Factory<CacheEntryEventFilter<Integer, String>>() {
-                    @Override public CacheEntryEventFilter<Integer, String> create() {
+                    @Override
+                    public CacheEntryEventFilter<Integer, String> create() {
                         return new CacheEntryEventFilter<Integer, String>() {
-                            @Override public boolean evaluate(CacheEntryEvent<? extends Integer, ? extends String> e) {
+                            @Override
+                            public boolean evaluate(CacheEntryEvent<? extends Integer, ? extends String> e) {
                                 return e.getKey() > 10;
                             }
                         };
@@ -107,8 +113,7 @@ public class CacheContinuousQueryExample {
                     // Wait for a while while callback is notified about remaining puts.
                     Thread.sleep(2000);
                 }
-            }
-            finally {
+            } finally {
                 // Distributed cache could be removed from cluster only by #destroyCache() call.
                 ignite.destroyCache(CACHE_NAME);
             }

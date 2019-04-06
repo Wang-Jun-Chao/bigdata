@@ -44,30 +44,34 @@ import javax.cache.Cache;
  * across several nodes, they may not work as expected. Keep in mind following
  * limitations (not applied if data is queried from one node only):
  * <ul>
- *     <li>
- *         Non-distributed joins will work correctly only if joined objects are stored in
- *         collocated mode. Refer to {@link AffinityKey} javadoc for more details.
- *         <p>
- *         To use distributed joins it is necessary to set query 'distributedJoin' flag using
- *         {@link SqlFieldsQuery#setDistributedJoins(boolean)} or {@link SqlQuery#setDistributedJoins(boolean)}.
- *     </li>
- *     <li>
- *         Note that if you created query on to replicated cache, all data will
- *         be queried only on one node, not depending on what caches participate in
- *         the query (some data from partitioned cache can be lost). And visa versa,
- *         if you created it on partitioned cache, data from replicated caches
- *         will be duplicated.
- *     </li>
+ * <li>
+ * Non-distributed joins will work correctly only if joined objects are stored in
+ * collocated mode. Refer to {@link AffinityKey} javadoc for more details.
+ * <p>
+ * To use distributed joins it is necessary to set query 'distributedJoin' flag using
+ * {@link SqlFieldsQuery#setDistributedJoins(boolean)} or {@link SqlQuery#setDistributedJoins(boolean)}.
+ * </li>
+ * <li>
+ * Note that if you created query on to replicated cache, all data will
+ * be queried only on one node, not depending on what caches participate in
+ * the query (some data from partitioned cache can be lost). And visa versa,
+ * if you created it on partitioned cache, data from replicated caches
+ * will be duplicated.
+ * </li>
  * </ul>
  * <p>
  * Remote nodes should be started using {@link ExampleNodeStartup} which will
  * start node with {@code example-ignite.xml} configuration.
  */
 public class CacheQueryExample {
-    /** Organizations cache name. */
+    /**
+     * Organizations cache name.
+     */
     private static final String ORG_CACHE = CacheQueryExample.class.getSimpleName() + "Organizations";
 
-    /** Persons collocated with Organizations cache name. */
+    /**
+     * Persons collocated with Organizations cache name.
+     */
     private static final String PERSON_CACHE = CacheQueryExample.class.getSimpleName() + "Persons";
 
     /**
@@ -87,7 +91,7 @@ public class CacheQueryExample {
             orgCacheCfg.setIndexedTypes(Long.class, Organization.class);
 
             CacheConfiguration<AffinityKey<Long>, Person> personCacheCfg =
-                new CacheConfiguration<>(PERSON_CACHE);
+                    new CacheConfiguration<>(PERSON_CACHE);
 
             personCacheCfg.setCacheMode(CacheMode.PARTITIONED); // Default.
             personCacheCfg.setIndexedTypes(AffinityKey.class, Person.class);
@@ -105,8 +109,7 @@ public class CacheQueryExample {
 
                 // Example for TEXT-based querying for a given string in peoples resumes.
                 textQuery();
-            }
-            finally {
+            } finally {
                 // Distributed cache could be removed from cluster only by Ignite.destroyCache() call.
                 ignite.destroyCache(PERSON_CACHE);
                 ignite.destroyCache(ORG_CACHE);
@@ -121,14 +124,15 @@ public class CacheQueryExample {
      */
     private static void scanQuery() {
         IgniteCache<BinaryObject, BinaryObject> cache = Ignition.ignite()
-            .cache(PERSON_CACHE).withKeepBinary();
+                .cache(PERSON_CACHE).withKeepBinary();
 
         ScanQuery<BinaryObject, BinaryObject> scan = new ScanQuery<>(
-            new IgniteBiPredicate<BinaryObject, BinaryObject>() {
-                @Override public boolean apply(BinaryObject key, BinaryObject person) {
-                    return person.<Double>field("salary") <= 1000;
+                new IgniteBiPredicate<BinaryObject, BinaryObject>() {
+                    @Override
+                    public boolean apply(BinaryObject key, BinaryObject person) {
+                        return person.<Double>field("salary") <= 1000;
+                    }
                 }
-            }
         );
 
         // Execute queries for salary ranges.
@@ -144,11 +148,11 @@ public class CacheQueryExample {
 
         //  Query for all people with "Master Degree" in their resumes.
         QueryCursor<Cache.Entry<Long, Person>> masters =
-            cache.query(new TextQuery<Long, Person>(Person.class, "Master"));
+                cache.query(new TextQuery<Long, Person>(Person.class, "Master"));
 
         // Query for all people with "Bachelor Degree" in their resumes.
         QueryCursor<Cache.Entry<Long, Person>> bachelors =
-            cache.query(new TextQuery<Long, Person>(Person.class, "Bachelor"));
+                cache.query(new TextQuery<Long, Person>(Person.class, "Bachelor"));
 
         print("Following people have 'Master Degree' in their resumes: ", masters.getAll());
         print("Following people have 'Bachelor Degree' in their resumes: ", bachelors.getAll());

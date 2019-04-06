@@ -53,22 +53,34 @@ import java.util.concurrent.ThreadLocalRandom;
  * start node with {@code example-ignite.xml} configuration.
  */
 public class CacheStarSchemaExample {
-    /** Partitioned cache name. */
+    /**
+     * Partitioned cache name.
+     */
     private static final String FACT_CACHE_NAME = CacheStarSchemaExample.class.getSimpleName() + "Fact";
 
-    /** Replicated cache name. */
+    /**
+     * Replicated cache name.
+     */
     private static final String DIM_STORE_CACHE_NAME = CacheStarSchemaExample.class.getSimpleName() + "DimStore";
 
-    /** Replicated cache name. */
+    /**
+     * Replicated cache name.
+     */
     private static final String DIM_PROD_CACHE_NAME = CacheStarSchemaExample.class.getSimpleName() + "DimProd";
 
-    /** ID generator. */
+    /**
+     * ID generator.
+     */
     private static int idGen;
 
-    /** DimStore data. */
+    /**
+     * DimStore data.
+     */
     private static Map<Integer, DimStore> dataStore = new HashMap<>();
 
-    /** DimProduct data. */
+    /**
+     * DimProduct data.
+     */
     private static Map<Integer, DimProduct> dataProduct = new HashMap<>();
 
     /**
@@ -103,8 +115,7 @@ public class CacheStarSchemaExample {
 
                 queryStorePurchases();
                 queryProductPurchases();
-            }
-            finally {
+            } finally {
                 // Distributed cache could be removed from cluster only by #destroyCache() call.
                 ignite.destroyCache(FACT_CACHE_NAME);
                 ignite.destroyCache(DIM_STORE_CACHE_NAME);
@@ -116,13 +127,13 @@ public class CacheStarSchemaExample {
     /**
      * Populate cache with {@code 'dimensions'} which in our case are
      * {@link DimStore} and {@link DimProduct} instances.
-     * @param dimStoreCache Cache of the DimStores to populate.
-     * @param dimProdCache Cache of the DimProducts to populate.
      *
+     * @param dimStoreCache Cache of the DimStores to populate.
+     * @param dimProdCache  Cache of the DimProducts to populate.
      * @throws IgniteException If failed.
      */
     private static void populateDimensions(Cache<Integer, DimStore> dimStoreCache,
-        Cache<Integer, DimProduct> dimProdCache) throws IgniteException {
+                                           Cache<Integer, DimProduct> dimProdCache) throws IgniteException {
         DimStore store1 = new DimStore(idGen++, "Store1", "12345", "321 Chilly Dr, NY");
         DimStore store2 = new DimStore(idGen++, "Store2", "54321", "123 Windy Dr, San Francisco");
 
@@ -147,8 +158,8 @@ public class CacheStarSchemaExample {
 
     /**
      * Populate cache with {@code 'facts'}, which in our case are {@link FactPurchase} objects.
-     * @param factCache Cache to populate.
      *
+     * @param factCache Cache to populate.
      * @throws IgniteException If failed.
      */
     private static void populateFacts(Cache<Integer, FactPurchase> factCache) throws IgniteException {
@@ -177,9 +188,9 @@ public class CacheStarSchemaExample {
 
         // Create cross cache query to get all purchases made at store1.
         QueryCursor<Cache.Entry<Integer, FactPurchase>> storePurchases = factCache.query(new SqlQuery(
-            FactPurchase.class,
-            "from \"" + DIM_STORE_CACHE_NAME + "\".DimStore, \"" + FACT_CACHE_NAME + "\".FactPurchase "
-                + "where DimStore.id = FactPurchase.storeId and DimStore.name = ?").setArgs("Store1"));
+                FactPurchase.class,
+                "from \"" + DIM_STORE_CACHE_NAME + "\".DimStore, \"" + FACT_CACHE_NAME + "\".FactPurchase "
+                        + "where DimStore.id = FactPurchase.storeId and DimStore.name = ?").setArgs("Store1"));
 
         printQueryResults("All purchases made at store1:", storePurchases.getAll());
     }
@@ -207,12 +218,12 @@ public class CacheStarSchemaExample {
         // Create cross cache query to get all purchases made at store2
         // for specified products.
         QueryCursor<Cache.Entry<Integer, FactPurchase>> prodPurchases = factCache.query(new SqlQuery(
-            FactPurchase.class,
-            "from \"" + DIM_STORE_CACHE_NAME + "\".DimStore, \"" + DIM_PROD_CACHE_NAME + "\".DimProduct, " +
-                "\"" + FACT_CACHE_NAME + "\".FactPurchase "
-                + "where DimStore.id = FactPurchase.storeId and DimProduct.id = FactPurchase.productId "
-                + "and DimStore.name = ? and DimProduct.id in(?, ?, ?)")
-            .setArgs("Store2", p1.getId(), p2.getId(), p3.getId()));
+                FactPurchase.class,
+                "from \"" + DIM_STORE_CACHE_NAME + "\".DimStore, \"" + DIM_PROD_CACHE_NAME + "\".DimProduct, " +
+                        "\"" + FACT_CACHE_NAME + "\".FactPurchase "
+                        + "where DimStore.id = FactPurchase.storeId and DimProduct.id = FactPurchase.productId "
+                        + "and DimStore.name = ? and DimProduct.id in(?, ?, ?)")
+                .setArgs("Store2", p1.getId(), p2.getId(), p3.getId()));
 
         printQueryResults("All purchases made at store2 for 3 specific products:", prodPurchases.getAll());
     }

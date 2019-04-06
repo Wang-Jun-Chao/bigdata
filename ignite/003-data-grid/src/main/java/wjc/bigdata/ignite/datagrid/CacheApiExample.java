@@ -36,7 +36,9 @@ import java.util.concurrent.ConcurrentMap;
  * start node with {@code example-ignite.xml} configuration.
  */
 public class CacheApiExample {
-    /** Cache name. */
+    /**
+     * Cache name.
+     */
     private static final String CACHE_NAME = CacheApiExample.class.getSimpleName();
 
     /**
@@ -59,8 +61,7 @@ public class CacheApiExample {
             try (IgniteCache<Integer, String> cache = ignite.getOrCreateCache(cfg)) {
                 // Demonstrate atomic map operations.
                 atomicMapOperations(cache);
-            }
-            finally {
+            } finally {
                 // Distributed cache could be removed from cluster only by #destroyCache() call.
                 ignite.destroyCache(CACHE_NAME);
             }

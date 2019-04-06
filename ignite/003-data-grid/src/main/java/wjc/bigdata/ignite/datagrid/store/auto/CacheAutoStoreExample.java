@@ -42,32 +42,23 @@ import static org.apache.ignite.cache.CacheAtomicityMode.TRANSACTIONAL;
  * <p>
  * To start the example, you should:
  * <ul>
- *     <li>Start H2 database TCP server using {@link DbH2ServerStartup}.</li>
- *     <li>Start a few nodes using {@link ExampleNodeStartup}.</li>
- *     <li>Start example using {@link CacheAutoStoreExample}.</li>
+ * <li>Start H2 database TCP server using {@link DbH2ServerStartup}.</li>
+ * <li>Start a few nodes using {@link ExampleNodeStartup}.</li>
+ * <li>Start example using {@link CacheAutoStoreExample}.</li>
  * </ul>
  * <p>
  * Remote nodes can be started with {@link ExampleNodeStartup} in another JVM which will
  * start node with {@code example-ignite.xml} configuration.
  */
 public class CacheAutoStoreExample {
-    /** Global person ID to use across entire example. */
-    private static final Long id = 25121642L;
-
-    /** Cache name. */
-    public static final String CACHE_NAME = CacheAutoStoreExample.class.getSimpleName();
-
     /**
-     * Example store factory.
+     * Cache name.
      */
-    private static final class CacheJdbcPojoStoreExampleFactory extends CacheJdbcPojoStoreFactory<Long, Person> {
-        /** {@inheritDoc} */
-        @Override public CacheJdbcPojoStore<Long, Person> create() {
-            setDataSource(JdbcConnectionPool.create("jdbc:h2:tcp://localhost/mem:ExampleDb", "sa", ""));
-
-            return super.create();
-        }
-    }
+    public static final String CACHE_NAME = CacheAutoStoreExample.class.getSimpleName();
+    /**
+     * Global person ID to use across entire example.
+     */
+    private static final Long id = 25121642L;
 
     /**
      * Configure cache with store.
@@ -90,9 +81,9 @@ public class CacheAutoStoreExample {
 
         jdbcType.setValueType("org.apache.ignite.examples.model.Person");
         jdbcType.setValueFields(
-            new JdbcTypeField(Types.BIGINT, "ID", Long.class, "id"),
-            new JdbcTypeField(Types.VARCHAR, "FIRST_NAME", String.class, "firstName"),
-            new JdbcTypeField(Types.VARCHAR, "LAST_NAME", String.class, "lastName")
+                new JdbcTypeField(Types.BIGINT, "ID", Long.class, "id"),
+                new JdbcTypeField(Types.VARCHAR, "FIRST_NAME", String.class, "firstName"),
+                new JdbcTypeField(Types.VARCHAR, "LAST_NAME", String.class, "lastName")
         );
 
         storeFactory.setTypes(jdbcType);
@@ -167,11 +158,25 @@ public class CacheAutoStoreExample {
                 cache.loadCache(null);
 
                 System.out.println(">>> Loaded cache entries: " + cache.size());
-            }
-            finally {
+            } finally {
                 // Distributed cache could be removed from cluster only by #destroyCache() call.
                 ignite.destroyCache(CACHE_NAME);
             }
+        }
+    }
+
+    /**
+     * Example store factory.
+     */
+    private static final class CacheJdbcPojoStoreExampleFactory extends CacheJdbcPojoStoreFactory<Long, Person> {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public CacheJdbcPojoStore<Long, Person> create() {
+            setDataSource(JdbcConnectionPool.create("jdbc:h2:tcp://localhost/mem:ExampleDb", "sa", ""));
+
+            return super.create();
         }
     }
 }

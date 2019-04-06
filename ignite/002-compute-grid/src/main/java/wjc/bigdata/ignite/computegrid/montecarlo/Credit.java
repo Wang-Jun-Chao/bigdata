@@ -27,16 +27,24 @@ import java.io.Serializable;
  * risk assessment application.
  */
 public class Credit implements Serializable {
-    /** Remaining crediting amount. */
+    /**
+     * Remaining crediting amount.
+     */
     private final double remAmnt;
 
-    /** Remaining crediting remTerm. */
+    /**
+     * Remaining crediting remTerm.
+     */
     private final int remTerm;
 
-    /** Annual percentage rate (APR). */
+    /**
+     * Annual percentage rate (APR).
+     */
     private final double apr;
 
-    /** Expected annual probability of default (EaDF). */
+    /**
+     * Expected annual probability of default (EaDF).
+     */
     private final double edf;
 
     /**
@@ -44,8 +52,8 @@ public class Credit implements Serializable {
      *
      * @param remAmnt Remained crediting amount.
      * @param remTerm Remained crediting remTerm.
-     * @param apr Annual percentage rate (APR).
-     * @param edf Expected annual probability of default (EaDF).
+     * @param apr     Annual percentage rate (APR).
+     * @param edf     Expected annual probability of default (EaDF).
      */
     public Credit(double remAmnt, int remTerm, double apr, double edf) {
         this.remAmnt = remAmnt;
@@ -88,14 +96,17 @@ public class Credit implements Serializable {
      *
      * @param term Default term.
      * @return Credit probability of default in relative percents
-     *     (percentage / 100).
+     * (percentage / 100).
      */
     double getDefaultProbability(int term) {
         return 1 - Math.exp(Math.log(1 - edf) * Math.min(remTerm, term) / 365.0);
     }
 
-    /** {@inheritDoc} */
-    @Override public String toString() {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
         StringBuilder buf = new StringBuilder();
 
         buf.append(getClass().getName());

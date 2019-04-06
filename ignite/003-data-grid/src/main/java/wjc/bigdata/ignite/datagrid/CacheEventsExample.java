@@ -42,7 +42,9 @@ import static org.apache.ignite.events.EventType.EVT_CACHE_OBJECT_REMOVED;
  * start node with {@code example-ignite.xml} configuration.
  */
 public class CacheEventsExample {
-    /** Cache name. */
+    /**
+     * Cache name.
+     */
     private static final String CACHE_NAME = CacheEventsExample.class.getSimpleName();
 
     /**
@@ -61,9 +63,10 @@ public class CacheEventsExample {
                 // This optional local callback is called for each event notification
                 // that passed remote predicate listener.
                 IgniteBiPredicate<UUID, CacheEvent> locLsnr = new IgniteBiPredicate<UUID, CacheEvent>() {
-                    @Override public boolean apply(UUID uuid, CacheEvent evt) {
+                    @Override
+                    public boolean apply(UUID uuid, CacheEvent evt) {
                         System.out.println("Received event [evt=" + evt.name() + ", key=" + evt.key() +
-                            ", oldVal=" + evt.oldValue() + ", newVal=" + evt.newValue());
+                                ", oldVal=" + evt.oldValue() + ", newVal=" + evt.newValue());
 
                         return true; // Continue listening.
                     }
@@ -72,7 +75,8 @@ public class CacheEventsExample {
                 // Remote listener which only accepts events for keys that are
                 // greater or equal than 10 and if event node is primary for this key.
                 IgnitePredicate<CacheEvent> rmtLsnr = new IgnitePredicate<CacheEvent>() {
-                    @Override public boolean apply(CacheEvent evt) {
+                    @Override
+                    public boolean apply(CacheEvent evt) {
                         System.out.println("Cache event [name=" + evt.name() + ", key=" + evt.key() + ']');
 
                         int key = evt.key();
@@ -84,7 +88,7 @@ public class CacheEventsExample {
                 // Subscribe to specified cache events on all nodes that have cache running.
                 // Cache events are explicitly enabled in example-ignite.xml file.
                 ignite.events(ignite.cluster().forCacheNodes(CACHE_NAME)).remoteListen(locLsnr, rmtLsnr,
-                    EVT_CACHE_OBJECT_PUT, EVT_CACHE_OBJECT_READ, EVT_CACHE_OBJECT_REMOVED);
+                        EVT_CACHE_OBJECT_PUT, EVT_CACHE_OBJECT_READ, EVT_CACHE_OBJECT_REMOVED);
 
                 // Generate cache events.
                 for (int i = 0; i < 20; i++)
@@ -92,8 +96,7 @@ public class CacheEventsExample {
 
                 // Wait for a while while callback is notified about remaining puts.
                 Thread.sleep(2000);
-            }
-            finally {
+            } finally {
                 // Distributed cache could be removed from cluster only by #destroyCache() call.
                 ignite.destroyCache(CACHE_NAME);
             }

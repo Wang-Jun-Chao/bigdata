@@ -21,12 +21,18 @@ package wjc.bigdata.ignite.datagrid.model;
  * Organization type enum.
  */
 public enum OrganizationType {
-    /** Non-profit organization. */
+    /**
+     * Non-profit organization.
+     */
     NON_PROFIT,
 
-    /** Private organization. */
+    /**
+     * Private organization.
+     */
     PRIVATE,
 
-    /** Government organization. */
+    /**
+     * Government organization.
+     */
     GOVERNMENT
 }

@@ -113,7 +113,7 @@ public class CreditRiskManager {
                     // S is a remaining credit amount.
                     losses[i] += (1 + crd.getAnnualRate() * Math.min(horizon, crd.getRemainingTerm()) / 365)
                             * crd.getRemainingAmount();
-                }else {
+                } else {
                     // - 'r' * min(H,W) / 365 * S
                     // Where W is a horizon, H is a remaining crediting term, 'r' is a annual credit rate,
                     // S is a remaining credit amount.

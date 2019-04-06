@@ -45,14 +45,14 @@ public class SqlJdbcCopyExample {
             executeCommand(conn, "DROP TABLE IF EXISTS City");
 
             executeCommand(conn,
-                "CREATE TABLE City (" +
-                "    ID INT(11), " +
-                "    Name CHAR(35), " +
-                "    CountryCode CHAR(3), " +
-                "    District CHAR(20), " +
-                "    Population INT(11), " +
-                "    PRIMARY KEY (ID, CountryCode) " +
-                ") WITH \"template=partitioned, backups=1, affinityKey=CountryCode, CACHE_NAME=City\""
+                    "CREATE TABLE City (" +
+                            "    ID INT(11), " +
+                            "    Name CHAR(35), " +
+                            "    CountryCode CHAR(3), " +
+                            "    District CHAR(20), " +
+                            "    Population INT(11), " +
+                            "    PRIMARY KEY (ID, CountryCode) " +
+                            ") WITH \"template=partitioned, backups=1, affinityKey=CountryCode, CACHE_NAME=City\""
             );
 
             print("Created database objects.");
@@ -61,7 +61,7 @@ public class SqlJdbcCopyExample {
             // Load data from CSV file.
             executeCommand(conn, "COPY FROM '" +
                     ResourceUtils.getFile("classpath:city.csv") + "' " +
-                "INTO City (ID, Name, CountryCode, District, Population) FORMAT CSV");
+                    "INTO City (ID, Name, CountryCode, District, Population) FORMAT CSV");
 
             // Read data.
             try (Statement stmt = conn.createStatement()) {
@@ -102,7 +102,7 @@ public class SqlJdbcCopyExample {
      * Execute SQL command.
      *
      * @param conn Connection.
-     * @param sql SQL statement.
+     * @param sql  SQL statement.
      * @throws Exception If failed.
      */
     private static void executeCommand(Connection conn, String sql) throws Exception {
