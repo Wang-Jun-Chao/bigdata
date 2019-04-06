@@ -29,45 +29,69 @@ import org.apache.ignite.services.ServiceContext;
  * distributed {@link SimpleMapService} functionality.
  */
 public class SimpleMapServiceImpl<K, V> implements Service, SimpleMapService<K, V> {
-    /** Serial version UID. */
+    /**
+     * Serial version UID.
+     */
     private static final long serialVersionUID = 0L;
 
-    /** Ignite instance. */
+    /**
+     * Ignite instance.
+     */
     @IgniteInstanceResource
     private Ignite ignite;
 
-    /** Underlying cache map. */
+    /**
+     * Underlying cache map.
+     */
     private IgniteCache<K, V> cache;
 
-    /** {@inheritDoc} */
-    @Override public void put(K key, V val) {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void put(K key, V val) {
         cache.put(key, val);
     }
 
-    /** {@inheritDoc} */
-    @Override public V get(K key) {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public V get(K key) {
         return cache.get(key);
     }
 
-    /** {@inheritDoc} */
-    @Override public void clear() {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void clear() {
         cache.clear();
     }
 
-    /** {@inheritDoc} */
-    @Override public int size() {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int size() {
         return cache.size();
     }
 
-    /** {@inheritDoc} */
-    @Override public void cancel(ServiceContext ctx) {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void cancel(ServiceContext ctx) {
         ignite.destroyCache(ctx.name());
 
         System.out.println("Service was cancelled: " + ctx.name());
     }
 
-    /** {@inheritDoc} */
-    @Override public void init(ServiceContext ctx) throws Exception {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void init(ServiceContext ctx) throws Exception {
         // Create a new cache for every service deployment.
         // Note that we use service name as cache name, which allows
         // for each service deployment to use its own isolated cache.
@@ -76,8 +100,11 @@ public class SimpleMapServiceImpl<K, V> implements Service, SimpleMapService<K, 
         System.out.println("Service was initialized: " + ctx.name());
     }
 
-    /** {@inheritDoc} */
-    @Override public void execute(ServiceContext ctx) throws Exception {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void execute(ServiceContext ctx) throws Exception {
         System.out.println("Executing distributed service: " + ctx.name());
     }
 }

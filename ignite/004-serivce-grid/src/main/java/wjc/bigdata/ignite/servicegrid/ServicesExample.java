@@ -65,9 +65,9 @@ public class ServicesExample {
 
                 // Deploy 2 instances, regardless of number nodes.
                 svcs.deployMultiple("myMultiService",
-                    new SimpleMapServiceImpl(),
-                    2 /*total number*/,
-                    0 /*0 for unlimited*/);
+                        new SimpleMapServiceImpl(),
+                        2 /*total number*/,
+                        0 /*0 for unlimited*/);
 
                 // Example for using a service proxy
                 // to access a remotely deployed service.
@@ -76,8 +76,7 @@ public class ServicesExample {
                 // Example for auto-injecting service proxy
                 // into remote closure execution.
                 serviceInjectionExample(ignite);
-            }
-            finally {
+            } finally {
                 // Undeploy all services.
                 ignite.services().cancelAll();
             }
@@ -97,23 +96,25 @@ public class ServicesExample {
 
         // Get a sticky proxy for node-singleton map service.
         SimpleMapService<Integer, String> mapSvc = ignite.services().serviceProxy("myNodeSingletonService",
-            SimpleMapService.class,
-            true);
+                SimpleMapService.class,
+                true);
 
         int cnt = 10;
 
         // Each service invocation will go over a proxy to some remote node.
         // Since service proxy is sticky, we will always be contacting the same remote node.
-        for (int i = 0; i < cnt; i++)
+        for (int i = 0; i < cnt; i++) {
             mapSvc.put(i, Integer.toString(i));
+        }
 
         // Get size from remotely deployed service instance.
         int mapSize = mapSvc.size();
 
         System.out.println("Map service size: " + mapSize);
 
-        if (mapSize != cnt)
+        if (mapSize != cnt) {
             throw new Exception("Invalid map size [expected=" + cnt + ", actual=" + mapSize + ']');
+        }
     }
 
     /**
@@ -129,15 +130,15 @@ public class ServicesExample {
 
         // Get a sticky proxy for cluster-singleton map service.
         SimpleMapService<Integer, String> mapSvc = ignite.services().serviceProxy("myClusterSingletonService",
-            SimpleMapService.class,
-            true);
+                SimpleMapService.class,
+                true);
 
         int cnt = 10;
 
         // Each service invocation will go over a proxy to the remote cluster-singleton instance.
-        for (int i = 0; i < cnt; i++)
+        for (int i = 0; i < cnt; i++) {
             mapSvc.put(i, Integer.toString(i));
-
+        }
         // Broadcast closure to every node.
         final Collection<Integer> mapSizes = ignite.compute().broadcast(new SimpleClosure());
 
@@ -146,9 +147,11 @@ public class ServicesExample {
         // Since we invoked the same cluster-singleton service instance
         // from all the remote closure executions, they should all return
         // the same size equal to 'cnt' value.
-        for (int mapSize : mapSizes)
-            if (mapSize != cnt)
+        for (int mapSize : mapSizes) {
+            if (mapSize != cnt) {
                 throw new Exception("Invalid map size [expected=" + cnt + ", actual=" + mapSize + ']');
+            }
+        }
     }
 
     /**
@@ -159,8 +162,11 @@ public class ServicesExample {
         @ServiceResource(serviceName = "myClusterSingletonService", proxyInterface = SimpleMapService.class)
         private transient SimpleMapService mapSvc;
 
-        /** {@inheritDoc} */
-        @Override public Integer call() throws Exception {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Integer call() throws Exception {
             int mapSize = mapSvc.size();
 
             System.out.println("Executing closure [mapSize=" + mapSize + ']');
