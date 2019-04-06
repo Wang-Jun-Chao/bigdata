@@ -25,16 +25,16 @@ import org.apache.ignite.cache.CacheMode;
 import org.apache.ignite.cache.CachePeekMode;
 import org.apache.ignite.cache.store.CacheLoadOnlyStoreAdapter;
 import org.apache.ignite.configuration.CacheConfiguration;
-import org.apache.ignite.internal.util.IgniteUtils;
 import org.apache.ignite.internal.util.typedef.T2;
 import org.apache.ignite.lang.IgniteBiTuple;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.util.ResourceUtils;
 import wjc.bigdata.ignite.datagrid.model.Person;
 
 import javax.cache.configuration.FactoryBuilder;
 import javax.cache.integration.CacheLoaderException;
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -49,7 +49,9 @@ import java.util.Scanner;
  * start node with {@code example-ignite.xml} configuration.
  */
 public class CacheLoadOnlyStoreExample {
-    /** Cache name. */
+    /**
+     * Cache name.
+     */
     private static final String CACHE_NAME = CacheLoadOnlyStoreExample.class.getSimpleName();
 
     /**
@@ -63,7 +65,7 @@ public class CacheLoadOnlyStoreExample {
             System.out.println();
             System.out.println(">>> CacheLoadOnlyStoreExample started.");
 
-            ProductLoader productLoader = new ProductLoader("examples/src/main/resources/person.csv");
+            ProductLoader productLoader = new ProductLoader("classpath:person.csv");
 
             productLoader.setThreadsCount(2);
             productLoader.setBatchSize(10);
@@ -76,8 +78,7 @@ public class CacheLoadOnlyStoreExample {
                 System.out.println(">>> Loaded number of items: " + cache.size(CachePeekMode.PRIMARY));
 
                 System.out.println(">>> Data for the person by id1: " + cache.get(1L));
-            }
-            finally {
+            } finally {
                 // Distributed cache could be removed from cluster only by #destroyCache() call.
                 ignite.destroyCache(CACHE_NAME);
             }
@@ -105,29 +106,36 @@ public class CacheLoadOnlyStoreExample {
      * Csv data loader for product data.
      */
     private static class ProductLoader extends CacheLoadOnlyStoreAdapter<Long, Person, String> implements Serializable {
-        /** Csv file name. */
+        /**
+         * Csv file name.
+         */
         final String csvFileName;
 
-        /** Constructor. */
+        /**
+         * Constructor.
+         */
         ProductLoader(String csvFileName) {
             this.csvFileName = csvFileName;
         }
 
-        /** {@inheritDoc} */
-        @Override protected Iterator<String> inputIterator(@Nullable Object... args) throws CacheLoaderException {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        protected Iterator<String> inputIterator(@Nullable Object... args) throws CacheLoaderException {
             final Scanner scanner;
 
             try {
-                File path = IgniteUtils.resolveIgnitePath(csvFileName);
 
-                if (path == null)
+                File path = ResourceUtils.getFile(csvFileName);
+
+                if (path == null) {
                     throw new CacheLoaderException("Failed to open the source file: " + csvFileName);
-
+                }
                 scanner = new Scanner(path);
 
                 scanner.useDelimiter("\\n");
-            }
-            catch (FileNotFoundException e) {
+            } catch (IOException e) {
                 throw new CacheLoaderException("Failed to open the source file " + csvFileName, e);
             }
 
@@ -136,7 +144,8 @@ public class CacheLoadOnlyStoreExample {
              */
             return new Iterator<String>() {
                 /** {@inheritDoc} */
-                @Override public boolean hasNext() {
+                @Override
+                public boolean hasNext() {
                     if (!scanner.hasNext()) {
                         scanner.close();
 
@@ -147,25 +156,31 @@ public class CacheLoadOnlyStoreExample {
                 }
 
                 /** {@inheritDoc} */
-                @Override public String next() {
-                    if (!hasNext())
+                @Override
+                public String next() {
+                    if (!hasNext()) {
                         throw new NoSuchElementException();
-
+                    }
                     return scanner.next();
                 }
 
                 /** {@inheritDoc} */
-                @Override public void remove() {
+                @Override
+                public void remove() {
                     throw new UnsupportedOperationException();
                 }
             };
         }
 
-        /** {@inheritDoc} */
-        @Nullable @Override protected IgniteBiTuple<Long, Person> parse(String rec, @Nullable Object... args) {
+        /**
+         * {@inheritDoc}
+         */
+        @Nullable
+        @Override
+        protected IgniteBiTuple<Long, Person> parse(String rec, @Nullable Object... args) {
             String[] p = rec.split("\\s*,\\s*");
             return new T2<>(Long.valueOf(p[0]), new Person(Long.valueOf(p[0]), Long.valueOf(p[1]),
-                p[2], p[3], Double.valueOf(p[4]), p[5].trim()));
+                    p[2], p[3], Double.valueOf(p[4]), p[5].trim()));
         }
     }
 }

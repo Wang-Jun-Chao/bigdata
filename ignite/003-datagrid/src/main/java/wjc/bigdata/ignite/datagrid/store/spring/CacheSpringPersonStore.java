@@ -97,8 +97,9 @@ public class CacheSpringPersonStore extends CacheStoreAdapter<Long, Person> {
 
     /** {@inheritDoc} */
     @Override public void loadCache(final IgniteBiInClosure<Long, Person> clo, Object... args) {
-        if (args == null || args.length == 0 || args[0] == null)
+        if (args == null || args.length == 0 || args[0] == null) {
             throw new CacheLoaderException("Expected entry count parameter is not provided.");
+        }
 
         int entryCnt = (Integer)args[0];
 

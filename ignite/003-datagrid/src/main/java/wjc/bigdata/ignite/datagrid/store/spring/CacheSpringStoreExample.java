@@ -26,6 +26,7 @@ import org.apache.ignite.cache.store.spring.CacheSpringStoreSessionListener;
 import org.apache.ignite.configuration.CacheConfiguration;
 import org.apache.ignite.transactions.Transaction;
 import wjc.bigdata.ignite.datagrid.model.Person;
+import wjc.bigdata.ignite.datagrid.util.DbH2ServerStartup;
 import wjc.bigdata.ignite.datagrid.util.ExamplesUtils;
 
 import javax.cache.configuration.Factory;
