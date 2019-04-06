@@ -12,6 +12,8 @@
     <modules>
         <module>000-startup</module>
         <module>001-sql</module>
+        <module>002-compute-grid</module>
+        <module>003-data-grid</module>
     </modules>
 
     <dependencyManagement>

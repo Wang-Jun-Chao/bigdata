@@ -31,7 +31,7 @@ import java.util.List;
  * Remote nodes could be started from command line as follows:
  * {@code 'ignite.{sh|bat} examples/config/example-ignite.xml'}.
  * <p>
- * Alternatively you can run 000-startup ExampleNodeStartup in either same or another JVM.
+ * Alternatively you can run {@link ExampleNodeStartup} in either same or another JVM.
  */
 public class SqlDdlExample {
     /**
