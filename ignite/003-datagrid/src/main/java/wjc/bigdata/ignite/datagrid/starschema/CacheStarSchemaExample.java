@@ -179,7 +179,7 @@ public class CacheStarSchemaExample {
         QueryCursor<Cache.Entry<Integer, FactPurchase>> storePurchases = factCache.query(new SqlQuery(
             FactPurchase.class,
             "from \"" + DIM_STORE_CACHE_NAME + "\".DimStore, \"" + FACT_CACHE_NAME + "\".FactPurchase "
-                + "where DimStore.id=FactPurchase.storeId and DimStore.name=?").setArgs("Store1"));
+                + "where DimStore.id = FactPurchase.storeId and DimStore.name = ?").setArgs("Store1"));
 
         printQueryResults("All purchases made at store1:", storePurchases.getAll());
     }
@@ -210,8 +210,8 @@ public class CacheStarSchemaExample {
             FactPurchase.class,
             "from \"" + DIM_STORE_CACHE_NAME + "\".DimStore, \"" + DIM_PROD_CACHE_NAME + "\".DimProduct, " +
                 "\"" + FACT_CACHE_NAME + "\".FactPurchase "
-                + "where DimStore.id=FactPurchase.storeId and DimProduct.id=FactPurchase.productId "
-                + "and DimStore.name=? and DimProduct.id in(?, ?, ?)")
+                + "where DimStore.id = FactPurchase.storeId and DimProduct.id = FactPurchase.productId "
+                + "and DimStore.name = ? and DimProduct.id in(?, ?, ?)")
             .setArgs("Store2", p1.getId(), p2.getId(), p3.getId()));
 
         printQueryResults("All purchases made at store2 for 3 specific products:", prodPurchases.getAll());
@@ -226,8 +226,9 @@ public class CacheStarSchemaExample {
     private static <V> void printQueryResults(String msg, Iterable<Cache.Entry<Integer, V>> res) {
         System.out.println(msg);
 
-        for (Cache.Entry<?, ?> e : res)
+        for (Cache.Entry<?, ?> e : res) {
             System.out.println("    " + e.getValue().toString());
+        }
     }
 
     /**
@@ -238,16 +239,18 @@ public class CacheStarSchemaExample {
      */
     @SuppressWarnings("UnusedDeclaration")
     private static <T> T rand(Collection<? extends T> c) {
-        if (c == null)
+        if (c == null) {
             throw new IllegalArgumentException();
+        }
 
         int n = ThreadLocalRandom.current().nextInt(c.size());
 
         int i = 0;
 
         for (T t : c) {
-            if (i++ == n)
+            if (i++ == n) {
                 return t;
+            }
         }
 
         throw new ConcurrentModificationException();
