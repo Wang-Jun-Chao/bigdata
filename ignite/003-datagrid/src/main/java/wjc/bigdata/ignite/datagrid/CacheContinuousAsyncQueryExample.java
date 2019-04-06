@@ -63,30 +63,35 @@ public class CacheContinuousAsyncQueryExample {
                 int keyCnt = 20;
 
                 // These entries will be queried by initial predicate.
-                for (int i = 0; i < keyCnt; i++)
+                for (int i = 0; i < keyCnt; i++) {
                     cache.put(i, Integer.toString(i));
+                }
 
                 // Create new continuous query.
                 ContinuousQuery<Integer, String> qry = new ContinuousQuery<>();
 
                 qry.setInitialQuery(new ScanQuery<>(new IgniteBiPredicate<Integer, String>() {
-                    @Override public boolean apply(Integer key, String val) {
+                    @Override
+                    public boolean apply(Integer key, String val) {
                         return key > 10;
                     }
                 }));
 
                 // Callback that is called locally when update notifications are received.
                 qry.setLocalListener(new CacheEntryUpdatedListener<Integer, String>() {
-                    @Override public void onUpdated(Iterable<CacheEntryEvent<? extends Integer, ? extends String>> evts) {
-                        for (CacheEntryEvent<? extends Integer, ? extends String> e : evts)
+                    @Override
+                    public void onUpdated(Iterable<CacheEntryEvent<? extends Integer, ? extends String>> evts) {
+                        for (CacheEntryEvent<? extends Integer, ? extends String> e : evts) {
                             System.out.println("Updated entry [key=" + e.getKey() + ", val=" + e.getValue() + ']');
+                        }
                     }
                 });
 
                 // This filter will be evaluated remotely on all nodes.
                 // Entry that pass this filter will be sent to the caller.
                 qry.setRemoteFilterFactory(new Factory<CacheEntryEventFilter<Integer, String>>() {
-                    @Override public CacheEntryEventFilter<Integer, String> create() {
+                    @Override
+                    public CacheEntryEventFilter<Integer, String> create() {
                         return new CacheEntryFilter();
                     }
                 });
@@ -94,20 +99,21 @@ public class CacheContinuousAsyncQueryExample {
                 // Execute query.
                 try (QueryCursor<Cache.Entry<Integer, String>> cur = cache.query(qry)) {
                     // Iterate through existing data.
-                    for (Cache.Entry<Integer, String> e : cur)
+                    for (Cache.Entry<Integer, String> e : cur) {
                         System.out.println("Queried existing entry [key=" + e.getKey() + ", val=" + e.getValue() + ']');
-
+                    }
                     // Add a few more keys and watch more query notifications.
-                    for (int i = 0; i < keyCnt; i++)
+                    for (int i = 0; i < keyCnt; i++) {
                         cache.put(i, Integer.toString(i));
-
+                    }
                     // Wait for a while while callback is notified about remaining puts.
                     Thread.sleep(2000);
                 }
 
                 // Iterate through entries which was updated from filter.
-                for (int i = 0; i < 10; i++)
+                for (int i = 0; i < 10; i++) {
                     System.out.println("Entry updated from filter [key=" + i + ", val=" + cache.get(i) + ']');
+                }
             }
             finally {
                 // Distributed cache could be removed from cluster only by #destroyCache() call.
@@ -129,8 +135,9 @@ public class CacheContinuousAsyncQueryExample {
         @Override public boolean evaluate(CacheEntryEvent<? extends Integer, ? extends String> e)
             throws CacheEntryListenerException {
             // This cache operation is safe because filter has Ignite AsyncCallback annotation.
-            if (e.getKey() < 10 && String.valueOf(e.getKey()).equals(e.getValue()))
+            if (e.getKey() < 10 && String.valueOf(e.getKey()).equals(e.getValue())) {
                 ignite.cache(CACHE_NAME).put(e.getKey(), e.getValue() + "_less_than_10");
+            }
 
             return e.getKey() > 10;
         }
