@@ -60,8 +60,9 @@ public class CacheContinuousQueryExample {
                 int keyCnt = 20;
 
                 // These entries will be queried by initial predicate.
-                for (int i = 0; i < keyCnt; i++)
+                for (int i = 0; i < keyCnt; i++) {
                     cache.put(i, Integer.toString(i));
+                }
 
                 // Create new continuous query.
                 ContinuousQuery<Integer, String> qry = new ContinuousQuery<>();
@@ -75,8 +76,9 @@ public class CacheContinuousQueryExample {
                 // Callback that is called locally when update notifications are received.
                 qry.setLocalListener(new CacheEntryUpdatedListener<Integer, String>() {
                     @Override public void onUpdated(Iterable<CacheEntryEvent<? extends Integer, ? extends String>> evts) {
-                        for (CacheEntryEvent<? extends Integer, ? extends String> e : evts)
+                        for (CacheEntryEvent<? extends Integer, ? extends String> e : evts) {
                             System.out.println("Updated entry [key=" + e.getKey() + ", val=" + e.getValue() + ']');
+                        }
                     }
                 });
 
@@ -95,13 +97,13 @@ public class CacheContinuousQueryExample {
                 // Execute query.
                 try (QueryCursor<Cache.Entry<Integer, String>> cur = cache.query(qry)) {
                     // Iterate through existing data.
-                    for (Cache.Entry<Integer, String> e : cur)
+                    for (Cache.Entry<Integer, String> e : cur) {
                         System.out.println("Queried existing entry [key=" + e.getKey() + ", val=" + e.getValue() + ']');
-
+                    }
                     // Add a few more keys and watch more query notifications.
-                    for (int i = keyCnt; i < keyCnt + 10; i++)
+                    for (int i = keyCnt; i < keyCnt + 10; i++) {
                         cache.put(i, Integer.toString(i));
-
+                    }
                     // Wait for a while while callback is notified about remaining puts.
                     Thread.sleep(2000);
                 }

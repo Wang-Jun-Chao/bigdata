@@ -44,10 +44,14 @@ import java.util.Map;
  * start node with {@code example-ignite.xml} configuration.
  */
 public final class CacheAffinityExample {
-    /** Cache name. */
+    /**
+     * Cache name.
+     */
     private static final String CACHE_NAME = CacheAffinityExample.class.getSimpleName();
 
-    /** Number of keys. */
+    /**
+     * Number of keys.
+     */
     private static final int KEY_CNT = 20;
 
     /**
@@ -68,16 +72,16 @@ public final class CacheAffinityExample {
 
             // Auto-close cache at the end of the example.
             try (IgniteCache<Integer, String> cache = ignite.getOrCreateCache(cfg)) {
-                for (int i = 0; i < KEY_CNT; i++)
+                for (int i = 0; i < KEY_CNT; i++) {
                     cache.put(i, Integer.toString(i));
+                }
 
                 // Co-locates jobs with data using IgniteCompute.affinityRun(...) method.
                 visitUsingAffinityRun();
 
                 // Co-locates jobs with data using IgniteCluster.mapKeysToNodes(...) method.
                 visitUsingMapKeysToNodes();
-            }
-            finally {
+            } finally {
                 // Distributed cache could be removed from cluster only by #destroyCache() call.
                 ignite.destroyCache(CACHE_NAME);
             }
@@ -100,7 +104,7 @@ public final class CacheAffinityExample {
             // data with the given key is located. Since it will be co-located
             // we can use local 'peek' operation safely.
             ignite.compute().affinityRun(CACHE_NAME, key,
-                () -> System.out.println("Co-located using affinityRun [key= " + key + ", value=" + cache.localPeek(key) + ']'));
+                    () -> System.out.println("Co-located using affinityRun [key= " + key + ", value=" + cache.localPeek(key) + ']'));
         }
     }
 
@@ -114,8 +118,9 @@ public final class CacheAffinityExample {
 
         Collection<Integer> keys = new ArrayList<>(KEY_CNT);
 
-        for (int i = 0; i < KEY_CNT; i++)
+        for (int i = 0; i < KEY_CNT; i++) {
             keys.add(i);
+        }
 
         // Map all keys to nodes.
         Map<ClusterNode, Collection<Integer>> mappings = ignite.<Integer>affinity(CACHE_NAME).mapKeysToNodes(keys);
@@ -132,9 +137,10 @@ public final class CacheAffinityExample {
 
                     // Peek is a local memory lookup, however, value should never be 'null'
                     // as we are co-located with node that has a given key.
-                    for (Integer key : mappedKeys)
+                    for (Integer key : mappedKeys) {
                         System.out.println("Co-located using mapKeysToNodes [key= " + key +
-                            ", value=" + cache.localPeek(key) + ']');
+                                ", value=" + cache.localPeek(key) + ']');
+                    }
                 });
             }
         }
