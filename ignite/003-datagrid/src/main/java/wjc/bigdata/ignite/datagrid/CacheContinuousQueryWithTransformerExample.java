@@ -53,7 +53,9 @@ import java.util.Map;
  * @see ContinuousQueryWithTransformer
  */
 public class CacheContinuousQueryWithTransformerExample {
-    /** Cache name. */
+    /**
+     * Cache name.
+     */
     private static final String CACHE_NAME = CacheContinuousQueryWithTransformerExample.class.getSimpleName();
 
     /**
@@ -71,30 +73,33 @@ public class CacheContinuousQueryWithTransformerExample {
             try (IgniteCache<Integer, Organization> cache = ignite.getOrCreateCache(CACHE_NAME).withKeepBinary()) {
                 // Create new continuous query with transformer.
                 ContinuousQueryWithTransformer<Integer, Organization, String> qry =
-                    new ContinuousQueryWithTransformer<>();
+                        new ContinuousQueryWithTransformer<>();
 
                 // Factory to create transformers.
                 qry.setRemoteTransformerFactory(() -> {
                     // Return one field of complex object.
                     // Only this field will be sent over to a local node over the network.
-                    return event -> ((BinaryObject)event.getValue()).field("name");
+                    return event -> ((BinaryObject) event.getValue()).field("name");
                 });
 
                 // Listener that will receive transformed data.
                 qry.setLocalListener(names -> {
-                    for (String name : names)
+                    for (String name : names) {
                         System.out.println("New organization name: " + name);
+                    }
                 });
+
 
                 // Execute query.
                 try (QueryCursor<Cache.Entry<Integer, Organization>> cur = cache.query(qry)) {
                     populateCache(cache);
-
-                    // Wait for a while while callback is notified about remaining puts.
-                    Thread.sleep(2000);
+                    System.out.println();
+                    cur.forEach(entry -> System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue()));
                 }
-            }
-            finally {
+                // Wait for a while while callback is notified about remaining puts.
+                Thread.sleep(2000);
+
+            } finally {
                 // Distributed cache could be removed from cluster only by #destroyCache() call.
                 ignite.destroyCache(CACHE_NAME);
             }
@@ -110,34 +115,34 @@ public class CacheContinuousQueryWithTransformerExample {
         Map<Integer, Organization> data = new HashMap<>();
 
         data.put(1, new Organization(
-            "Microsoft", // Name.
-            new Address("1096 Eddy Street, San Francisco, CA", 94109), // Address.
-            OrganizationType.PRIVATE, // Type.
-            new Timestamp(System.currentTimeMillis()))); // Last update time.
+                "Microsoft", // Name.
+                new Address("1096 Eddy Street, San Francisco, CA", 94109), // Address.
+                OrganizationType.PRIVATE, // Type.
+                new Timestamp(System.currentTimeMillis()))); // Last update time.
 
         data.put(2, new Organization(
-            "Red Cross", // Name.
-            new Address("184 Fidler Drive, San Antonio, TX", 78205), // Address.
-            OrganizationType.NON_PROFIT, // Type.
-            new Timestamp(System.currentTimeMillis()))); // Last update time.
+                "Red Cross", // Name.
+                new Address("184 Fidler Drive, San Antonio, TX", 78205), // Address.
+                OrganizationType.NON_PROFIT, // Type.
+                new Timestamp(System.currentTimeMillis()))); // Last update time.
 
         data.put(3, new Organization(
-            "Apple", // Name.
-            new Address("1 Infinite Loop, Cupertino, CA", 95014), // Address.
-            OrganizationType.PRIVATE, // Type.
-            new Timestamp(System.currentTimeMillis()))); // Last update time.
+                "Apple", // Name.
+                new Address("1 Infinite Loop, Cupertino, CA", 95014), // Address.
+                OrganizationType.PRIVATE, // Type.
+                new Timestamp(System.currentTimeMillis()))); // Last update time.
 
         data.put(4, new Organization(
-            "IBM", // Name.
-            new Address("1 New Orchard Road Armonk, New York", 10504), // Address.
-            OrganizationType.PRIVATE, // Type.
-            new Timestamp(System.currentTimeMillis()))); // Last update time.
+                "IBM", // Name.
+                new Address("1 New Orchard Road Armonk, New York", 10504), // Address.
+                OrganizationType.PRIVATE, // Type.
+                new Timestamp(System.currentTimeMillis()))); // Last update time.
 
         data.put(5, new Organization(
-            "NASA Armstrong Flight Research Center", // Name.
-            new Address("4800 Lilly Ave, Edwards, CA", 793523), // Address.
-            OrganizationType.NON_PROFIT, // Type.
-            new Timestamp(System.currentTimeMillis()))); // Last update time.
+                "NASA Armstrong Flight Research Center", // Name.
+                new Address("4800 Lilly Ave, Edwards, CA", 793523), // Address.
+                OrganizationType.NON_PROFIT, // Type.
+                new Timestamp(System.currentTimeMillis()))); // Last update time.
 
         cache.putAll(data);
     }
