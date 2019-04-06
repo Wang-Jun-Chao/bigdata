@@ -13,6 +13,7 @@
         <module>001-sql</module>
         <module>002-compute-grid</module>
         <module>003-data-grid</module>
+        <module>004-service-grid</module>
     </modules>
 
     <dependencyManagement>
