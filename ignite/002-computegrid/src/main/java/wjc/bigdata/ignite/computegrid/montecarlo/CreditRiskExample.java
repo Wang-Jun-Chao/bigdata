@@ -44,7 +44,7 @@ public final class CreditRiskExample {
      * @throws IgniteException If example execution failed.
      */
     public static void main(String[] args) throws IgniteException {
-        try (Ignite ignite = Ignition.start("example-ignite.xml")) {
+        try (Ignite ignite = Ignition.start("   example-ignite.xml")) {
             System.out.println();
             System.out.println("Credit risk example started.");
 
