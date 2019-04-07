@@ -15,8 +15,22 @@
  * limitations under the License.
  */
 
+package wjc.bigdata.ingite.cluster;
+
+import org.apache.ignite.IgniteException;
+import org.apache.ignite.Ignition;
+
 /**
- * <!-- Package description. -->
- * Cluster group example.
+ * Starts up an empty node with example compute configuration.
  */
-package org.apache.ignite.examples.cluster;
+public class ExampleNodeStartup {
+    /**
+     * Start up an empty node with example compute configuration.
+     *
+     * @param args Command line arguments, none required.
+     * @throws IgniteException If failed.
+     */
+    public static void main(String[] args) throws IgniteException {
+        Ignition.start("example-ignite.xml");
+    }
+}

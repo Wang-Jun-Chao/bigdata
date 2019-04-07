@@ -15,24 +15,22 @@
  * limitations under the License.
  */
 
-package org.apache.ignite.examples.cluster;
+package wjc.bigdata.ingite.cluster;
 
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCluster;
 import org.apache.ignite.IgniteException;
 import org.apache.ignite.Ignition;
 import org.apache.ignite.cluster.ClusterGroup;
-import org.apache.ignite.examples.ExampleNodeStartup;
-import org.apache.ignite.examples.ExamplesUtils;
 
 /**
  * Demonstrates new functional APIs.
  * <p>
  * Remote nodes should always be started with special configuration file which
- * enables P2P class loading: {@code 'ignite.{sh|bat} examples/config/example-ignite.xml'}.
+ * enables P2P class loading: {@code 'ignite.{sh|bat} example-ignite.xml'}.
  * <p>
  * Alternatively you can run {@link ExampleNodeStartup} in another JVM which will start node
- * with {@code examples/config/example-ignite.xml} configuration.
+ * with {@code example-ignite.xml} configuration.
  */
 public class ClusterGroupExample {
     /**
@@ -42,9 +40,10 @@ public class ClusterGroupExample {
      * @throws IgniteException If example execution failed.
      */
     public static void main(String[] args) throws IgniteException {
-        try (Ignite ignite = Ignition.start("examples/config/example-ignite.xml")) {
-            if (!ExamplesUtils.checkMinTopologySize(ignite.cluster(), 2))
+        try (Ignite ignite = Ignition.start("example-ignite.xml")) {
+            if (!ExamplesUtils.checkMinTopologySize(ignite.cluster(), 2)) {
                 return;
+            }
 
             System.out.println();
             System.out.println("Compute example started.");
