@@ -31,11 +31,11 @@ import org.apache.ignite.cache.query.SqlFieldsQuery;
 import org.apache.ignite.cache.query.SqlQuery;
 import org.apache.ignite.cache.query.TextQuery;
 import org.apache.ignite.configuration.CacheConfiguration;
-import org.apache.ignite.examples.model.Address;
-import org.apache.ignite.examples.model.Employee;
-import org.apache.ignite.examples.model.EmployeeKey;
-import org.apache.ignite.examples.model.Organization;
-import org.apache.ignite.examples.model.OrganizationType;
+import wjc.bigdata.ignite.binary.model.Address;
+import wjc.bigdata.ignite.binary.model.Employee;
+import wjc.bigdata.ignite.binary.model.EmployeeKey;
+import wjc.bigdata.ignite.binary.model.Organization;
+import wjc.bigdata.ignite.binary.model.OrganizationType;
 
 import javax.cache.Cache;
 import java.sql.Timestamp;
@@ -48,10 +48,10 @@ import java.util.List;
  * The example populates cache with sample data and runs several SQL and full text queries over this data.
  * <p>
  * Remote nodes should always be started with the following command:
- * {@code 'ignite.{sh|bat} examples/config/example-ignite.xml'}
+ * {@code 'ignite.{sh|bat} example-ignite.xml'}
  * <p>
- * Alternatively you can run {@link org.apache.ignite.examples.ExampleNodeStartup} in another JVM which will
- * start a node with {@code examples/config/example-ignite.xml} configuration.
+ * Alternatively you can run {@link ExampleNodeStartup} in another JVM which will
+ * start a node with {@code example-ignite.xml} configuration.
  */
 public class CacheClientBinaryQueryExample {
     /** Organization cache name. */
@@ -68,7 +68,7 @@ public class CacheClientBinaryQueryExample {
      * @param args Command line arguments, none required.
      */
     public static void main(String[] args) {
-        try (Ignite ignite = Ignition.start("examples/config/example-ignite.xml")) {
+        try (Ignite ignite = Ignition.start("example-ignite.xml")) {
             System.out.println();
             System.out.println(">>> Binary objects cache query example started.");
 

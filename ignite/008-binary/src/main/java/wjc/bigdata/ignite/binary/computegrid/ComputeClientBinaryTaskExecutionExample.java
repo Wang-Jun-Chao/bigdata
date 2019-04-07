@@ -37,10 +37,10 @@ import java.util.Collection;
  * of these nodes.
  * <p>
  * Remote nodes should always be started with the following command:
- * {@code 'ignite.{sh|bat} examples/config/example-ignite.xml'}.
+ * {@code 'ignite.{sh|bat} example-ignite.xml'}.
  * <p>
  * Alternatively you can run {@link ExampleNodeStartup} in another JVM which will
- * start a node with {@code examples/config/example-ignite.xml} configuration.
+ * start a node with {@code example-ignite.xml} configuration.
  */
 public class ComputeClientBinaryTaskExecutionExample {
     /**
@@ -49,7 +49,7 @@ public class ComputeClientBinaryTaskExecutionExample {
      * @param args Command line arguments, none required.
      */
     public static void main(String[] args) {
-        try (Ignite ignite = Ignition.start("examples/config/example-ignite.xml")) {
+        try (Ignite ignite = Ignition.start("example-ignite.xml")) {
             System.out.println();
             System.out.println(">>> Binary objects task execution example started.");
 

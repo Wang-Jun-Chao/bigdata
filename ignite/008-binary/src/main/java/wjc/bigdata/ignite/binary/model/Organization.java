@@ -122,7 +122,7 @@ public class Organization {
         return lastUpdated;
     }
 
-    /** {@inheritDoc} */
+    /* */
     @Override public String toString() {
         return "Organization [id=" + id +
             ", name=" + name +

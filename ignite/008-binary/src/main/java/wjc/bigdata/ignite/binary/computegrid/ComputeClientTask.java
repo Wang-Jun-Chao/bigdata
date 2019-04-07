@@ -39,11 +39,9 @@ import java.util.List;
  * get the average salary.
  */
 public class ComputeClientTask extends ComputeTaskSplitAdapter<Collection<BinaryObject>, Long> {
-    /** {@inheritDoc} */
-    @Override protected Collection<? extends ComputeJob> split(
-        int gridSize,
-        Collection<BinaryObject> arg
-    ) {
+
+    @Override
+    protected Collection<? extends ComputeJob> split(int gridSize, Collection<BinaryObject> arg) {
         Collection<ComputeClientJob> jobs = new ArrayList<>();
 
         Collection<BinaryObject> employees = new ArrayList<>();
@@ -67,8 +65,9 @@ public class ComputeClientTask extends ComputeTaskSplitAdapter<Collection<Binary
         return jobs;
     }
 
-    /** {@inheritDoc} */
-    @Nullable @Override public Long reduce(List<ComputeJobResult> results) {
+    @Nullable
+    @Override
+    public Long reduce(List<ComputeJobResult> results) {
         long sum = 0;
         int cnt = 0;
 
@@ -86,7 +85,9 @@ public class ComputeClientTask extends ComputeTaskSplitAdapter<Collection<Binary
      * Remote job for {@link ComputeClientTask}.
      */
     private static class ComputeClientJob extends ComputeJobAdapter {
-        /** Collection of employees. */
+        /**
+         * Collection of employees.
+         */
         private final Collection<BinaryObject> employees;
 
         /**
@@ -96,8 +97,9 @@ public class ComputeClientTask extends ComputeTaskSplitAdapter<Collection<Binary
             this.employees = employees;
         }
 
-        /** {@inheritDoc} */
-        @Nullable @Override public Object execute() {
+        @Nullable
+        @Override
+        public Object execute() {
             long sum = 0;
             int cnt = 0;
 

@@ -44,10 +44,10 @@ import java.util.Map;
  * format using special cache projection.
  * <p>
  * Remote nodes should always be started with the following command:
- * {@code 'ignite.{sh|bat} examples/config/example-ignite.xml'}
+ * {@code 'ignite.{sh|bat} example-ignite.xml'}
  * <p>
  * Alternatively you can run {@link ExampleNodeStartup} in another JVM which will
- * start a node with {@code examples/config/example-ignite.xml} configuration.
+ * start a node with {@code example-ignite.xml} configuration.
  */
 @SuppressWarnings("TypeMayBeWeakened")
 public class CacheClientBinaryPutGetExample {
@@ -60,7 +60,7 @@ public class CacheClientBinaryPutGetExample {
      * @param args Command line arguments, none required.
      */
     public static void main(String[] args) {
-        try (Ignite ignite = Ignition.start("examples/config/example-ignite.xml")) {
+        try (Ignite ignite = Ignition.start("example-ignite.xml")) {
             System.out.println();
             System.out.println(">>> Binary objects cache put-get example started.");
 

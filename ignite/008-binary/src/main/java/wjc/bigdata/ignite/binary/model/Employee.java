@@ -83,7 +83,7 @@ public class Employee {
         return departments;
     }
 
-    /** {@inheritDoc} */
+    /* */
     @Override public String toString() {
         return "Employee [name=" + name +
             ", salary=" + salary +

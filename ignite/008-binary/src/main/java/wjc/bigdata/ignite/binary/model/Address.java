@@ -52,19 +52,19 @@ public class Address implements Binarylizable {
         this.zip = zip;
     }
 
-    /** {@inheritDoc} */
+    /* */
     @Override public void writeBinary(BinaryWriter writer) throws BinaryObjectException {
         writer.writeString("street", street);
         writer.writeInt("zip", zip);
     }
 
-    /** {@inheritDoc} */
+    /* */
     @Override public void readBinary(BinaryReader reader) throws BinaryObjectException {
         street = reader.readString("street");
         zip = reader.readInt("zip");
     }
 
-    /** {@inheritDoc} */
+    /* */
     @Override public String toString() {
         return "Address [street=" + street +
             ", zip=" + zip + ']';
