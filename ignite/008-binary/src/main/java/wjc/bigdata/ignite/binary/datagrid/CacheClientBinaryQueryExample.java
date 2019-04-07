@@ -31,6 +31,7 @@ import org.apache.ignite.cache.query.SqlFieldsQuery;
 import org.apache.ignite.cache.query.SqlQuery;
 import org.apache.ignite.cache.query.TextQuery;
 import org.apache.ignite.configuration.CacheConfiguration;
+import wjc.bigdata.ignite.binary.ExampleNodeStartup;
 import wjc.bigdata.ignite.binary.model.Address;
 import wjc.bigdata.ignite.binary.model.Employee;
 import wjc.bigdata.ignite.binary.model.EmployeeKey;
@@ -40,6 +41,7 @@ import wjc.bigdata.ignite.binary.model.OrganizationType;
 import javax.cache.Cache;
 import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -54,13 +56,17 @@ import java.util.List;
  * start a node with {@code example-ignite.xml} configuration.
  */
 public class CacheClientBinaryQueryExample {
-    /** Organization cache name. */
+    /**
+     * Organization cache name.
+     */
     private static final String ORGANIZATION_CACHE_NAME = CacheClientBinaryQueryExample.class.getSimpleName()
-        + "Organizations";
+            + "Organizations";
 
-    /** Employee cache name. */
+    /**
+     * Employee cache name.
+     */
     private static final String EMPLOYEE_CACHE_NAME = CacheClientBinaryQueryExample.class.getSimpleName()
-        + "Employees";
+            + "Employees";
 
     /**
      * Executes example.
@@ -77,14 +83,14 @@ public class CacheClientBinaryQueryExample {
             orgCacheCfg.setCacheMode(CacheMode.PARTITIONED);
             orgCacheCfg.setName(ORGANIZATION_CACHE_NAME);
 
-            orgCacheCfg.setQueryEntities(Arrays.asList(createOrganizationQueryEntity()));
+            orgCacheCfg.setQueryEntities(Collections.singletonList(createOrganizationQueryEntity()));
 
             CacheConfiguration<EmployeeKey, Employee> employeeCacheCfg = new CacheConfiguration<>();
 
             employeeCacheCfg.setCacheMode(CacheMode.PARTITIONED);
             employeeCacheCfg.setName(EMPLOYEE_CACHE_NAME);
 
-            employeeCacheCfg.setQueryEntities(Arrays.asList(createEmployeeQueryEntity()));
+            employeeCacheCfg.setQueryEntities(Collections.singletonList(createEmployeeQueryEntity()));
 
             employeeCacheCfg.setKeyConfiguration(new CacheKeyConfiguration(EmployeeKey.class));
 
@@ -120,8 +126,7 @@ public class CacheClientBinaryQueryExample {
                 textQuery(binaryCache);
 
                 System.out.println();
-            }
-            finally {
+            } finally {
                 // Delete caches with their content completely.
                 ignite.destroyCache(ORGANIZATION_CACHE_NAME);
                 ignite.destroyCache(EMPLOYEE_CACHE_NAME);
@@ -151,11 +156,11 @@ public class CacheClientBinaryQueryExample {
         employeeEntity.setFields(fields);
 
         employeeEntity.setIndexes(Arrays.asList(
-            new QueryIndex("name"),
-            new QueryIndex("salary"),
-            new QueryIndex("addr.zip"),
-            new QueryIndex("organizationId"),
-            new QueryIndex("addr.street", QueryIndexType.FULLTEXT)
+                new QueryIndex("name"),
+                new QueryIndex("salary"),
+                new QueryIndex("addr.zip"),
+                new QueryIndex("organizationId"),
+                new QueryIndex("addr.street", QueryIndexType.FULLTEXT)
         ));
 
         return employeeEntity;
@@ -179,9 +184,9 @@ public class CacheClientBinaryQueryExample {
 
         organizationEntity.setFields(fields);
 
-        organizationEntity.setIndexes(Arrays.asList(
-            new QueryIndex("name")
-        ));
+        organizationEntity.setIndexes(
+                Collections.singletonList(new QueryIndex("name"))
+        );
 
         return organizationEntity;
     }
@@ -201,8 +206,9 @@ public class CacheClientBinaryQueryExample {
         System.out.println();
         System.out.println(">>> Employees with zip " + zip + ':');
 
-        for (Cache.Entry<BinaryObject, BinaryObject> e : employees.getAll())
+        for (Cache.Entry<BinaryObject, BinaryObject> e : employees.getAll()) {
             System.out.println(">>>     " + e.getValue().deserialize());
+        }
     }
 
     /**
@@ -212,19 +218,20 @@ public class CacheClientBinaryQueryExample {
      */
     private static void sqlJoinQuery(IgniteCache<BinaryObject, BinaryObject> cache) {
         SqlQuery<BinaryObject, BinaryObject> qry = new SqlQuery<>(Employee.class,
-            "from Employee, \"" + ORGANIZATION_CACHE_NAME + "\".Organization as org " +
-                "where Employee.organizationId = org._key and org.name = ?");
+                "from Employee, \"" + ORGANIZATION_CACHE_NAME + "\".Organization as org " +
+                        "where Employee.organizationId = org._key and org.name = ?");
 
         String organizationName = "GridGain";
 
         QueryCursor<Cache.Entry<BinaryObject, BinaryObject>> employees =
-            cache.query(qry.setArgs(organizationName));
+                cache.query(qry.setArgs(organizationName));
 
         System.out.println();
         System.out.println(">>> Employees working for " + organizationName + ':');
 
-        for (Cache.Entry<BinaryObject, BinaryObject> e : employees.getAll())
+        for (Cache.Entry<BinaryObject, BinaryObject> e : employees.getAll()) {
             System.out.println(">>>     " + e.getValue());
+        }
     }
 
     /**
@@ -240,8 +247,9 @@ public class CacheClientBinaryQueryExample {
         System.out.println();
         System.out.println(">>> Employee names and their salaries:");
 
-        for (List<?> row : employees.getAll())
+        for (List<?> row : employees.getAll()) {
             System.out.println(">>>     [Name=" + row.get(0) + ", salary=" + row.get(1) + ']');
+        }
     }
 
     /**
@@ -257,80 +265,80 @@ public class CacheClientBinaryQueryExample {
         System.out.println();
         System.out.println(">>> Employees living in Texas:");
 
-        for (Cache.Entry<BinaryObject, BinaryObject> e : employees.getAll())
+        for (Cache.Entry<BinaryObject, BinaryObject> e : employees.getAll()) {
             System.out.println(">>>     " + e.getValue().deserialize());
+        }
     }
 
     /**
      * Populates cache with data.
      *
-     * @param orgCache Organization cache.
+     * @param orgCache      Organization cache.
      * @param employeeCache Employee cache.
      */
-    @SuppressWarnings("TypeMayBeWeakened")
     private static void populateCache(IgniteCache<Integer, Organization> orgCache,
-        IgniteCache<EmployeeKey, Employee> employeeCache) {
+                                      IgniteCache<EmployeeKey, Employee> employeeCache) {
         orgCache.put(1, new Organization(
-            "GridGain",
-            new Address("1065 East Hillsdale Blvd, Foster City, CA", 94404),
-            OrganizationType.PRIVATE,
-            new Timestamp(System.currentTimeMillis())
+                "GridGain",
+                new Address("1065 East Hillsdale Blvd, Foster City, CA", 94404),
+                OrganizationType.PRIVATE,
+                new Timestamp(System.currentTimeMillis())
         ));
 
         orgCache.put(2, new Organization(
-            "Microsoft",
-            new Address("1096 Eddy Street, San Francisco, CA", 94109),
-            OrganizationType.PRIVATE,
-            new Timestamp(System.currentTimeMillis())
+                "Microsoft",
+                new Address("1096 Eddy Street, San Francisco, CA", 94109),
+                OrganizationType.PRIVATE,
+                new Timestamp(System.currentTimeMillis())
         ));
 
         employeeCache.put(new EmployeeKey(1, 1), new Employee(
-            "James Wilson",
-            12500,
-            new Address("1096 Eddy Street, San Francisco, CA", 94109),
-            Arrays.asList("Human Resources", "Customer Service")
+                "James Wilson",
+                12500,
+                new Address("1096 Eddy Street, San Francisco, CA", 94109),
+                Arrays.asList("Human Resources", "Customer Service")
         ));
 
         employeeCache.put(new EmployeeKey(2, 1), new Employee(
-            "Daniel Adams",
-            11000,
-            new Address("184 Fidler Drive, San Antonio, TX", 78130),
-            Arrays.asList("Development", "QA")
+                "Daniel Adams",
+                11000,
+                new Address("184 Fidler Drive, San Antonio, TX", 78130),
+                Arrays.asList("Development", "QA")
         ));
 
         employeeCache.put(new EmployeeKey(3, 1), new Employee(
-            "Cristian Moss",
-            12500,
-            new Address("667 Jerry Dove Drive, Florence, SC", 29501),
-            Arrays.asList("Logistics")
+                "Cristian Moss",
+                12500,
+                new Address("667 Jerry Dove Drive, Florence, SC", 29501),
+                Collections.singletonList("Logistics")
         ));
 
         employeeCache.put(new EmployeeKey(4, 2), new Employee(
-            "Allison Mathis",
-            25300,
-            new Address("2702 Freedom Lane, San Francisco, CA", 94109),
-            Arrays.asList("Development")
+                "Allison Mathis",
+                25300,
+                new Address("2702 Freedom Lane, San Francisco, CA", 94109),
+                Collections.singletonList("Development")
         ));
 
         employeeCache.put(new EmployeeKey(5, 2), new Employee(
-            "Breana Robbin",
-            6500,
-            new Address("3960 Sundown Lane, Austin, TX", 78130),
-            Arrays.asList("Sales")
+                "Breana Robbin",
+                6500,
+                new Address("3960 Sundown Lane, Austin, TX", 78130),
+                Collections.singletonList("Sales")
         ));
 
         employeeCache.put(new EmployeeKey(6, 2), new Employee(
-            "Philip Horsley",
-            19800,
-            new Address("2803 Elsie Drive, Sioux Falls, SD", 57104),
-            Arrays.asList("Sales")
+                "Philip Horsley",
+                19800,
+                new Address("2803 Elsie Drive, Sioux Falls, SD", 57104),
+                Collections.singletonList("Sales")
         ));
 
         employeeCache.put(new EmployeeKey(7, 2), new Employee(
-            "Brian Peters",
-            10600,
-            new Address("1407 Pearlman Avenue, Boston, MA", 12110),
-            Arrays.asList("Development", "QA")
+                "Brian Peters",
+                10600,
+                new Address("1407 Pearlman Avenue, Boston, MA", 12110),
+                Arrays.asList("Development", "QA")
         ));
     }
 }
