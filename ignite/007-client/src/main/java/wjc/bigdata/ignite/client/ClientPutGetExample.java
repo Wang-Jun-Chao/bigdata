@@ -15,26 +15,28 @@
  * limitations under the License.
  */
 
-package org.apache.ignite.examples.client;
+package wjc.bigdata.ignite.client;
 
 import org.apache.ignite.Ignition;
 import org.apache.ignite.client.ClientCache;
 import org.apache.ignite.client.ClientException;
 import org.apache.ignite.client.IgniteClient;
 import org.apache.ignite.configuration.ClientConfiguration;
-import org.apache.ignite.examples.model.Address;
+import wjc.bigdata.ignite.client.model.Address;
 
 /**
  * Demonstrates how to use Ignite thin client for basic put/get cache operations.
  * <p>
  * Prerequisites:
  * <ul>
- * <li>An Ignite server node must be running on local host.</li>
+ * <li>An Ignite server node must be running on local host. You can run {@link ExampleNodeStartup} in another JVM which will start node with default configuration.</li>
  * </ul>
  * </p>
  */
 public class ClientPutGetExample {
-    /** Entry point. */
+    /**
+     * Entry point.
+     */
     public static void main(String[] args) {
         ClientConfiguration cfg = new ClientConfiguration().setAddresses("127.0.0.1:10800");
 
@@ -58,11 +60,9 @@ public class ClientPutGetExample {
             Address cachedVal = cache.get(key);
 
             System.out.format(">>> Loaded [%s] from the cache.\n", cachedVal);
-        }
-        catch (ClientException e) {
+        } catch (ClientException e) {
             System.err.println(e.getMessage());
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.err.format("Unexpected failure: %s\n", e);
         }
     }
