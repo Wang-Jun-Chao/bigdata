@@ -24,7 +24,6 @@ import org.apache.ignite.binary.BinaryObject;
 import org.apache.ignite.cache.CacheAtomicityMode;
 import org.apache.ignite.cache.CacheMode;
 import org.apache.ignite.configuration.CacheConfiguration;
-import wjc.bigdata.ignite.binary.ExampleNodeStartup;
 import wjc.bigdata.ignite.binary.model.Address;
 import wjc.bigdata.ignite.binary.model.Organization;
 import wjc.bigdata.ignite.binary.model.OrganizationType;
@@ -46,12 +45,14 @@ import java.util.Map;
  * Remote nodes should always be started with the following command:
  * {@code 'ignite.{sh|bat} example-ignite.xml'}
  * <p>
- * Alternatively you can run {@link ExampleNodeStartup} in another JVM which will
+ * Alternatively you can run {@link wjc.bigdata.ignite.common.ExampleNodeStartup} in another JVM which will
  * start a node with {@code example-ignite.xml} configuration.
  */
 @SuppressWarnings("TypeMayBeWeakened")
 public class CacheClientBinaryPutGetExample {
-    /** Cache name. */
+    /**
+     * Cache name.
+     */
     private static final String CACHE_NAME = CacheClientBinaryPutGetExample.class.getSimpleName();
 
     /**
@@ -87,8 +88,7 @@ public class CacheClientBinaryPutGetExample {
                 putGetAllBinary(cache);
 
                 System.out.println();
-            }
-            finally {
+            } finally {
                 // Delete cache with its content completely.
                 ignite.destroyCache(CACHE_NAME);
             }
@@ -103,10 +103,10 @@ public class CacheClientBinaryPutGetExample {
     private static void putGet(IgniteCache<Integer, Organization> cache) {
         // Create new Organization binary object to store in cache.
         Organization org = new Organization(
-            "Microsoft", // Name.
-            new Address("1096 Eddy Street, San Francisco, CA", 94109), // Address.
-            OrganizationType.PRIVATE, // Type.
-            new Timestamp(System.currentTimeMillis())); // Last update time.
+                "Microsoft", // Name.
+                new Address("1096 Eddy Street, San Francisco, CA", 94109), // Address.
+                OrganizationType.PRIVATE, // Type.
+                new Timestamp(System.currentTimeMillis())); // Last update time.
 
         // Put created data entry to cache.
         cache.put(1, org);
@@ -126,10 +126,10 @@ public class CacheClientBinaryPutGetExample {
     private static void putGetBinary(IgniteCache<Integer, Organization> cache) {
         // Create new Organization binary object to store in cache.
         Organization org = new Organization(
-            "Microsoft", // Name.
-            new Address("1096 Eddy Street, San Francisco, CA", 94109), // Address.
-            OrganizationType.PRIVATE, // Type.
-            new Timestamp(System.currentTimeMillis())); // Last update time.
+                "Microsoft", // Name.
+                new Address("1096 Eddy Street, San Francisco, CA", 94109), // Address.
+                OrganizationType.PRIVATE, // Type.
+                new Timestamp(System.currentTimeMillis())); // Last update time.
 
         // Put created data entry to cache.
         cache.put(1, org);
@@ -156,16 +156,16 @@ public class CacheClientBinaryPutGetExample {
     private static void putGetAll(IgniteCache<Integer, Organization> cache) {
         // Create new Organization binary objects to store in cache.
         Organization org1 = new Organization(
-            "Microsoft", // Name.
-            new Address("1096 Eddy Street, San Francisco, CA", 94109), // Address.
-            OrganizationType.PRIVATE, // Type.
-            new Timestamp(System.currentTimeMillis())); // Last update time.
+                "Microsoft", // Name.
+                new Address("1096 Eddy Street, San Francisco, CA", 94109), // Address.
+                OrganizationType.PRIVATE, // Type.
+                new Timestamp(System.currentTimeMillis())); // Last update time.
 
         Organization org2 = new Organization(
-            "Red Cross", // Name.
-            new Address("184 Fidler Drive, San Antonio, TX", 78205), // Address.
-            OrganizationType.NON_PROFIT, // Type.
-            new Timestamp(System.currentTimeMillis())); // Last update time.
+                "Red Cross", // Name.
+                new Address("184 Fidler Drive, San Antonio, TX", 78205), // Address.
+                OrganizationType.NON_PROFIT, // Type.
+                new Timestamp(System.currentTimeMillis())); // Last update time.
 
         Map<Integer, Organization> map = new HashMap<>();
 
@@ -195,16 +195,16 @@ public class CacheClientBinaryPutGetExample {
     private static void putGetAllBinary(IgniteCache<Integer, Organization> cache) {
         // Create new Organization binary objects to store in cache.
         Organization org1 = new Organization(
-            "Microsoft", // Name.
-            new Address("1096 Eddy Street, San Francisco, CA", 94109), // Address.
-            OrganizationType.PRIVATE, // Type.
-            new Timestamp(System.currentTimeMillis())); // Last update time.
+                "Microsoft", // Name.
+                new Address("1096 Eddy Street, San Francisco, CA", 94109), // Address.
+                OrganizationType.PRIVATE, // Type.
+                new Timestamp(System.currentTimeMillis())); // Last update time.
 
         Organization org2 = new Organization(
-            "Red Cross", // Name.
-            new Address("184 Fidler Drive, San Antonio, TX", 78205), // Address.
-            OrganizationType.NON_PROFIT, // Type.
-            new Timestamp(System.currentTimeMillis())); // Last update time.
+                "Red Cross", // Name.
+                new Address("184 Fidler Drive, San Antonio, TX", 78205), // Address.
+                OrganizationType.NON_PROFIT, // Type.
+                new Timestamp(System.currentTimeMillis())); // Last update time.
 
         Map<Integer, Organization> map = new HashMap<>();
 

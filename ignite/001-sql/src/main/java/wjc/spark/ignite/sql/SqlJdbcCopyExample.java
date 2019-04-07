@@ -27,7 +27,7 @@ import java.sql.Statement;
 /**
  * This example demonstrates usage of COPY command via Ignite thin JDBC driver.
  * <p>
- * Ignite nodes must be started in separate process using {@link ExampleNodeStartup} before running this example.
+ * Ignite nodes must be started in separate process using {@link wjc.bigdata.ignite.common.ExampleNodeStartup} before running this example.
  */
 public class SqlJdbcCopyExample {
     /**

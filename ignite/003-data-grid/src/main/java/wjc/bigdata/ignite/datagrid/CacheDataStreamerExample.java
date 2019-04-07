@@ -22,7 +22,7 @@ import org.apache.ignite.IgniteCache;
 import org.apache.ignite.IgniteDataStreamer;
 import org.apache.ignite.IgniteException;
 import org.apache.ignite.Ignition;
-import wjc.bigdata.ignite.datagrid.util.ExamplesUtils;
+import wjc.bigdata.ignite.common.utils.ExamplesUtils;
 
 
 /**
@@ -34,22 +34,22 @@ import wjc.bigdata.ignite.datagrid.util.ExamplesUtils;
  * Remote nodes should always be started with special configuration file which
  * enables P2P class loading: {@code 'ignite.{sh|bat} example-ignite.xml'}.
  * <p>
- * Alternatively you can run {@link ExampleNodeStartup} in another JVM which will
+ * Alternatively you can run {@link wjc.bigdata.ignite.common.ExampleNodeStartup} in another JVM which will
  * start node with {@code example-ignite.xml} configuration.
  */
 public class CacheDataStreamerExample {
     /**
      * Heap size required to run this example.
      */
-    public static final int MIN_MEMORY = 512 * 1024 * 1024;
+    public static final  int    MIN_MEMORY  = 512 * 1024 * 1024;
     /**
      * Cache name.
      */
-    private static final String CACHE_NAME = CacheDataStreamerExample.class.getSimpleName();
+    private static final String CACHE_NAME  = CacheDataStreamerExample.class.getSimpleName();
     /**
      * Number of entries to load.
      */
-    private static final int ENTRY_COUNT = 500000;
+    private static final int    ENTRY_COUNT = 500000;
 
     /**
      * Executes example.

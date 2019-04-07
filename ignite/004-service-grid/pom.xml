@@ -17,6 +17,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>wjc.bigdata.ignite</groupId>
+            <artifactId>000-common</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.apache.ignite</groupId>
             <artifactId>ignite-core</artifactId>
         </dependency>

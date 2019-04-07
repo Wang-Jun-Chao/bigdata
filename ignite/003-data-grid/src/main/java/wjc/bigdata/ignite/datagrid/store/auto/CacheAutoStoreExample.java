@@ -28,7 +28,7 @@ import org.apache.ignite.cache.store.jdbc.dialect.H2Dialect;
 import org.apache.ignite.configuration.CacheConfiguration;
 import org.apache.ignite.transactions.Transaction;
 import org.h2.jdbcx.JdbcConnectionPool;
-import wjc.bigdata.ignite.datagrid.model.Person;
+import wjc.bigdata.ignite.common.model.Person;
 import wjc.bigdata.ignite.datagrid.util.DbH2ServerStartup;
 
 import java.sql.Types;
@@ -43,22 +43,22 @@ import static org.apache.ignite.cache.CacheAtomicityMode.TRANSACTIONAL;
  * To start the example, you should:
  * <ul>
  * <li>Start H2 database TCP server using {@link DbH2ServerStartup}.</li>
- * <li>Start a few nodes using {@link ExampleNodeStartup}.</li>
+ * <li>Start a few nodes using {@link wjc.bigdata.ignite.common.ExampleNodeStartup}.</li>
  * <li>Start example using {@link CacheAutoStoreExample}.</li>
  * </ul>
  * <p>
- * Remote nodes can be started with {@link ExampleNodeStartup} in another JVM which will
+ * Remote nodes can be started with {@link wjc.bigdata.ignite.common.ExampleNodeStartup} in another JVM which will
  * start node with {@code example-ignite.xml} configuration.
  */
 public class CacheAutoStoreExample {
     /**
      * Cache name.
      */
-    public static final String CACHE_NAME = CacheAutoStoreExample.class.getSimpleName();
+    public static final  String CACHE_NAME = CacheAutoStoreExample.class.getSimpleName();
     /**
      * Global person ID to use across entire example.
      */
-    private static final Long id = 25121642L;
+    private static final Long   id         = 25121642L;
 
     /**
      * Configure cache with store.

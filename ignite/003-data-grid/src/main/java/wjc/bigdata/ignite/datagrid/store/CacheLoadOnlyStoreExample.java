@@ -29,7 +29,7 @@ import org.apache.ignite.internal.util.typedef.T2;
 import org.apache.ignite.lang.IgniteBiTuple;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.util.ResourceUtils;
-import wjc.bigdata.ignite.datagrid.model.Person;
+import wjc.bigdata.ignite.common.model.Person;
 
 import javax.cache.configuration.FactoryBuilder;
 import javax.cache.integration.CacheLoaderException;
@@ -45,7 +45,7 @@ import java.util.Scanner;
  * <p>
  * The adapter is intended to be used in cases when you need to pre-load a cache from text or file of any other format.
  * <p>
- * Remote nodes can be started with {@link ExampleNodeStartup} in another JVM which will
+ * Remote nodes can be started with {@link wjc.bigdata.ignite.common.ExampleNodeStartup} in another JVM which will
  * start node with {@code example-ignite.xml} configuration.
  */
 public class CacheLoadOnlyStoreExample {

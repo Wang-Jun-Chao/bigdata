@@ -49,7 +49,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * one <i>fact</i> - {@link FactPurchase}. Queries are executed by joining dimensions and facts
  * in various ways.
  * <p>
- * Remote nodes can be started with {@link ExampleNodeStartup} in another JVM which will
+ * Remote nodes can be started with {@link wjc.bigdata.ignite.common.ExampleNodeStartup} in another JVM which will
  * start node with {@code example-ignite.xml} configuration.
  */
 public class CacheStarSchemaExample {

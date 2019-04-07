@@ -31,7 +31,6 @@ import org.apache.ignite.cache.query.SqlFieldsQuery;
 import org.apache.ignite.cache.query.SqlQuery;
 import org.apache.ignite.cache.query.TextQuery;
 import org.apache.ignite.configuration.CacheConfiguration;
-import wjc.bigdata.ignite.binary.ExampleNodeStartup;
 import wjc.bigdata.ignite.binary.model.Address;
 import wjc.bigdata.ignite.binary.model.Employee;
 import wjc.bigdata.ignite.binary.model.EmployeeKey;
@@ -52,7 +51,7 @@ import java.util.List;
  * Remote nodes should always be started with the following command:
  * {@code 'ignite.{sh|bat} example-ignite.xml'}
  * <p>
- * Alternatively you can run {@link ExampleNodeStartup} in another JVM which will
+ * Alternatively you can run {@link wjc.bigdata.ignite.common.ExampleNodeStartup} in another JVM which will
  * start a node with {@code example-ignite.xml} configuration.
  */
 public class CacheClientBinaryQueryExample {

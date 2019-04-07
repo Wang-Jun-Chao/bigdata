@@ -26,9 +26,9 @@ import org.apache.ignite.cache.store.jdbc.CacheJdbcStoreSessionListener;
 import org.apache.ignite.configuration.CacheConfiguration;
 import org.apache.ignite.transactions.Transaction;
 import org.h2.jdbcx.JdbcConnectionPool;
-import wjc.bigdata.ignite.datagrid.model.Person;
+import wjc.bigdata.ignite.common.model.Person;
+import wjc.bigdata.ignite.common.utils.ExamplesUtils;
 import wjc.bigdata.ignite.datagrid.util.DbH2ServerStartup;
-import wjc.bigdata.ignite.datagrid.util.ExamplesUtils;
 
 import javax.cache.configuration.Factory;
 import javax.cache.configuration.FactoryBuilder;
@@ -44,26 +44,26 @@ import static org.apache.ignite.cache.CacheAtomicityMode.TRANSACTIONAL;
  * To start the example, you should:
  * <ul>
  * <li>Start H2 database TCP server using {@link DbH2ServerStartup}.</li>
- * <li>Start a few nodes using {@link ExampleNodeStartup}.</li>
+ * <li>Start a few nodes using {@link wjc.bigdata.ignite.common.ExampleNodeStartup}.</li>
  * <li>Start example using {@link CacheJdbcStoreExample}.</li>
  * </ul>
  * <p>
- * Remote nodes can be started with {@link ExampleNodeStartup} in another JVM which will
+ * Remote nodes can be started with {@link wjc.bigdata.ignite.common.ExampleNodeStartup} in another JVM which will
  * start node with {@code example-ignite.xml} configuration.
  */
 public class CacheJdbcStoreExample {
     /**
      * Heap size required to run this example.
      */
-    public static final int MIN_MEMORY = 1024 * 1024 * 1024;
+    public static final  int    MIN_MEMORY  = 1024 * 1024 * 1024;
     /**
      * Cache name.
      */
-    private static final String CACHE_NAME = CacheJdbcStoreExample.class.getSimpleName();
+    private static final String CACHE_NAME  = CacheJdbcStoreExample.class.getSimpleName();
     /**
      * Number of entries to load.
      */
-    private static final int ENTRY_COUNT = 100_000;
+    private static final int    ENTRY_COUNT = 100_000;
 
     /**
      * Global person ID to use across entire example.

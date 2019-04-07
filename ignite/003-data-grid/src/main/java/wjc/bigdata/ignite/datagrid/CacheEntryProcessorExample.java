@@ -35,7 +35,7 @@ import java.util.Set;
  * Remote nodes should always be started with special configuration file which enables P2P
  * class loading: {@code 'ignite.{sh|bat} example-ignite.xml'}.
  * <p>
- * Alternatively you can run {@link ExampleNodeStartup} in another JVM which will start node with
+ * Alternatively you can run {@link wjc.bigdata.ignite.common.ExampleNodeStartup} in another JVM which will start node with
  * {@code example-ignite.xml} configuration.
  */
 public class CacheEntryProcessorExample {

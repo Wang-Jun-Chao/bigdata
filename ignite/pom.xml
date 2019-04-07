@@ -14,6 +14,10 @@
         <module>002-compute-grid</module>
         <module>003-data-grid</module>
         <module>004-service-grid</module>
+        <module>005-lifecycle</module>
+        <module>006-cluster</module>
+        <module>007-client</module>
+        <module>008-binary</module>
     </modules>
 
     <properties>
@@ -24,7 +28,11 @@
 
     <dependencyManagement>
         <dependencies>
-
+            <dependency>
+                <groupId>wjc.bigdata.ignite</groupId>
+                <artifactId>000-common</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>

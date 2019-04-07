@@ -22,6 +22,7 @@ import org.apache.ignite.IgniteCluster;
 import org.apache.ignite.IgniteException;
 import org.apache.ignite.Ignition;
 import org.apache.ignite.cluster.ClusterGroup;
+import wjc.bigdata.ignite.common.utils.ExamplesUtils;
 
 /**
  * Demonstrates new functional APIs.
@@ -29,7 +30,7 @@ import org.apache.ignite.cluster.ClusterGroup;
  * Remote nodes should always be started with special configuration file which
  * enables P2P class loading: {@code 'ignite.{sh|bat} example-ignite.xml'}.
  * <p>
- * Alternatively you can run {@link ExampleNodeStartup} in another JVM which will start node
+ * Alternatively you can run {@link wjc.bigdata.ignite.common.ExampleNodeStartup} in another JVM which will start node
  * with {@code example-ignite.xml} configuration.
  */
 public class ClusterGroupExample {
@@ -74,12 +75,12 @@ public class ClusterGroupExample {
      * Print 'Hello' message on remote nodes.
      *
      * @param ignite Ignite.
-     * @param grp Cluster group.
+     * @param grp    Cluster group.
      * @throws IgniteException If failed.
      */
     private static void sayHello(Ignite ignite, final ClusterGroup grp) throws IgniteException {
         // Print out hello message on all cluster nodes.
         ignite.compute(grp).broadcast(
-            () -> System.out.println(">>> Hello Node: " + grp.ignite().cluster().localNode().id()));
+                () -> System.out.println(">>> Hello Node: " + grp.ignite().cluster().localNode().id()));
     }
 }

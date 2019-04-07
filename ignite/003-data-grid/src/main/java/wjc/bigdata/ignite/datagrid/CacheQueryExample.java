@@ -30,8 +30,8 @@ import org.apache.ignite.cache.query.SqlQuery;
 import org.apache.ignite.cache.query.TextQuery;
 import org.apache.ignite.configuration.CacheConfiguration;
 import org.apache.ignite.lang.IgniteBiPredicate;
-import wjc.bigdata.ignite.datagrid.model.Organization;
-import wjc.bigdata.ignite.datagrid.model.Person;
+import wjc.bigdata.ignite.common.model.Organization;
+import wjc.bigdata.ignite.common.model.Person;
 
 import javax.cache.Cache;
 
@@ -60,7 +60,7 @@ import javax.cache.Cache;
  * </li>
  * </ul>
  * <p>
- * Remote nodes should be started using {@link ExampleNodeStartup} which will
+ * Remote nodes should be started using {@link wjc.bigdata.ignite.common.ExampleNodeStartup} which will
  * start node with {@code example-ignite.xml} configuration.
  */
 public class CacheQueryExample {
@@ -221,7 +221,8 @@ public class CacheQueryExample {
      * @param col Query results.
      */
     private static void print(Iterable<?> col) {
-        for (Object next : col)
+        for (Object next : col) {
             System.out.println(">>>     " + next);
+        }
     }
 }

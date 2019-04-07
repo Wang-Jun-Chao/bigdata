@@ -22,14 +22,14 @@ import org.apache.ignite.client.ClientCache;
 import org.apache.ignite.client.ClientException;
 import org.apache.ignite.client.IgniteClient;
 import org.apache.ignite.configuration.ClientConfiguration;
-import wjc.bigdata.ignite.client.model.Address;
+import wjc.bigdata.ignite.common.model.Address;
 
 /**
  * Demonstrates how to use Ignite thin client for basic put/get cache operations.
  * <p>
  * Prerequisites:
  * <ul>
- * <li>An Ignite server node must be running on local host. You can run {@link ExampleNodeStartup} in another JVM which will start node with default configuration.</li>
+ * <li>An Ignite server node must be running on local host. You can run {@link wjc.bigdata.ignite.common.ExampleNodeStartup} in another JVM which will start node with default configuration.</li>
  * </ul>
  * </p>
  */

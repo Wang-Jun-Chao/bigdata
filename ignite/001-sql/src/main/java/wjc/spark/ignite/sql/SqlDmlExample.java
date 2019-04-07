@@ -22,8 +22,8 @@ import org.apache.ignite.IgniteCache;
 import org.apache.ignite.Ignition;
 import org.apache.ignite.cache.query.SqlFieldsQuery;
 import org.apache.ignite.configuration.CacheConfiguration;
-import wjc.spark.ignite.sql.model.Organization;
-import wjc.spark.ignite.sql.model.Person;
+import wjc.bigdata.ignite.common.model.Organization;
+import wjc.bigdata.ignite.common.model.Person;
 
 import java.util.List;
 

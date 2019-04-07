@@ -26,7 +26,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.jdbc.core.RowMapper;
-import wjc.bigdata.ignite.datagrid.model.Person;
+import wjc.bigdata.ignite.common.model.Person;
 
 import javax.cache.Cache;
 import javax.cache.integration.CacheLoaderException;

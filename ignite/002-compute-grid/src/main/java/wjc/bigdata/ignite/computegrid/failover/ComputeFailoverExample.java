@@ -28,7 +28,7 @@ import org.apache.ignite.lang.IgniteBiTuple;
 import org.apache.ignite.lang.IgniteClosure;
 import org.apache.ignite.resources.LoggerResource;
 import org.apache.ignite.resources.TaskSessionResource;
-import wjc.bigdata.ignite.computegrid.ExamplesUtils;
+import wjc.bigdata.ignite.common.utils.ExamplesUtils;
 
 import java.util.Arrays;
 import java.util.List;

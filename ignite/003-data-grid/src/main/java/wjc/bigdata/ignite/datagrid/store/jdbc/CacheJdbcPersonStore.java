@@ -22,7 +22,7 @@ import org.apache.ignite.cache.store.CacheStoreAdapter;
 import org.apache.ignite.cache.store.CacheStoreSession;
 import org.apache.ignite.lang.IgniteBiInClosure;
 import org.apache.ignite.resources.CacheStoreSessionResource;
-import wjc.bigdata.ignite.datagrid.model.Person;
+import wjc.bigdata.ignite.common.model.Person;
 
 import javax.cache.Cache;
 import javax.cache.integration.CacheLoaderException;

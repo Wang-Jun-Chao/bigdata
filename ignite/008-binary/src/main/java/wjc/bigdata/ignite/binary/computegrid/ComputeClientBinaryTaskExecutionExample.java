@@ -20,9 +20,8 @@ package wjc.bigdata.ignite.binary.computegrid;
 import org.apache.ignite.Ignite;
 import org.apache.ignite.Ignition;
 import org.apache.ignite.binary.BinaryObject;
-import wjc.bigdata.ignite.binary.ExampleNodeStartup;
-import wjc.bigdata.ignite.binary.model.Address;
-import wjc.bigdata.ignite.binary.model.Employee;
+import wjc.bigdata.ignite.common.model.Address;
+import wjc.bigdata.ignite.common.model.Employee;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,7 +39,7 @@ import java.util.Collections;
  * Remote nodes should always be started with the following command:
  * {@code 'ignite.{sh|bat} example-ignite.xml'}.
  * <p>
- * Alternatively you can run {@link ExampleNodeStartup} in another JVM which will
+ * Alternatively you can run {@link wjc.bigdata.ignite.common.ExampleNodeStartup} in another JVM which will
  * start a node with {@code example-ignite.xml} configuration.
  */
 public class ComputeClientBinaryTaskExecutionExample {

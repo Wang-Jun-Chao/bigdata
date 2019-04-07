@@ -36,7 +36,7 @@ import org.apache.ignite.configuration.DataStorageConfiguration;
  * Additional remote nodes can be started with special configuration file which
  * enables P2P class loading: {@code 'ignite.{sh|bat} example-data-regions.xml'}.
  * <p>
- * Alternatively you can run {@link ExampleNodeStartup} in another JVM which passing
+ * Alternatively you can run {@link wjc.bigdata.ignite.common.ExampleNodeStartup} in another JVM which passing
  * {@code example-data-regions.xml} configuration to it.
  */
 public class DataRegionsExample {

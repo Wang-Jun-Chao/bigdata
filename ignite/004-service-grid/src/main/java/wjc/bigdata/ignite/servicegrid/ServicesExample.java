@@ -22,6 +22,7 @@ import org.apache.ignite.IgniteServices;
 import org.apache.ignite.Ignition;
 import org.apache.ignite.lang.IgniteCallable;
 import org.apache.ignite.resources.ServiceResource;
+import wjc.bigdata.ignite.common.utils.ExamplesUtils;
 
 import java.util.Collection;
 
@@ -30,7 +31,7 @@ import java.util.Collection;
  * Distributed services are especially useful when deploying singletons on the ignite,
  * be that cluster-singleton, or per-node-singleton, etc...
  * <p>
- * To start remote nodes, you must run {@link ExampleNodeStartup} in another JVM
+ * To start remote nodes, you must run {@link wjc.bigdata.ignite.common.ExampleNodeStartup} in another JVM
  * which will start node with {@code example-ignite.xml} configuration.
  * <p>
  * NOTE:<br/>

@@ -48,7 +48,7 @@ import java.util.concurrent.ConcurrentMap;
  * Remote nodes should always be started with special configuration file which
  * enables P2P class loading: {@code 'ignite.{sh|bat} examples/config/example-ignite.xml'}.
  * <p>
- * Alternatively you can run {@link ExampleNodeStartup}} in another JVM which will start node
+ * Alternatively you can run {@link wjc.bigdata.ignite.common.ExampleNodeStartup} in another JVM which will start node
  * with {@code example-ignite.xml} configuration.
  */
 public final class ComputeFibonacciContinuationExample {
@@ -104,21 +104,21 @@ public final class ComputeFibonacciContinuationExample {
         /**
          * Future for spawned task.
          */
-        private IgniteFuture<BigInteger> fut1;
+        private       IgniteFuture<BigInteger>     fut1;
         /**
          * Future for spawned task.
          */
-        private IgniteFuture<BigInteger> fut2;
+        private       IgniteFuture<BigInteger>     fut2;
         /**
          * Auto-inject job context.
          */
         @JobContextResource
-        private ComputeJobContext jobCtx;
+        private       ComputeJobContext            jobCtx;
         /**
          * Auto-inject ignite instance.
          */
         @IgniteInstanceResource
-        private Ignite ignite;
+        private       Ignite                       ignite;
 
         /**
          * @param nodeFilter Predicate to filter nodes.

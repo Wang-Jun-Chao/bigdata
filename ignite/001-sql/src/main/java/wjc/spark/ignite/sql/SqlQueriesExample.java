@@ -26,8 +26,8 @@ import org.apache.ignite.cache.query.QueryCursor;
 import org.apache.ignite.cache.query.SqlFieldsQuery;
 import org.apache.ignite.cache.query.SqlQuery;
 import org.apache.ignite.configuration.CacheConfiguration;
-import wjc.spark.ignite.sql.model.Organization;
-import wjc.spark.ignite.sql.model.Person;
+import wjc.bigdata.ignite.common.model.Organization;
+import wjc.bigdata.ignite.common.model.Person;
 
 import java.util.List;
 
@@ -55,7 +55,7 @@ import java.util.List;
  * </li>
  * </ul>
  * <p>
- * Remote nodes should be started using {@link ExampleNodeStartup} which will
+ * Remote nodes should be started using {@link wjc.bigdata.ignite.common.ExampleNodeStartup} which will
  * start node with {@code example-ignite.xml} configuration.
  */
 public class SqlQueriesExample {

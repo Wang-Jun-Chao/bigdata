@@ -54,7 +54,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Remote nodes should always be started with special configuration file which
  * enables P2P class loading: {@code 'ignite.{sh|bat} example-ignite.xml'}.
  * <p>
- * Alternatively you can run {@link ExampleNodeStartup} in another JVM which will start node
+ * Alternatively you can run {@link wjc.bigdata.ignite.common.ExampleNodeStartup} in another JVM which will start node
  * with {@code example-ignite.xml} configuration.
  */
 public class ComputeContinuousMapperExample {
@@ -91,16 +91,16 @@ public class ComputeContinuousMapperExample {
         /**
          * Word queue.
          */
-        private final Queue<String> words = new ConcurrentLinkedQueue<>();
+        private final Queue<String>               words       = new ConcurrentLinkedQueue<>();
         /**
          * Total character count.
          */
-        private final AtomicInteger totalChrCnt = new AtomicInteger(0);
+        private final AtomicInteger               totalChrCnt = new AtomicInteger(0);
         /**
          * This field will be injected with task continuous mapper.
          */
         @TaskContinuousMapperResource
-        private ComputeTaskContinuousMapper mapper;
+        private       ComputeTaskContinuousMapper mapper;
 
         /**
          * {@inheritDoc}
