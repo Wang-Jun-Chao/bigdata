@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.ignite.examples.persistentstore;
+package wjc.bigdata.ignite.persistentstore;
 
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCache;
@@ -26,8 +26,7 @@ import org.apache.ignite.cache.CacheWriteSynchronizationMode;
 import org.apache.ignite.cache.query.QueryCursor;
 import org.apache.ignite.cache.query.SqlFieldsQuery;
 import org.apache.ignite.configuration.CacheConfiguration;
-import org.apache.ignite.examples.datagrid.CacheQueryExample;
-import org.apache.ignite.examples.model.Organization;
+import wjc.bigdata.ignite.common.model.Organization;
 
 import java.util.List;
 
@@ -49,7 +48,7 @@ import java.util.List;
  */
 public class PersistentStoreExample {
     /** Organizations cache name. */
-    private static final String ORG_CACHE = CacheQueryExample.class.getSimpleName() + "Organizations";
+    private static final String ORG_CACHE = PersistentStoreExample.class.getSimpleName() + "Organizations";
 
     /** */
     private static final boolean UPDATE = true;
@@ -61,10 +60,10 @@ public class PersistentStoreExample {
     public static void main(String[] args) throws Exception {
         Ignition.setClientMode(true);
 
-        try (Ignite ignite = Ignition.start("examples/config/persistentstore/example-persistent-store.xml")) {
+        try (Ignite ignite = Ignition.start("example-persistent-store.xml")) {
             // Activate the cluster. Required to do if the persistent store is enabled because you might need
             // to wait while all the nodes, that store a subset of data on disk, join the cluster.
-            ignite.active(true);
+            ignite.cluster().active(true);
 
             CacheConfiguration<Long, Organization> cacheCfg = new CacheConfiguration<>(ORG_CACHE);
 
@@ -98,7 +97,7 @@ public class PersistentStoreExample {
             System.out.println("SQL Result: " + cur.getAll());
 
             // Run get() without explicitly calling to loadCache().
-            Organization org = cache.get(54321l);
+            Organization org = cache.get(54321L);
 
             System.out.println("GET Result: " + org);
         }

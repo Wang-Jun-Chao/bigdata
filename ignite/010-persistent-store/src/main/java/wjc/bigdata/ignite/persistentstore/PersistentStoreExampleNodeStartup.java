@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.ignite.examples.persistentstore;
+package wjc.bigdata.ignite.persistentstore;
 
 import org.apache.ignite.Ignition;
 
@@ -28,6 +28,6 @@ public class PersistentStoreExampleNodeStartup {
      * @throws Exception If failed.
      */
     public static void main(String[] args) throws Exception {
-        Ignition.start("examples/config/persistentstore/example-persistent-store.xml");
+        Ignition.start("example-persistent-store.xml");
     }
 }
