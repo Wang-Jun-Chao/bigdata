@@ -67,6 +67,17 @@
             </dependency>
             <dependency>
                 <groupId>org.apache.ignite</groupId>
+                <artifactId>ignite-spring-data</artifactId>
+                <version>${ignite.version}</version>
+            </dependency>
+            <!-- spring 5 可用 -->
+            <dependency>
+                <groupId>org.apache.ignite</groupId>
+                <artifactId>ignite-spring-data_2.0</artifactId>
+                <version>${ignite.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.ignite</groupId>
                 <artifactId>ignite-indexing</artifactId>
                 <version>${ignite.version}</version>
             </dependency>
