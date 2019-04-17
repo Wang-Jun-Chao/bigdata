@@ -23,9 +23,8 @@ import org.apache.ignite.IgniteDataStreamer;
 import org.apache.ignite.Ignition;
 import org.apache.ignite.cache.query.SqlFieldsQuery;
 import org.apache.ignite.configuration.CacheConfiguration;
-import org.apache.ignite.examples.ExampleNodeStartup;
-import org.apache.ignite.examples.ExamplesUtils;
 import org.apache.ignite.stream.StreamTransformer;
+import wjc.bigdata.ignite.common.utils.ExamplesUtils;
 
 import java.util.List;
 import java.util.Random;
@@ -54,7 +53,7 @@ public class StreamTransformerExample {
         // Mark this cluster member as client.
         Ignition.setClientMode(true);
 
-        try (Ignite ignite = Ignition.start("examples/config/example-ignite.xml")) {
+        try (Ignite ignite = Ignition.start("example-ignite.xml")) {
             if (!ExamplesUtils.hasServerNodes(ignite))
                 return;
 
@@ -84,8 +83,9 @@ public class StreamTransformerExample {
                     for (int i = 1; i <= 10_000_000; i++) {
                         stmr.addData(RAND.nextInt(RANGE), 1L);
 
-                        if (i % 500_000 == 0)
+                        if (i % 500_000 == 0) {
                             System.out.println("Number of tuples streamed into Ignite: " + i);
+                        }
                     }
                 }
 

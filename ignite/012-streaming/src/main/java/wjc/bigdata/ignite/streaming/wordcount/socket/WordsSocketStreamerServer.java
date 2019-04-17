@@ -24,14 +24,12 @@ import org.apache.ignite.IgniteException;
 import org.apache.ignite.Ignition;
 import org.apache.ignite.cache.affinity.AffinityUuid;
 import org.apache.ignite.configuration.CacheConfiguration;
-import org.apache.ignite.examples.ExampleNodeStartup;
-import org.apache.ignite.examples.ExamplesUtils;
-import org.apache.ignite.examples.streaming.wordcount.CacheConfig;
-import org.apache.ignite.examples.streaming.wordcount.QueryWords;
 import org.apache.ignite.lang.IgniteBiTuple;
 import org.apache.ignite.stream.StreamSingleTupleExtractor;
 import org.apache.ignite.stream.socket.SocketMessageConverter;
 import org.apache.ignite.stream.socket.SocketStreamer;
+import wjc.bigdata.ignite.common.utils.ExamplesUtils;
+import wjc.bigdata.ignite.streaming.wordcount.CacheConfig;
 
 import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;

@@ -23,8 +23,7 @@ import org.apache.ignite.Ignition;
 import org.apache.ignite.cache.affinity.AffinityUuid;
 import org.apache.ignite.cache.query.SqlFieldsQuery;
 import org.apache.ignite.configuration.CacheConfiguration;
-import org.apache.ignite.examples.ExampleNodeStartup;
-import org.apache.ignite.examples.ExamplesUtils;
+import wjc.bigdata.ignite.common.utils.ExamplesUtils;
 
 import java.util.List;
 

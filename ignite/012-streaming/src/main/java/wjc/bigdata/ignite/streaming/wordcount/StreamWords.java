@@ -22,8 +22,7 @@ import org.apache.ignite.IgniteCache;
 import org.apache.ignite.IgniteDataStreamer;
 import org.apache.ignite.Ignition;
 import org.apache.ignite.cache.affinity.AffinityUuid;
-import org.apache.ignite.examples.ExampleNodeStartup;
-import org.apache.ignite.examples.ExamplesUtils;
+import wjc.bigdata.ignite.common.utils.ExamplesUtils;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;

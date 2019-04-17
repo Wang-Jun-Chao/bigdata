@@ -24,9 +24,9 @@ import org.apache.ignite.Ignition;
 import org.apache.ignite.cache.query.SqlFieldsQuery;
 import org.apache.ignite.cache.query.annotations.QuerySqlField;
 import org.apache.ignite.configuration.CacheConfiguration;
-import org.apache.ignite.examples.ExampleNodeStartup;
-import org.apache.ignite.examples.ExamplesUtils;
 import org.apache.ignite.stream.StreamVisitor;
+import wjc.bigdata.ignite.common.ExampleNodeStartup;
+import wjc.bigdata.ignite.common.utils.ExamplesUtils;
 
 import java.io.Serializable;
 import java.util.List;
@@ -56,7 +56,7 @@ public class StreamVisitorExample {
         // Mark this cluster member as client.
         Ignition.setClientMode(true);
 
-        try (Ignite ignite = Ignition.start("examples/config/example-ignite.xml")) {
+        try (Ignite ignite = Ignition.start("example-ignite.xml")) {
             if (!ExamplesUtils.hasServerNodes(ignite))
                 return;
 
@@ -85,8 +85,9 @@ public class StreamVisitorExample {
 
                         Instrument inst = instCache.get(symbol);
 
-                        if (inst == null)
+                        if (inst == null) {
                             inst = new Instrument(symbol);
+                        }
 
                         // Don't populate market cache, as we don't use it for querying.
                         // Update cached instrument based on the latest market tick.
@@ -105,8 +106,9 @@ public class StreamVisitorExample {
 
                         mktStmr.addData(INSTRUMENTS[idx], price);
 
-                        if (i % 500_000 == 0)
+                        if (i % 500_000 == 0) {
                             System.out.println("Number of tuples streamed into Ignite: " + i);
+                        }
                     }
                 }
 
@@ -169,8 +171,9 @@ public class StreamVisitorExample {
          * @param price Latest price.
          */
         public void update(double price) {
-            if (open == 0)
+            if (open == 0) {
                 open = price;
+            }
 
             this.latest = price;
         }

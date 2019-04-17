@@ -17,8 +17,6 @@
 
 package wjc.bigdata.ignite.streaming.wordcount.socket;
 
-import org.apache.ignite.examples.ExampleNodeStartup;
-import org.apache.ignite.examples.streaming.wordcount.QueryWords;
 import org.apache.ignite.stream.socket.SocketStreamer;
 
 import java.io.BufferedOutputStream;
