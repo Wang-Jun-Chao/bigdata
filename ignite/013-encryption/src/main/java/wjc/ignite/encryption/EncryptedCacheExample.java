@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.ignite.examples.encryption;
+package wjc.ignite.encryption;
 
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCache;
@@ -38,7 +38,7 @@ public class EncryptedCacheExample {
         // Starting Ignite with EncryptionSpi configured.
         // Please, note, you should have the same keystore on every server node in cluster with enabled encryption.
         // You can use encryption feature only for deployment with Ignite persistence enabled.
-        try (Ignite ignite = Ignition.start("examples/config/encryption/example-encrypted-store.xml")) {
+        try (Ignite ignite = Ignition.start("example-encrypted-store.xml")) {
             // Activate the cluster. Required to do if the persistent store is enabled because you might need
             // to wait while all the nodes, that store a subset of data on disk, join the cluster.
             ignite.cluster().active(true);
@@ -64,7 +64,7 @@ public class EncryptedCacheExample {
 
         System.out.println(">>> Starting cluster again.");
         // Starting cluster again.
-        try (Ignite ignite = Ignition.start("examples/config/encryption/example-encrypted-store.xml")) {
+        try (Ignite ignite = Ignition.start("example-encrypted-store.xml")) {
             ignite.cluster().active(true);
 
             // We can obtain existing cache and load data from disk.
