@@ -22,6 +22,7 @@ import org.apache.ignite.IgniteException;
 import org.apache.ignite.IgniteMessaging;
 import org.apache.ignite.Ignition;
 import org.apache.ignite.cluster.ClusterGroup;
+import wjc.bigdata.ignite.common.ExampleNodeStartup;
 import wjc.bigdata.ignite.common.utils.ExamplesUtils;
 
 import java.util.concurrent.CountDownLatch;
@@ -34,10 +35,10 @@ import java.util.concurrent.CountDownLatch;
  * To run this example you must have at least one remote node started.
  * <p>
  * Remote nodes should always be started with special configuration file which
- * enables P2P class loading: {@code 'ignite.{sh|bat} examples/config/example-ignite.xml'}.
+ * enables P2P class loading: {@code 'ignite.{sh|bat} example-ignite.xml'}.
  * <p>
  * Alternatively you can run {@link ExampleNodeStartup} in another JVM which will start node
- * with {@code examples/config/example-ignite.xml} configuration.
+ * with {@code example-ignite.xml} configuration.
  */
 public final class MessagingExample {
     /** Number of messages. */
