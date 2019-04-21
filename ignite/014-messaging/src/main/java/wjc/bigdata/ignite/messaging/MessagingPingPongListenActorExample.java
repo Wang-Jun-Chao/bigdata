@@ -23,6 +23,7 @@ import org.apache.ignite.Ignition;
 import org.apache.ignite.cluster.ClusterGroup;
 import org.apache.ignite.cluster.ClusterNode;
 import org.apache.ignite.messaging.MessagingListenActor;
+import wjc.bigdata.ignite.common.ExampleNodeStartup;
 import wjc.bigdata.ignite.common.utils.ExamplesUtils;
 
 import java.util.Collection;
@@ -35,10 +36,10 @@ import java.util.concurrent.CountDownLatch;
  * To run this example you must have at least one remote node started.
  * <p>
  * Remote nodes should always be started with special configuration file which
- * enables P2P class loading: {@code 'ignite.{sh|bat} examples/config/example-ignite.xml'}.
+ * enables P2P class loading: {@code 'ignite.{sh|bat} example-ignite.xml'}.
  * <p>
  * Alternatively you can run {@link ExampleNodeStartup} in another JVM which will start node
- * with {@code examples/config/example-ignite.xml} configuration.
+ * with {@code eexample-ignite.xml} configuration.
  */
 public class MessagingPingPongListenActorExample {
     /**
@@ -48,9 +49,10 @@ public class MessagingPingPongListenActorExample {
      */
     public static void main(String[] args) {
         // Game is played over the default ignite.
-        try (Ignite ignite = Ignition.start("examples/config/example-ignite.xml")) {
-            if (!ExamplesUtils.checkMinTopologySize(ignite.cluster(), 2))
+        try (Ignite ignite = Ignition.start("example-ignite.xml")) {
+            if (!ExamplesUtils.checkMinTopologySize(ignite.cluster(), 2)) {
                 return;
+            }
 
             System.out.println();
             System.out.println(">>> Messaging ping-pong listen actor example started.");
@@ -67,13 +69,15 @@ public class MessagingPingPongListenActorExample {
 
             // Set up remote player.
             ignite.message(nodeB).remoteListen(null, new MessagingListenActor<String>() {
-                @Override public void receive(UUID nodeId, String rcvMsg) {
+                @Override
+                public void receive(UUID nodeId, String rcvMsg) {
                     System.out.println(rcvMsg);
 
-                    if ("PING".equals(rcvMsg))
+                    if ("PING".equals(rcvMsg)) {
                         respond("PONG");
-                    else if ("STOP".equals(rcvMsg))
+                    } else if ("STOP".equals(rcvMsg)) {
                         stop();
+                    }
                 }
             });
 
@@ -83,14 +87,15 @@ public class MessagingPingPongListenActorExample {
 
             // Set up local player.
             ignite.message().localListen(null, new MessagingListenActor<String>() {
-                @Override protected void receive(UUID nodeId, String rcvMsg) throws IgniteException {
+                @Override
+                protected void receive(UUID nodeId, String rcvMsg) throws IgniteException {
                     System.out.println(rcvMsg);
 
-                    if (cnt.getCount() == 1)
+                    if (cnt.getCount() == 1) {
                         stop("STOP");
-                    else if ("PONG".equals(rcvMsg))
+                    } else if ("PONG".equals(rcvMsg)) {
                         respond("PING");
-
+                    }
                     cnt.countDown();
                 }
             });
@@ -101,8 +106,7 @@ public class MessagingPingPongListenActorExample {
             // Wait til the game is over.
             try {
                 cnt.await();
-            }
-            catch (InterruptedException e) {
+            } catch (InterruptedException e) {
                 System.err.println("Hm... let us finish the game!\n" + e);
             }
         }
