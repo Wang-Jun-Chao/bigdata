@@ -15,15 +15,14 @@
  * limitations under the License.
  */
 
-package org.apache.ignite.examples.messaging;
+package wjc.bigdata.ignite.messaging;
 
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteException;
 import org.apache.ignite.IgniteMessaging;
 import org.apache.ignite.Ignition;
 import org.apache.ignite.cluster.ClusterGroup;
-import org.apache.ignite.examples.ExampleNodeStartup;
-import org.apache.ignite.examples.ExamplesUtils;
+import wjc.bigdata.ignite.common.utils.ExamplesUtils;
 
 import java.util.concurrent.CountDownLatch;
 
@@ -54,7 +53,7 @@ public final class MessagingExample {
      * @throws IgniteException If example execution failed.
      */
     public static void main(String[] args) throws Exception {
-        try (Ignite ignite = Ignition.start("examples/config/example-ignite.xml")) {
+        try (Ignite ignite = Ignition.start("example-ignite.xml")) {
             if (!ExamplesUtils.checkMinTopologySize(ignite.cluster(), 2))
                 return;
 
@@ -76,14 +75,16 @@ public final class MessagingExample {
             startListening(ignite, ignite.message(rmtGrp));
 
             // Send unordered messages to all remote nodes.
-            for (int i = 0; i < MESSAGES_NUM; i++)
+            for (int i = 0; i < MESSAGES_NUM; i++) {
                 ignite.message(rmtGrp).send(TOPIC.UNORDERED, Integer.toString(i));
+            }
 
             System.out.println(">>> Finished sending unordered messages.");
 
             // Send ordered messages to all remote nodes.
-            for (int i = 0; i < MESSAGES_NUM; i++)
+            for (int i = 0; i < MESSAGES_NUM; i++) {
                 ignite.message(rmtGrp).sendOrdered(TOPIC.ORDERED, Integer.toString(i), 0);
+            }
 
             System.out.println(">>> Finished sending ordered messages.");
             System.out.println(">>> Check output on all nodes for message printouts.");

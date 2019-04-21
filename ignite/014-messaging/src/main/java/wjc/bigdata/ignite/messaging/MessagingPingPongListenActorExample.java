@@ -15,16 +15,15 @@
  * limitations under the License.
  */
 
-package org.apache.ignite.examples.messaging;
+package wjc.bigdata.ignite.messaging;
 
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteException;
 import org.apache.ignite.Ignition;
 import org.apache.ignite.cluster.ClusterGroup;
 import org.apache.ignite.cluster.ClusterNode;
-import org.apache.ignite.examples.ExampleNodeStartup;
-import org.apache.ignite.examples.ExamplesUtils;
 import org.apache.ignite.messaging.MessagingListenActor;
+import wjc.bigdata.ignite.common.utils.ExamplesUtils;
 
 import java.util.Collection;
 import java.util.UUID;

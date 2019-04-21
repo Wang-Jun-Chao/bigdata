@@ -15,14 +15,14 @@
  * limitations under the License.
  */
 
-package org.apache.ignite.examples.messaging;
+package wjc.bigdata.ignite.messaging;
 
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteException;
 import org.apache.ignite.Ignition;
 import org.apache.ignite.cluster.ClusterGroup;
-import org.apache.ignite.examples.ExampleNodeStartup;
-import org.apache.ignite.examples.ExamplesUtils;
+import wjc.bigdata.ignite.common.ExampleNodeStartup;
+import wjc.bigdata.ignite.common.utils.ExamplesUtils;
 
 import java.util.concurrent.CountDownLatch;
 
@@ -32,10 +32,10 @@ import java.util.concurrent.CountDownLatch;
  * To run this example you must have at least one remote node started.
  * <p>
  * Remote nodes should always be started with special configuration file which
- * enables P2P class loading: {@code 'ignite.{sh|bat} examples/config/example-ignite.xml'}.
+ * enables P2P class loading: {@code 'ignite.{sh|bat} example-ignite.xml'}.
  * <p>
  * Alternatively you can run {@link ExampleNodeStartup} in another JVM which will start node
- * with {@code examples/config/example-ignite.xml} configuration.
+ * with {@code example-ignite.xml} configuration.
  */
 public class MessagingPingPongExample {
     /**
@@ -46,9 +46,10 @@ public class MessagingPingPongExample {
      */
     public static void main(String[] args) throws Exception {
         // Game is played over the default ignite.
-        try (Ignite ignite = Ignition.start("examples/config/example-ignite.xml")) {
-            if (!ExamplesUtils.checkMinTopologySize(ignite.cluster(), 2))
+        try (Ignite ignite = Ignition.start("example-ignite.xml")) {
+            if (!ExamplesUtils.checkMinTopologySize(ignite.cluster(), 2)) {
                 return;
+            }
 
             System.out.println();
             System.out.println(">>> Messaging ping-pong example started.");
@@ -89,10 +90,11 @@ public class MessagingPingPongExample {
 
                     return false; // Stop listening.
                 }
-                else if ("PONG".equals(rcvMsg))
+                else if ("PONG".equals(rcvMsg)) {
                     ignite.message(ignite.cluster().forNodeId(nodeId)).send(null, "PING");
-                else
+                } else {
                     throw new IgniteException("Received unexpected message: " + rcvMsg);
+                }
 
                 cnt.countDown();
 
