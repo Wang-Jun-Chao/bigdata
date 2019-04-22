@@ -49,10 +49,10 @@ import java.util.TreeSet;
  * the same way as {@code grep} command does.
  * <p>
  * Remote nodes should always be started with configuration file which includes
- * IGFS: {@code 'ignite.sh examples/config/filesystem/example-igfs.xml'}.
+ * IGFS: {@code 'ignite.sh example-igfs.xml'}.
  * <p>
  * Alternatively you can run {@link IgfsNodeStartup} in another JVM which will start
- * node with {@code examples/config/filesystem/example-igfs.xml} configuration.
+ * node with {@code example-igfs.xml} configuration.
  */
 public class IgfsMapReduceExample {
     /**
@@ -62,12 +62,12 @@ public class IgfsMapReduceExample {
      * @throws Exception If failed.
      */
     public static void main(String[] args) throws Exception {
-        if (args.length == 0)
+        if (args.length == 0) {
             System.out.println("Please provide file name and regular expression.");
-        else if (args.length == 1)
+        } else if (args.length == 1) {
             System.out.println("Please provide regular expression.");
-        else {
-            try (Ignite ignite = Ignition.start("examples/config/filesystem/example-igfs.xml")) {
+        } else {
+            try (Ignite ignite = Ignition.start("example-igfs.xml")) {
                 System.out.println();
                 System.out.println(">>> IGFS map reduce example started.");
 
@@ -90,13 +90,12 @@ public class IgfsMapReduceExample {
                 writeFile(fs, fsPath, file);
 
                 Collection<Line> lines = fs.execute(new GrepTask(), IgfsNewLineRecordResolver.NEW_LINE,
-                    Collections.singleton(fsPath), regexStr);
+                        Collections.singleton(fsPath), regexStr);
 
                 if (lines.isEmpty()) {
                     System.out.println();
                     System.out.println("No lines were found.");
-                }
-                else {
+                } else {
                     System.out.println();
                     System.out.println("Found lines:");
 
@@ -110,9 +109,9 @@ public class IgfsMapReduceExample {
     /**
      * Write file to the Ignite file system.
      *
-     * @param fs Ignite file system.
+     * @param fs     Ignite file system.
      * @param fsPath Ignite file system path.
-     * @param file File to write.
+     * @param file   File to write.
      * @throws Exception In case of exception.
      */
     private static void writeFile(IgniteFileSystem fs, IgfsPath fsPath, File file) throws Exception {
@@ -120,8 +119,8 @@ public class IgfsMapReduceExample {
         System.out.println("Copying file to IGFS: " + file);
 
         try (
-            IgfsOutputStream os = fs.create(fsPath, true);
-            FileInputStream fis = new FileInputStream(file)
+                IgfsOutputStream os = fs.create(fsPath, true);
+                FileInputStream fis = new FileInputStream(file)
         ) {
             byte[] buf = new byte[2048];
 
@@ -148,29 +147,38 @@ public class IgfsMapReduceExample {
      * Grep task.
      */
     private static class GrepTask extends IgfsTask<String, Collection<Line>> {
-        /** {@inheritDoc} */
-        @Override public IgfsJob createJob(IgfsPath path, IgfsFileRange range,
-            IgfsTaskArgs<String> args) {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public IgfsJob createJob(IgfsPath path, IgfsFileRange range,
+                                 IgfsTaskArgs<String> args) {
             return new GrepJob(args.userArgument());
         }
 
-        /** {@inheritDoc} */
-        @Override public Collection<Line> reduce(List<ComputeJobResult> results) {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Collection<Line> reduce(List<ComputeJobResult> results) {
             Collection<Line> lines = new TreeSet<>(new Comparator<Line>() {
-                @Override public int compare(Line line1, Line line2) {
+                @Override
+                public int compare(Line line1, Line line2) {
                     return line1.rangePosition() < line2.rangePosition() ? -1 :
-                        line1.rangePosition() > line2.rangePosition() ? 1 : line1.lineIndex() - line2.lineIndex();
+                            line1.rangePosition() > line2.rangePosition() ? 1 : line1.lineIndex() - line2.lineIndex();
                 }
             });
 
             for (ComputeJobResult res : results) {
-                if (res.getException() != null)
+                if (res.getException() != null) {
                     throw res.getException();
+                }
 
                 Collection<Line> line = res.getData();
 
-                if (line != null)
+                if (line != null) {
                     lines.addAll(line);
+                }
             }
 
             return lines;
@@ -181,7 +189,9 @@ public class IgfsMapReduceExample {
      * Grep job.
      */
     private static class GrepJob extends IgfsInputStreamJobAdapter {
-        /** Regex string. */
+        /**
+         * Regex string.
+         */
         private final String regex;
 
         /**
@@ -193,8 +203,11 @@ public class IgfsMapReduceExample {
             this.regex = regex;
         }
 
-        /**  {@inheritDoc} */
-        @Override public Object execute(IgniteFileSystem igfs, IgfsRangeInputStream in) throws IgniteException, IOException {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Object execute(IgniteFileSystem igfs, IgfsRangeInputStream in) throws IgniteException, IOException {
             Collection<Line> res = null;
 
             long start = in.startOffset();
@@ -206,8 +219,9 @@ public class IgfsMapReduceExample {
 
                 while (line != null) {
                     if (line.matches(".*" + regex + ".*")) {
-                        if (res == null)
+                        if (res == null) {
                             res = new HashSet<>();
+                        }
 
                         res.add(new Line(start, ctr++, line));
                     }
@@ -224,21 +238,27 @@ public class IgfsMapReduceExample {
      * Single file line with it's position.
      */
     private static class Line {
-        /** Line start position in the file. */
+        /**
+         * Line start position in the file.
+         */
         private long rangePos;
 
-        /** Matching line index within the range. */
+        /**
+         * Matching line index within the range.
+         */
         private final int lineIdx;
 
-        /** File line. */
+        /**
+         * File line.
+         */
         private String line;
 
         /**
          * Constructor.
          *
          * @param rangePos Range position.
-         * @param lineIdx Matching line index within the range.
-         * @param line File line.
+         * @param lineIdx  Matching line index within the range.
+         * @param line     File line.
          */
         private Line(long rangePos, int lineIdx, String line) {
             this.rangePos = rangePos;
