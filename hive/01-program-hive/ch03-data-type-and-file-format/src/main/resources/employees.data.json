@@ -1,0 +1,19 @@
+{
+    "name": "John Doe",
+    "salary": 100000.0,
+    "subordinates": [
+        "Mary Smith",
+        "Todd Jones"
+    ],
+    "deductions": {
+        "Federal Taxes": 0.2,
+        "State Taxes": 0.05,
+        "Insurance": 0.1
+    },
+    "address": {
+        "street": "1 Michigan Ave.",
+        "city": "Chicago",
+        "state": "IL",
+        "Zip": 60600
+    }
+}
