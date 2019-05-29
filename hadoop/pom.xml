@@ -4,15 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>wjc.bigdata</groupId>
-    <artifactId>bigdata</artifactId>
-    <version>1.0</version>
     <packaging>pom</packaging>
+    <groupId>wjc.bigdata</groupId>
+    <artifactId>hadoop</artifactId>
+    <version>1.0-SNAPSHOT</version>
 
-    <modules>
-        <module>spark</module>
-        <module>flink</module>
-        <module>ignite</module>
-        <module>hive</module>
-    </modules>
+
 </project>
