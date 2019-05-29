@@ -118,3 +118,114 @@ ALTER TABLE log_messages
 DESCRIBE EXTENDED log_messages;
 
 DESCRIBE EXTENDED log_messages PARTITION (year = 2012, month = 1,day = 2);
+
+CREATE TABLE kst
+    PARTITIONED BY (ds string)
+    ROW FORMAT SERDE 'com.linkedin.haivvreo.AvroSerDe'
+        WITH SERDEPROPERTIES ('schema.url' = 'http://schema_provider/kst.avsc')
+    STORED AS
+        INPUTFORMAT 'com.linkedin.haivvreo.AvroContainerinputFormat'
+        OUTPUTFORMAT 'com.linkedin.haivvreo.AvroContainerOutputFormat';
+
+CREATE EXTERNAL TABLE IF NOT EXISTS stocks
+(
+    `exchange`      STRING,
+    symbol          STRING,
+    ymd             STRING,
+    price_open      FLOAT,
+    price_high      FLOAT,
+    price_low       FLOAT,
+    price_close     FLOAT,
+    volume          INT,
+    price_adj_close FLOAT
+)
+    CLUSTERED BY (`exchange`, symbol)
+        SORTED BY (ymd ASC)
+        INTO 96 BUCKETS
+    ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+    LOCATION '/data/stocks';
+
+-- 表重命名
+ALTER TABLE log_messages
+    RENAME TO logmsgs;
+
+ALTER TABLE log_messages
+    ADD IF NOT EXISTS
+        PARTITION (year = 2011, month = 1, day = 1) LOCATION '/logs/2011/01/01'
+        PARTITION (year = 2011, month = 1, day = 2) LOCATION '/logs/2011/01/02'
+        PARTITION (year = 2011, month = 1, day = 3) LOCATION '/logs/2011/01/03';
+
+ALTER TABLE log_messages
+    PARTITION (year = 2011, month = 12, day = 2)
+        SET LOCATION 's3n://ourbucket/logs/2011/01/02';
+
+ALTER TABLE log_messages
+    DROP IF EXISTS PARTITION (year = 2011, month = 12, day = 2);
+
+
+-- 修改列信息
+-- 如果用户想将这个字段移动到第一个位置，那么只需要使用FIRST 关键字替代AFTER other_ column 子句即可。
+ALTER TABLE log_messages
+    CHANGE COLUMN hms hours_minutes_seconds INT
+        COMMENT 'The hours, minutes, and seconds part of the timestamp'
+        AFTER severity;
+
+-- 增加列
+ALTER TABLE log_messages
+    ADD COLUMNS (
+        app_name STRING COMMENT 'Application name',
+        session_id BIGINT COMMENT 'The current session id');
+
+-- 删除或者替换列
+-- REPLACE 语句只能用于使用了如下2 种内置SerDe 模块的表： DynamicSerDe 或者
+-- MetadataTypedColumnsetSerDe
+ALTER TABLE log_messages
+    REPLACE COLUMNS (
+        hours_mins_secs INT COMMENT 'hour, minute, seconds from timestamp',
+        severity STRING COMMENT 'The message severity',
+        message STRING COMMENT 'The rest of the message');
+
+-- 修改表属性
+-- 用户可以增加附加的表属性或者修改已经存在的属性，但是无法删除属性：
+ALTER TABLE log_messages
+    SET TBLPROPERTIES (
+        'notes' = 'The process id is no longer captured; this column is always NULL');
+
+-- 修改存储属性
+
+ALTER TABLE log_messages
+    PARTITION (year = 2012, month = 1, day = 1)
+        SET FILEFORMAT SEQUENCEFILE;
+
+CREATE TABLE table_using_json_storage;
+ALTER TABLE table_using_json_storage
+    SET SERDE 'com.example.JSONSerDe'
+        WITH SERDEPROPERTIES ('propl' = 'valuel', 'prop2' = 'value2');
+
+ALTER TABLE stocks
+    CLUSTERED BY (`exchange`, symbol)
+        SORTED BY (symbol)
+        INTO 48 BUCKETS;
+
+ALTER TABLE log_messages
+    TOUCH PARTITION (year = 2012, month = 1, day = 1);
+
+-- ALTER TABLE … ARCHIVE PARTITION 语句会将这个分区内的文件打成一个
+-- Hadoop 压缩包(HAR) 文件。但是这样仅仅可以降低文件系统中的文件数以及减轻
+-- NameNode 的压力，而不会减少任何的存储空间（例如，通过压缩）
+-- 使用UNARCHIVE 替换ARCHIVE 就可以反向操作。这个功能只能用于分区表中独立
+-- 的分区。
+ALTER TABLE log_messages
+    ARCHIVE
+        PARTITION (year = 2012, month = 1, day = 1);
+
+ALTER TABLE log_messages
+    PARTITION (year = 2012, month = 1, day = 1) ENABLE NO_DROP;
+ALTER TABLE log_messages
+    PARTITION (year = 2012, month = 1, day = 1) ENABLE OFFLINE;
+
+
+
+
+
+
