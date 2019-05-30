@@ -310,3 +310,76 @@ FROM stocks s
      s.symbol DESC
 LIMIT 50;
 
+SELECT s.ymd, s.symbol, s.price_close
+FROM stocks s
+    DISTRIBUTE BY
+     s.symbol
+    SORT BY
+     s.symbol ASC,
+     s.ymd ASC
+LIMIT 50;
+
+-- 使用DISTRIBUTE BY …SORT BY 语句或其简化版的CLUSTER BY 语句会剥夺SORT
+-- BY 的并行性，然而这样可以实现输出文件的数据是全局排序的。
+SELECT s.ymd, s.symbol, s.price_close
+FROM stocks s
+    CLUSTER BY s.symbol
+LIMIT 100;
+
+SELECT (2.0 * cast(cast(b AS STRING) AS DOUBLE))
+FROM src;
+
+-- 分桶语句中的分母表示的是数据将会被散列的桶的个数，而分子表示将会选择的桶的个数：
+CREATE TABLE numbers (number INT);
+LOAD DATA INPATH "/data/number_table_data" INTO TABLE numbers;
+SELECT *
+FROM numbers TABLESAMPLE (BUCKET 3 OUT OF 10 ON rand()) s;
+
+SELECT*
+FROM numbers TABLESAMPLE (BUCKET 3 OUT OF 10 ON rand()) s;
+
+-- 基于行数数据块抽样，这种抽样方式不一定适用于所有的文件格式。另外，这种抽样的最小抽
+-- 样单元是一个HDFS 数据块。因此，如果表的数据大小小于普通的块大
+-- 小128MB 的话，那么将会返回所有行。
+SELECT* FROM numbersflat TABLESAMPLE(0.1 PERCENT) s;
+
+CREATE TABLE numbers_bucketed
+(
+    number int
+) CLUSTERED BY (number) INTO
+    1 BUCKETS;
+SET hive.enforce.bucketing=true;
+INSERT OVERWRITE TABLE numbers_bucketed SELECT number FROM numbers;
+
+
+-- UNION ALL
+SELECT log.ymd, log.level, log.message
+FROM (
+         SELECT l1.ymd,
+                l1.level,
+                l1.message,
+                'Logl' AS source
+         FROM logl l1
+         UNION ALL
+         SELECT l2.ymd,
+                l2.level,
+                l2.message,
+                'Log2' AS source
+         FROM logl l2
+     ) log
+    SORT BY log.ymd ASC;
+
+FROM (
+         FROM src
+         SELECT src.key, src.value
+         WHERE src.key < 100
+         UNION ALL
+         FROM src
+         SELECT src.key, src.value
+         WHERE src.key > 110
+     ) unioninput
+INSERT
+OVERWRITE
+DIRECTORY
+'/tmp/union.out'
+SELECT unioninput.*
