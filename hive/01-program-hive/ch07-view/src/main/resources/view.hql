@@ -57,3 +57,8 @@ WHERE cols["type"] = "response";
 -- 复制表
 CREATE TABLE shipments2
     LIKE shipments;
+
+-- 删除视图
+DROP VIEW IF EXISTS shipments;
+-- 视图只允许改变元数据中TBLPROPERTIES 属性信息：
+ALTER VIEW shipments SET TBLPROPERTIES ('created_at'='some_ time stamp') ;
