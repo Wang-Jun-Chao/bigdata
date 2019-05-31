@@ -7,10 +7,15 @@
     <groupId>wjc.bigdata.hive</groupId>
     <artifactId>01-program-hive</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
     <parent>
         <groupId>wjc.bigdata</groupId>
         <artifactId>hive</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
+
+    <modules>
+        <module>ch13-function</module>
+    </modules>
 </project>
