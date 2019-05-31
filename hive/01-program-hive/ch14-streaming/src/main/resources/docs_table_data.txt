@@ -1,0 +1,5 @@
+CREATE TEMPORARY EXTERNAL TABLE IF NOT EXISTS db name  table name
+col name data type COMMENT col comment
+COMMENT table comment
+ROW FORMAT row format
+STORED AS file format
