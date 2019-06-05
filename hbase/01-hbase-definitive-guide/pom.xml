@@ -4,12 +4,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>wjc.bigdata</groupId>
-    <artifactId>hbase</artifactId>
+    <groupId>wjc.bigdata.hbase</groupId>
+    <artifactId>01-hbase-definitive-guide</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
 
-    <modules>
-        <module>01-hbase-definitive-guide</module>
-    </modules>
+    <parent>
+        <groupId>wjc.bigdata</groupId>
+        <artifactId>hbase</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
 </project>
