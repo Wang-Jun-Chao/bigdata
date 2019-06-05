@@ -5,15 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>wjc.bigdata</groupId>
-    <artifactId>bigdata</artifactId>
-    <version>1.0</version>
-    <packaging>pom</packaging>
+    <artifactId>hbase</artifactId>
+    <version>1.0-SNAPSHOT</version>
 
-    <modules>
-        <module>spark</module>
-        <module>flink</module>
-        <module>ignite</module>
-        <module>hive</module>
-        <module>hbase</module>
-    </modules>
+    
 </project>
