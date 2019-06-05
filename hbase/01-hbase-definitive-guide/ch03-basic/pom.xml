@@ -5,13 +5,19 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>wjc.bigdata.hbase</groupId>
-    <artifactId>01-hbase-definitive-guide</artifactId>
+    <artifactId>ch03-basic</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
 
     <parent>
-        <groupId>wjc.bigdata</groupId>
-        <artifactId>hbase</artifactId>
+        <groupId>wjc.bigdata.hbase</groupId>
+        <artifactId>01-hbase-definitive-guide</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.hbase</groupId>
+            <artifactId>hbase-client</artifactId>
+        </dependency>
+    </dependencies>
 </project>

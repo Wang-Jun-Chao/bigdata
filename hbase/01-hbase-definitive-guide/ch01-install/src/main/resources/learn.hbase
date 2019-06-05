@@ -1,0 +1,19 @@
+status
+
+create 'testtable','colfam1'
+list'testtable'
+put 'testtable','myrow-1','colfam1:ql','value-1'
+put 'testtable','myrow-2','colfam1:q2','value-2'
+put 'testtable','myrow-2','colfam1:q3','value-3'
+scan 'testtable'
+get 'testtable','myrow-1'
+delete 'testtable','myrow-2','colfam1:q2'
+disable 'testtable'
+drop 'testtable'
+
+
+
+
+
+
+
