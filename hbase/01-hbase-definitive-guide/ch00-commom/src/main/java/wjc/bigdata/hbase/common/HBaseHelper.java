@@ -7,6 +7,8 @@ import org.apache.hadoop.hbase.HTableDescriptor;
 import org.apache.hadoop.hbase.NamespaceDescriptor;
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.Admin;
+import org.apache.hadoop.hbase.client.ColumnFamilyDescriptor;
+import org.apache.hadoop.hbase.client.ColumnFamilyDescriptorBuilder;
 import org.apache.hadoop.hbase.client.Connection;
 import org.apache.hadoop.hbase.client.ConnectionFactory;
 import org.apache.hadoop.hbase.client.Get;
@@ -15,6 +17,8 @@ import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.ResultScanner;
 import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.client.Table;
+import org.apache.hadoop.hbase.client.TableDescriptor;
+import org.apache.hadoop.hbase.client.TableDescriptorBuilder;
 import org.apache.hadoop.hbase.util.Bytes;
 
 import java.io.Closeable;
@@ -114,7 +118,30 @@ public class HBaseHelper implements Closeable {
         createTable(TableName.valueOf(table), 1, splitKeys, colfams);
     }
 
+    public void createTable2(TableName table, int maxVersions, byte[][] splitKeys, String... colfams) throws IOException {
+
+        List<ColumnFamilyDescriptor> cfds = new ArrayList<>();
+        for (String cf : colfams) {
+            ColumnFamilyDescriptor columnFamilyDescriptor = ColumnFamilyDescriptorBuilder
+                    .newBuilder(cf.getBytes())
+                    .setMaxVersions(maxVersions)
+                    .build();
+            cfds.add(columnFamilyDescriptor);
+        }
+
+        TableDescriptor descriptor = TableDescriptorBuilder
+                .newBuilder(table)
+                .setColumnFamilies(cfds)
+                .build();
+
+        if (splitKeys != null) {
+            admin.createTable(descriptor, splitKeys);
+        } else {
+            admin.createTable(descriptor);
+        }
+    }
     public void createTable(TableName table, int maxVersions, byte[][] splitKeys, String... colfams) throws IOException {
+
         HTableDescriptor desc = new HTableDescriptor(table);
         for (String cf : colfams) {
             HColumnDescriptor coldef = new HColumnDescriptor(cf);
