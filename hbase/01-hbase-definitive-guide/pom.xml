@@ -14,4 +14,18 @@
         <artifactId>hbase</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
+
+    <modules>
+        <module>ch00-commom</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>wjc.bigdata.hbase</groupId>
+                <artifactId>ch00-commom</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>

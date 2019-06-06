@@ -16,6 +16,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>wjc.bigdata.hbase</groupId>
+            <artifactId>ch00-commom</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.apache.hbase</groupId>
             <artifactId>hbase-client</artifactId>
         </dependency>

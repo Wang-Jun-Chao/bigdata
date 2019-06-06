@@ -43,6 +43,7 @@ public class HBaseHelper implements Closeable {
     }
 
     public static HBaseHelper getHelper(Configuration configuration) throws IOException {
+        configuration.set("hbase.zookeeper.quorum", "localhost:2181,localhost:2182,localhost:2183");
         return new HBaseHelper(configuration);
     }
 
@@ -83,9 +84,18 @@ public class HBaseHelper implements Closeable {
         try {
             admin.deleteNamespace(namespace);
         } catch (IOException e) {
-            System.err.println("Error: " + e.getMessage());
+            e.printStackTrace();
         }
     }
+
+    public Table getTable(String table) throws IOException {
+        return getTable(TableName.valueOf(table));
+    }
+
+    public Table getTable(TableName table) throws IOException {
+        return connection.getTable(table);
+    }
+
 
     public boolean existsTable(String table) throws IOException {
         return existsTable(TableName.valueOf(table));
@@ -118,7 +128,7 @@ public class HBaseHelper implements Closeable {
         createTable(TableName.valueOf(table), 1, splitKeys, colfams);
     }
 
-    public void createTable2(TableName table, int maxVersions, byte[][] splitKeys, String... colfams) throws IOException {
+    public void createTable(TableName table, int maxVersions, byte[][] splitKeys, String... colfams) throws IOException {
 
         List<ColumnFamilyDescriptor> cfds = new ArrayList<>();
         for (String cf : colfams) {
@@ -140,7 +150,9 @@ public class HBaseHelper implements Closeable {
             admin.createTable(descriptor);
         }
     }
-    public void createTable(TableName table, int maxVersions, byte[][] splitKeys, String... colfams) throws IOException {
+
+    @Deprecated
+    public void createTable2(TableName table, int maxVersions, byte[][] splitKeys, String... colfams) throws IOException {
 
         HTableDescriptor desc = new HTableDescriptor(table);
         for (String cf : colfams) {

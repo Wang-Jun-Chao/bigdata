@@ -1,0 +1,5 @@
+create 'test','cf1'
+put 'test','row1','cf1','val1'
+put 'test','row1','cf1','va12'
+scan 'test'
+scan'test',{VERSIONS => 3}
