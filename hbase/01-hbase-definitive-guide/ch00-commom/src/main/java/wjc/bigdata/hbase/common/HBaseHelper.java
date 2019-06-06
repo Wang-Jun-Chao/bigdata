@@ -370,7 +370,7 @@ public class HBaseHelper implements Closeable {
         List<Get> gets = new ArrayList<Get>();
         for (String row : rows) {
             Get get = new Get(Bytes.toBytes(row));
-            get.setMaxVersions();
+            get.readAllVersions();
             if (fams != null) {
                 for (String fam : fams) {
                     for (String qual : quals) {
