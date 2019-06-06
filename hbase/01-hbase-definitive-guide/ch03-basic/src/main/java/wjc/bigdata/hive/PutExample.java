@@ -17,8 +17,6 @@ public class PutExample {
 
     public static void main(String[] args) throws IOException {
         Configuration conf = HBaseConfiguration.create();
-        conf.set("hbase.zookeeper.quorum", "localhost:2181,localhost:2182,localhost:2183");
-
         try (
                 HBaseHelper helper = HBaseHelper.getHelper(conf);
         ) {
